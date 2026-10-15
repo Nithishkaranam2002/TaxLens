@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Check, ChevronDown, Inbox, Loader2, X } from 'lucide-react';
+import { Check, ChevronDown, ChevronRight, Inbox, Loader2, X } from 'lucide-react';
 import { type ButtonHTMLAttributes, type ReactNode, useEffect, useRef, useState } from 'react';
 import { store } from '../app/store';
 import type { Actor } from '../engine/people';
@@ -132,6 +132,26 @@ export function Empty({ title, children, icon, action, tone = 'neutral', classNa
   );
 }
 export const State = Empty;
+
+/** A section that starts collapsed (or open) behind one clear row: progressive disclosure. */
+export function Disclosure({ title, sub, right, children, defaultOpen = false, className }: { title: ReactNode; sub?: ReactNode; right?: ReactNode; children: ReactNode; defaultOpen?: boolean; className?: string }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <section className={cx('rounded-xl border border-line bg-panel', className)}>
+      <div className="flex items-center gap-3 px-4 sm:px-5">
+        <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex min-h-14 min-w-0 flex-1 items-center gap-3 py-3 text-left">
+          <ChevronRight className={cx('size-4 shrink-0 text-fg-3 transition-transform', open && 'rotate-90')} />
+          <span className="min-w-0">
+            <span className="block text-md font-semibold">{title}</span>
+            {sub && <span className="block text-sm text-fg-3">{sub}</span>}
+          </span>
+        </button>
+        {right && <div className="flex shrink-0 items-center gap-2">{right}</div>}
+      </div>
+      {open && <div className="border-t border-line">{children}</div>}
+    </section>
+  );
+}
 
 // ---------- numbers ----------
 /** A number you can click to see its proof. */
