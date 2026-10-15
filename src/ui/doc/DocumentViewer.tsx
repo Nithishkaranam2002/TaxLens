@@ -94,8 +94,8 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
   return (
     <div className="fixed inset-0 z-50 flex bg-[var(--scrim)] anim-fade" onMouseDown={onClose}>
       <div ref={panelRef} role="dialog" aria-modal="true" aria-label={`${doc.id} ${doc.title}`} className="m-auto flex h-[min(94vh,980px)] w-[min(1400px,96vw)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-2 anim-rise" onMouseDown={(e) => e.stopPropagation()}>
-        <header className="flex items-center gap-3 border-b border-line px-4 py-2.5">
-          <span className="mono rounded bg-sunk px-1.5 py-0.5 text-sm">{doc.id}</span>
+        <header className="flex flex-wrap items-center gap-3 border-b border-line px-5 py-3">
+          <span className="mono rounded-md bg-sunk px-2 py-0.5 text-sm font-medium">{doc.id}</span>
           <div className="min-w-0 flex-1">
             <div className="truncate text-md font-semibold">{doc.title}</div>
             <div className="truncate text-sm text-fg-3">{doc.issuer} · {doc.file_name} · received {dateTime(doc.received_at)} · uploaded by {doc.uploaded_by}</div>
@@ -105,16 +105,16 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
           ) : <Badge tone="warn">Identifiers shown · logged</Badge>)}
           <StatusPill status={account.disposition} />
           {account.flags.map((f) => <Badge key={f} tone={f === 'Corrected' ? 'info' : f === 'Late' ? 'warn' : 'neutral'}>{f}</Badge>)}
-          <IconButton label="Close (Esc)" onClick={onClose}><X className="size-4" /></IconButton>
+          <IconButton label="Close (Esc)" onClick={onClose}><X className="size-[18px]" /></IconButton>
         </header>
         <div className="flex min-h-0 flex-1">
           {doc.page_count > 1 && (
-            <aside className="hidden w-[76px] shrink-0 overflow-y-auto border-r border-line bg-panel-2 p-2 scroll-thin md:block">
+            <aside className="hidden w-[96px] shrink-0 overflow-y-auto border-r border-line bg-panel-2 p-2 scroll-thin md:block" aria-label="Pages">
               {doc.pages.map((p) => {
                 const n = (ix.evsByPage.get(`${doc.id}#${p.page}`) ?? []).length;
                 return (
-                  <button key={p.page} type="button" onClick={() => setPage(p.page)} className={cx('mb-1.5 flex w-full flex-col items-center rounded-md border px-1 py-2 text-cap', p.page === page ? 'border-fg-3 bg-panel' : 'border-transparent hover:border-line-2')}>
-                    <span className="font-medium">{p.page}</span>
+                  <button key={p.page} type="button" onClick={() => setPage(p.page)} aria-current={p.page === page ? 'page' : undefined} className={cx('mb-1.5 flex w-full flex-col items-center rounded-lg border px-1 py-2.5 text-cap', p.page === page ? 'border-fg/30 bg-panel shadow-1' : 'border-transparent hover:border-line-2')}>
+                    <span className="text-base font-semibold">{p.page}</span>
                     <span className={cx('num text-cap', n ? 'text-fg-3' : 'text-bad')}>{n ? `${n} values` : /\d\.\d\d/.test(p.printed_content) ? 'unread' : '—'}</span>
                   </button>
                 );
@@ -123,10 +123,10 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
           )}
           <div className="min-w-0 flex-1 overflow-y-auto bg-sunk p-4 scroll-thin md:p-8" ref={pageRef}>
             <div className="mx-auto mb-3 flex max-w-[760px] flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-1">
-                <IconButton label="Previous page" disabled={page <= 1} onClick={() => setPage(page - 1)}><ChevronLeft className="size-4" /></IconButton>
-                <span className="num text-sm text-fg-2">Page {page} of {doc.page_count}</span>
-                <IconButton label="Next page" disabled={page >= doc.page_count} onClick={() => setPage(page + 1)}><ChevronRight className="size-4" /></IconButton>
+              <div className="flex items-center gap-1.5">
+                <IconButton label="Previous page" className="border border-line bg-panel" disabled={page <= 1} onClick={() => setPage(page - 1)}><ChevronLeft className="size-4" /></IconButton>
+                <span className="num px-1 text-sm font-medium text-fg-2">Page {page} of {doc.page_count}</span>
+                <IconButton label="Next page" className="border border-line bg-panel" disabled={page >= doc.page_count} onClick={() => setPage(page + 1)}><ChevronRight className="size-4" /></IconButton>
               </div>
               <div className="flex items-center gap-2">
                 <Segmented size="sm" value={view} onChange={setView} options={[{ id: 'simulated', label: 'From packet text' }, { id: 'original', label: 'Original page' }]} />
@@ -174,15 +174,15 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
               )}
             </div>
           </div>
-          <aside className="hidden w-[360px] shrink-0 overflow-y-auto border-l border-line scroll-thin lg:block">
-            <div className="border-b border-line p-4">
-              <div className="eyebrow mb-1.5">This document</div>
+          <aside className="hidden w-[380px] shrink-0 overflow-y-auto border-l border-line scroll-thin lg:block">
+            <div className="border-b border-line p-5">
+              <h3 className="mb-1.5 text-md font-semibold">This document</h3>
               <p className="text-base text-fg-2">{account.reason}</p>
               {account.lines.length > 0 && <div className="mt-2 flex flex-wrap gap-1">{account.lines.slice(0, 16).map((l) => <RefChip key={l} r={l} />)}{account.lines.length > 16 && <span className="text-cap text-fg-3">+{account.lines.length - 16}</span>}</div>}
               {doc.extraction.reason && <p className="mt-2 text-sm text-fg-3">{doc.extraction.reason}</p>}
             </div>
-            <div className="p-4">
-              <div className="mb-2 flex items-center justify-between"><div className="eyebrow">Values on page {page}</div><Layers className="size-3.5 text-fg-3" /></div>
+            <div className="p-5">
+              <div className="mb-2.5 flex items-center justify-between"><h3 className="text-md font-semibold">Values on page {page}</h3><Layers className="size-4 text-fg-3" /></div>
               {evs.length === 0 && <p className="text-sm text-fg-3">The pipeline read nothing on this page.</p>}
               <div className="space-y-1">
                 {evs.map((e) => {
@@ -190,7 +190,7 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
                   const bad = rr.kind === 'mismatch' || rr.kind === 'blank-as-zero' || rr.kind === 'missing' || rr.kind === 'low-confidence';
                   const uses = usesOf(e.id);
                   return (
-                    <button key={e.id} type="button" onClick={() => setActive(e.id)} className={cx('block w-full rounded-md border px-2.5 py-1.5 text-left', active === e.id ? 'border-fg-3 bg-panel-2' : bad ? 'border-bad/40 bg-bad-bg/40' : 'border-transparent hover:border-line')}>
+                    <button key={e.id} type="button" onClick={() => setActive(e.id)} className={cx('block w-full rounded-lg border px-3 py-2 text-left', active === e.id ? 'border-[var(--hl-strong)] bg-[var(--hl)]/50' : bad ? 'border-bad/40 bg-bad-bg/40' : 'border-transparent hover:border-line')}>
                       <div className="flex items-baseline justify-between gap-2">
                         <span className="truncate text-sm">{e.label}</span>
                         <span className="num shrink-0 text-sm font-medium">{fmtEv(e.value, e.value_type)}</span>
@@ -212,12 +212,12 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
                 </div>
               )}
             </div>
-            <div className="border-t border-line p-4">
-              <div className="eyebrow mb-2">Verification</div>
+            <div className="border-t border-line p-5">
+              <h3 className="mb-2.5 text-md font-semibold">Verification</h3>
               <Verifications target={doc.id} />
             </div>
-            <div className="border-t border-line p-4">
-              <div className="eyebrow mb-2">Notes</div>
+            <div className="border-t border-line p-5">
+              <h3 className="mb-2.5 text-md font-semibold">Notes</h3>
               <Notes target={doc.id} area={account.area} />
             </div>
           </aside>

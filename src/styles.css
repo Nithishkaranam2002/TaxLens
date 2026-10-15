@@ -255,7 +255,7 @@ html body {
 }
 .paper-margin { border-left: 2px solid var(--paper-margin); }
 mark.hl { background: var(--hl); color: inherit; border-radius: 3px; padding: 0 2px; box-shadow: 0 0 0 1px color-mix(in oklab, var(--hl-strong) 60%, transparent); cursor: pointer; }
-mark.hl.active { background: var(--hl-strong); box-shadow: 0 0 0 2px var(--hl-strong); }
+mark.hl.active { background: var(--hl-strong); box-shadow: 0 0 0 2px var(--hl-strong), 0 0 0 4px color-mix(in oklab, var(--fg) 22%, transparent); }
 mark.hl.bad { background: var(--hl-bad); box-shadow: 0 0 0 1px var(--bad); }
 
 .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }

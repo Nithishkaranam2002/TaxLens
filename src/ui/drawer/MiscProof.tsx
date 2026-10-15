@@ -17,7 +17,7 @@ export function EvProof({ id }: { id: string }) {
   const uses = ix.versionOrder.map((v) => ({ v, lines: ix.evUses.get(v)?.get(id) ?? [] }));
   return (
     <div>
-      <div className="px-5 pt-4 pb-4">
+      <div className="px-5 pt-5 pb-5 sm:px-6">
         <div className="mb-1 flex flex-wrap items-center gap-1.5"><span className="mono text-sm text-fg-3">{e.id}</span><Badge tone="outline">{e.value_type}</Badge>{rr.kind !== 'ok' && rr.kind !== 'skipped' && <Badge tone={rr.kind === 'zero-not-printed' ? 'neutral' : 'bad'}>{rr.kind.replace(/-/g, ' ')}</Badge>}</div>
         <h2 className="text-xl leading-snug font-semibold">{e.label}</h2>
         <div className="num mt-2 text-2xl font-semibold">{e.value === null ? '—' : typeof e.value === 'number' ? money(e.value, { cents: e.value % 1 !== 0 }) : e.value_type === 'ssn' ? <Sensitive value={String(e.value)} subject={e.id} field="value" /> : String(e.value)}</div>
@@ -48,7 +48,7 @@ export function NoteProof({ id }: { id: string }) {
   if (!n) return <div className="p-5 text-fg-3">Note not found at this point in the season.</div>;
   return (
     <div>
-      <div className="px-5 pt-4 pb-3">
+      <div className="px-5 pt-5 pb-5 sm:px-6">
         <div className="mb-1 flex items-center gap-1.5"><Badge tone={n.blocking && n.status === 'open' ? 'bad' : 'neutral'}>{n.kind === 'review' ? 'Review note' : 'Note'}</Badge><StatusPill status={n.status === 'open' ? 'open' : 'resolved'} /></div>
         <div className="flex flex-wrap items-center gap-1.5 text-sm text-fg-2">On <RefChip r={n.target} /></div>
       </div>
@@ -116,7 +116,7 @@ export function RefProof({ r }: { r: string }) {
   }
   return (
     <div>
-      <div className="px-5 pt-4 pb-4">
+      <div className="px-5 pt-5 pb-5 sm:px-6">
         <div className="mono mb-1 text-sm text-fg-3">{r}</div>
         <h2 className="text-xl leading-snug font-semibold">{info.title}</h2>
         {info.detail && <p className="mt-1 text-sm text-fg-3">{info.detail}</p>}

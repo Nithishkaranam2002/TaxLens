@@ -1,4 +1,4 @@
-import { Eye, EyeOff, MessageSquarePlus, Paperclip, ShieldCheck } from 'lucide-react';
+import { ChevronRight, Eye, EyeOff, MessageSquarePlus, Paperclip, ShieldCheck } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { addNote, askClient, attach, reply, resolveNote, reveal, verify } from '../../app/actions';
 import { putFile, sha256Blob } from '../../app/persist';
@@ -11,14 +11,20 @@ import { ago, date, dateTime } from '../format';
 import { Avatar, Badge, Button, Checkbox, Input, Select, TextArea, Tick, cx } from '../kit';
 import { RefChip } from '../Ref';
 
-export function Section({ title, right, children, className }: { title: React.ReactNode; right?: React.ReactNode; children: React.ReactNode; className?: string }) {
+/** A proof section. Sections fold, so the drawer opens on the questions that matter first. */
+export function Section({ title, right, children, className, defaultOpen = true, count }: { title: React.ReactNode; right?: React.ReactNode; children: React.ReactNode; className?: string; defaultOpen?: boolean; count?: number }) {
+  const [open, setOpen] = useState(defaultOpen);
   return (
-    <section className={cx('border-t border-line px-5 py-4', className)}>
-      <div className="mb-2.5 flex items-center justify-between gap-2">
-        <h3 className="eyebrow">{title}</h3>
-        {right}
+    <section className={cx('border-t border-line px-5 sm:px-6', className)}>
+      <div className="flex items-center justify-between gap-2">
+        <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex min-h-13 flex-1 items-center gap-2 py-3 text-left">
+          <ChevronRight className={cx('size-4 shrink-0 text-fg-3 transition-transform', open && 'rotate-90')} />
+          <h3 className="text-md font-semibold">{title}</h3>
+          {count !== undefined && count > 0 && <span className="num rounded-full bg-sunk px-2 text-cap font-medium text-fg-2">{count}</span>}
+        </button>
+        {right && <span className="text-fg-3 [&_svg]:size-4">{right}</span>}
       </div>
-      {children}
+      {open && <div className="pb-5">{children}</div>}
     </section>
   );
 }

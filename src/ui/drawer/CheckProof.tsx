@@ -128,7 +128,7 @@ export function CheckProof({ id }: { id: string }) {
   if (!c) return <div className="p-5 text-fg-3">This check did not run at this point in the season.</div>;
   return (
     <div>
-      <div className="px-5 pt-4 pb-4">
+      <div className="px-5 pt-5 pb-5 sm:px-6">
         <div className="mb-1 flex flex-wrap items-center gap-1.5"><span className="mono text-sm text-fg-3">{c.id}</span><Badge tone="outline">{c.group}</Badge><StatusPill status={c.status} />{finding && finding.status !== 'open' && <StatusPill status={finding.status} />}</div>
         <h2 className="text-xl leading-snug font-semibold">{c.title}</h2>
         <p className="mt-1 text-base text-fg-2">{c.question}</p>
@@ -162,7 +162,7 @@ export function CheckProof({ id }: { id: string }) {
           })() : !finding?.disposition && <p className="text-sm text-fg-3">No disposition yet.</p>}
         </Section>
       )}
-      <Section title="Sources it read"><div className="flex flex-wrap gap-1">{c.refs.slice(0, 30).map((r) => <RefChip key={r} r={r} />)}</div></Section>
+      <Section title="Sources it read" count={c.refs.length} defaultOpen={false}><div className="flex flex-wrap gap-1">{c.refs.slice(0, 30).map((r) => <RefChip key={r} r={r} />)}</div></Section>
       <Section title="Notes"><Notes target={`check:${c.id}`} area={c.area} /></Section>
     </div>
   );

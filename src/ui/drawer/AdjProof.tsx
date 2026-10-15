@@ -23,7 +23,7 @@ export function AdjProof({ id }: { id: string }) {
   const e = p.effect;
   return (
     <div>
-      <div className="px-5 pt-4 pb-4">
+      <div className="px-5 pt-5 pb-5 sm:px-6">
         <div className="mb-1 flex flex-wrap items-center gap-1.5">
           <span className="mono text-sm text-fg-3">Change {p.seq}</span>
           <StatusPill status={p.status} />

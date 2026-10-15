@@ -39,21 +39,21 @@ export function LineProof({ k }: { k: string }) {
 
   return (
     <div>
-      <div className="px-5 pt-4 pb-4">
-        <div className="mb-1 flex flex-wrap items-center gap-1.5">
+      <div className="px-5 pt-5 pb-5 sm:px-6">
+        <div className="mb-2 flex flex-wrap items-center gap-2">
           <span className="mono text-sm text-fg-3">{k}</span>
           <Badge tone="outline">{formName(k)}</Badge>
           <button type="button" onClick={() => store.go({ page: 'area', id: area })}><Badge tone="neutral">{AREA[area].short}</Badge></button>
           {line?.jurisdiction === 'california' && <Badge tone="info">California</Badge>}
         </div>
         <h2 className="text-xl leading-snug font-semibold">{label}</h2>
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <ValueBox label={`Engine ${v?.version ?? ''}`} v={base} k={k} muted={changed} />
           <ValueBox label="Ours" v={removed ? 'Removed' : ours} k={k} strong ink={verifier?.ink} verified={!!lastVer} />
           {proj !== ours && <ValueBox label="If pending approved" v={proj} k={k} />}
           {typeof py === 'number' && <ValueBox label="2024" v={py} k={k} />}
         </div>
-        {line?.note && <p className="mt-3 rounded-md bg-panel-2 px-3 py-2 text-sm text-fg-2">Engine note: {line.note}</p>}
+        {line?.note && <p className="mt-4 rounded-lg bg-panel-2 px-3.5 py-2.5 text-sm text-fg-2">Engine note: {line.note}</p>}
       </div>
 
       <Section title="How it was built" right={<Calculator className="size-3.5 text-fg-3" />}>
@@ -61,12 +61,12 @@ export function LineProof({ k }: { k: string }) {
           <div className="mb-3">
             <div className="text-sm"><span className="mono text-fg-3">{line.rule}</span> {rule && <span className="text-fg-2">— {rule}</span>}</div>
             {line.inputs.length > 0 && (
-              <div className="mt-2 divide-y divide-line rounded-lg border border-line">
+              <div className="mt-3 divide-y divide-line rounded-lg border border-line">
                 {line.inputs.map((i) => (
-                  <button key={i} type="button" onClick={() => store.open(i)} className="flex w-full items-center gap-3 px-3 py-1.5 text-left hover:bg-panel-2">
-                    <span className="mono w-28 shrink-0 truncate text-cap text-fg-3">{i}</span>
+                  <button key={i} type="button" onClick={() => store.open(i)} className="flex min-h-10 w-full items-center gap-3 px-3 py-2 text-left hover:bg-panel-2">
+                    <span className="mono w-32 shrink-0 truncate text-cap text-fg-3">{i}</span>
                     <span className="min-w-0 flex-1 truncate text-sm">{wp.ours?.labels.get(i) ?? i}</span>
-                    <span className="num text-sm font-medium">{value(wp.ours?.values.get(i), i)}</span>
+                    <span className="num proof text-base font-medium">{value(wp.ours?.values.get(i), i)}</span>
                   </button>
                 ))}
               </div>
@@ -74,7 +74,7 @@ export function LineProof({ k }: { k: string }) {
           </div>
         )}
         {formula && (
-          <div className={cx('rounded-lg border px-3 py-2 text-sm', changed ? 'border-info/40 bg-info-bg/50' : 'border-line bg-panel-2')}>
+          <div className={cx('rounded-lg border px-3.5 py-3 text-sm', changed ? 'border-info/40 bg-info-bg/50' : 'border-line bg-panel-2')}>
             <div className="mb-0.5 flex items-center gap-1.5 font-medium"><GitBranch className="size-3.5" />TaxLens recompute</div>
             <div className="text-fg-2">{formula.expr}</div>
             <div className="mt-1 text-fg-3">{changed ? `Differs from the engine because of approved changes (${signed((ours as number) - (base as number))}).` : wp.ours?.derived.has(k) ? 'Same result as the engine.' : ''}</div>
@@ -95,7 +95,7 @@ export function LineProof({ k }: { k: string }) {
       <Sources sources={line?.sources ?? []} />
 
       {proposals.length > 0 && (
-        <Section title="Changes to this number">
+        <Section title="Changes to this number" count={proposals.length}>
           <div className="space-y-2">
             {proposals.map((p) => {
               const c = p.changes.find((x) => x.key === k);
@@ -115,7 +115,7 @@ export function LineProof({ k }: { k: string }) {
       )}
 
       {checks.length > 0 && (
-        <Section title="Checks that look at this number">
+        <Section title="Checks that look at this number" count={checks.length}>
           <div className="space-y-1.5">
             {checks.map((c) => (
               <button key={c.id} type="button" onClick={() => store.open(`check:${c.id}`)} className="flex w-full items-center gap-2 text-left text-base hover:underline">
@@ -126,7 +126,7 @@ export function LineProof({ k }: { k: string }) {
         </Section>
       )}
 
-      <Section title="Engine history">
+      <Section title="Engine history" defaultOpen={false}>
         <div className="grid grid-cols-3 gap-2">
           {history.map((h) => (
             <div key={h.vid} className="rounded-lg border border-line p-2" title={h.trigger}>
@@ -142,7 +142,7 @@ export function LineProof({ k }: { k: string }) {
       </Section>
 
       {consumers.length > 0 && (
-        <Section title="Used by">
+        <Section title="Used by" count={consumers.length} defaultOpen={false}>
           <div className="flex flex-wrap gap-1">{consumers.map((c) => <RefChip key={c} r={c} />)}</div>
         </Section>
       )}
@@ -151,7 +151,7 @@ export function LineProof({ k }: { k: string }) {
         <Notes target={k} area={area} />
       </Section>
 
-      <Section title="Evidence attached">
+      <Section title="Evidence attached" defaultOpen={false}>
         <Attachments target={k} />
         <div className="mt-2"><AskClient target={k} area={area} /></div>
       </Section>
@@ -163,9 +163,9 @@ export function LineProof({ k }: { k: string }) {
 
 function ValueBox({ label, v, k, muted, strong, ink, verified }: { label: string; v: number | string | undefined | null; k: string; muted?: boolean; strong?: boolean; ink?: string; verified?: boolean }) {
   return (
-    <div className={cx('rounded-lg border p-2.5', strong ? 'border-line-2 bg-panel' : 'border-line bg-panel-2')}>
+    <div className={cx('rounded-xl border px-3.5 py-3', strong ? 'border-fg/25 bg-panel shadow-1' : 'border-line bg-panel-2')}>
       <div className="text-cap text-fg-3">{label}</div>
-      <div className={cx('num mt-0.5 flex items-center gap-1 text-md', strong && 'font-semibold', muted && 'text-fg-3 line-through')}>
+      <div className={cx('num mt-1 flex items-center gap-1.5', strong ? 'text-xl font-semibold' : 'text-lg', muted && 'text-fg-3 line-through')}>
         {v === undefined || v === null ? '—' : typeof v === 'number' ? value(v, k) : v}
         {verified && <Tick ink={(ink as 'blue') ?? 'graphite'} size={14} />}
       </div>
@@ -177,7 +177,7 @@ export function Sources({ sources }: { sources: string[] }) {
   const ix = useApp((s) => s.ix)!;
   if (!sources.length) return null;
   return (
-    <Section title="Where it came from" right={<FileSearch className="size-3.5 text-fg-3" />}>
+    <Section title="Where it came from" count={sources.length} right={<FileSearch className="size-3.5 text-fg-3" />}>
       <div className="space-y-1.5">
         {sources.map((s) => {
           if (s.startsWith('ev-')) {
@@ -188,14 +188,14 @@ export function Sources({ sources }: { sources: string[] }) {
             const doc = ix.docs.get(e.document_id)!;
             return (
               <button key={s} type="button" onClick={() => store.open(`doc:${e.document_id}#page${e.page}@${e.id}`)}
-                className={cx('flex w-full items-start gap-2.5 rounded-lg border p-2.5 text-left hover:border-line-2', bad ? 'border-bad/40 bg-bad-bg/40' : 'border-line')}>
-                <span className="mono mt-0.5 rounded bg-sunk px-1 text-cap text-fg-2">{e.document_id}</span>
+                className={cx('flex w-full items-start gap-3 rounded-lg border p-3 text-left transition-colors hover:border-fg-3 hover:bg-panel-2', bad ? 'border-bad/40 bg-bad-bg/40' : 'border-line')}>
+                <span className="mono mt-0.5 rounded-md bg-sunk px-1.5 text-cap text-fg-2">{e.document_id}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium">{e.label}</span>
                   <span className="block truncate text-cap text-fg-3">{doc.title} · page {e.page} · {e.id} · confidence {e.confidence.toFixed(2)}</span>
                   {bad && <span className="block text-cap text-bad">{rr.reason}</span>}
                 </span>
-                <span className="num text-sm font-medium">{e.value === null ? '—' : typeof e.value === 'number' ? money(e.value, { cents: e.value % 1 !== 0 }) : String(e.value)}</span>
+                <span className="num text-base font-semibold">{e.value === null ? '—' : typeof e.value === 'number' ? money(e.value, { cents: e.value % 1 !== 0 }) : String(e.value)}</span>
                 <ArrowUpRight className="mt-0.5 size-3.5 text-fg-3" />
               </button>
             );
@@ -216,7 +216,7 @@ function ManualChange({ k, current, label }: { k: string; current: number; label
   const [evidence, setEvidence] = useState('');
   const n = Number(val.replace(/,/g, ''));
   return (
-    <Section title="Change this number">
+    <Section title="Change this number" defaultOpen={false}>
       {!open ? (
         <Button size="sm" icon={<PencilLine className="size-3.5" />} onClick={() => setOpen(true)}>Propose a change</Button>
       ) : (
