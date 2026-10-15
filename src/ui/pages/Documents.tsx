@@ -61,21 +61,21 @@ export function Documents() {
       </div>
 
       {rows.length === 0 ? <Empty title="No documents match" /> : (
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[860px] border-collapse text-base">
             <thead>
-              <tr className="text-cap tracking-wide text-fg-3 uppercase">
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Document</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Received</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Values</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Accounted for</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Lands on</th>
+              <tr className="text-cap text-fg-3">
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Document</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Received</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Values</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Accounted for</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Lands on</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((d) => (
                 <tr key={d.doc.id} onClick={() => d.received && store.open(`doc:${d.doc.id}#page1`)} className={cx('align-top', d.received ? 'cursor-pointer hover:bg-panel-2' : 'opacity-60')}>
-                  <td className="border-b border-line px-3 py-2">
+                  <td className="border-b border-line px-4 py-2.5">
                     <div className="flex items-start gap-2">
                       <span className="mono mt-0.5 rounded bg-sunk px-1 text-cap text-fg-2">{d.doc.id}</span>
                       <div className="min-w-0">
@@ -85,20 +85,20 @@ export function Documents() {
                       </div>
                     </div>
                   </td>
-                  <td className="border-b border-line px-3 py-2 whitespace-nowrap text-sm">
+                  <td className="border-b border-line px-4 py-2.5 whitespace-nowrap text-sm">
                     <div>{date(d.doc.received_at)}</div>
                     <div className="text-sm text-fg-3">{d.doc.uploaded_by === 'client' ? 'Client upload' : 'Firm'}</div>
                   </td>
-                  <td className="border-b border-line px-3 py-2 text-right">
+                  <td className="border-b border-line px-4 py-2.5 text-right">
                     <div className="num">{d.evCount || '—'}</div>
                     {d.problems > 0 && <div className="inline-flex items-center gap-1 text-sm text-warn"><AlertTriangle className="size-3" />{d.problems}</div>}
                   </td>
-                  <td className="border-b border-line px-3 py-2">
+                  <td className="border-b border-line px-4 py-2.5">
                     <StatusPill status={d.disposition} />
                     <div className="mt-1 max-w-[320px] text-sm text-fg-2">{d.reason}</div>
                     {d.doc.extraction.reason && <div className="mt-0.5 max-w-[320px] text-sm text-fg-3">{d.doc.extraction.reason}</div>}
                   </td>
-                  <td className="border-b border-line px-3 py-2" onClick={(e) => e.stopPropagation()}>
+                  <td className="border-b border-line px-4 py-2.5" onClick={(e) => e.stopPropagation()}>
                     <div className="flex max-w-[260px] flex-wrap gap-1">
                       {d.lines.slice(0, 4).map((l) => <RefChip key={l} r={l} />)}
                       {d.lines.length > 4 && <span className="text-cap text-fg-3">+{d.lines.length - 4}</span>}

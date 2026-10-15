@@ -227,7 +227,7 @@ function ApproveCard({ wp }: { wp: Workpaper }) {
       <details className="border-t border-line px-5 py-3 text-base">
         <summary className="cursor-pointer font-medium">The main figures, with last year</summary>
         <table className="mt-2 w-full border-collapse text-base">
-          <thead><tr className="text-cap tracking-wide text-fg-3 uppercase"><th className="py-1 text-left font-semibold">Federal</th><th className="py-1 text-right font-semibold">2024</th><th className="py-1 text-right font-semibold">2025</th></tr></thead>
+          <thead><tr className="text-cap text-fg-3"><th className="py-1 text-left font-semibold">Federal</th><th className="py-1 text-right font-semibold">2024</th><th className="py-1 text-right font-semibold">2025</th></tr></thead>
           <tbody>
             {([['F1040.1a', 'Wages', 'F1040.1a'], ['F1040.9', 'Total income', 'F1040.9'], ['F1040.11', 'Adjusted gross income', 'F1040.11'], ['F1040.12', 'Deductions', 'F1040.12'], ['F1040.15', 'Taxable income', 'F1040.15'], ['F1040.24', 'Total tax', 'F1040.24'], ['F1040.33', 'Payments and withholding', 'F1040.33'], ['F540NR.64', 'California tax', 'CA540.64']] as const).map(([k, l, pk]) => (
               <tr key={k} className="border-t border-line"><td className="py-1.5">{l}</td><td className="num py-1.5 text-right text-fg-3">{typeof py[pk] === 'number' ? money(Number(py[pk])) : '—'}</td><td className="num py-1.5 text-right font-medium">{money(Number(wp.ours!.values.get(k) ?? 0))}</td></tr>

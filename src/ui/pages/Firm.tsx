@@ -57,18 +57,18 @@ function Status({ wp }: { wp: Workpaper }) {
     <div className="space-y-6">
       <section>
         <SectionHead title="Returns" sub="Every return in the firm's season with its stage. This workspace holds one." right={<Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search returns" className="w-56" aria-label="Search returns" />} />
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[760px] border-collapse text-base">
-            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Client', 'Return', 'Stage', 'Open items', 'Due', 'Team'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
+            <thead><tr className="text-cap text-fg-3">{['Client', 'Return', 'Stage', 'Open items', 'Due', 'Team'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">{h}</th>)}</tr></thead>
             <tbody>
               {match ? (
                 <tr className="cursor-pointer hover:bg-panel-2" onClick={() => store.go({ page: 'overview' })}>
-                  <td className="border-b border-line px-3 py-2"><div className="font-medium">{client}</div><div className="mono text-cap text-fg-3">{p.packet.client_id}</div></td>
-                  <td className="border-b border-line px-3 py-2 text-sm">{ix.engagement.year} · {ix.engagement.forms} · {ix.engagement.filingStatusShort}</td>
-                  <td className="border-b border-line px-3 py-2"><Badge tone={wp.state.frozen ? 'ok' : 'info'} dot>{stage}</Badge></td>
-                  <td className="num border-b border-line px-3 py-2">{wp.blockers.length}</td>
-                  <td className="border-b border-line px-3 py-2 text-sm">{wp.state.frozen ? `Filed ${date(wp.state.frozen.at)}` : ix.engagement.due ? `${date(ix.engagement.due.date)}${ix.engagement.due.extended ? ' (extended)' : ''}` : '—'}</td>
-                  <td className="border-b border-line px-3 py-2"><TeamAvatars /></td>
+                  <td className="border-b border-line px-4 py-2.5"><div className="font-medium">{client}</div><div className="mono text-cap text-fg-3">{p.packet.client_id}</div></td>
+                  <td className="border-b border-line px-4 py-2.5 text-sm">{ix.engagement.year} · {ix.engagement.forms} · {ix.engagement.filingStatusShort}</td>
+                  <td className="border-b border-line px-4 py-2.5"><Badge tone={wp.state.frozen ? 'ok' : 'info'} dot>{stage}</Badge></td>
+                  <td className="num border-b border-line px-4 py-2.5">{wp.blockers.length}</td>
+                  <td className="border-b border-line px-4 py-2.5 text-sm">{wp.state.frozen ? `Filed ${date(wp.state.frozen.at)}` : ix.engagement.due ? `${date(ix.engagement.due.date)}${ix.engagement.due.extended ? ' (extended)' : ''}` : '—'}</td>
+                  <td className="border-b border-line px-4 py-2.5"><TeamAvatars /></td>
                 </tr>
               ) : <tr><td colSpan={6} className="px-3 py-4 text-center text-fg-3">No returns match.</td></tr>}
             </tbody>
@@ -180,9 +180,9 @@ function People({ wp }: { wp: Workpaper }) {
   const ptins = ix.packet.firm.firm_identity.ptins;
   return (
     <div className="space-y-6">
-      <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+      <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
         <table className="w-full min-w-[820px] border-collapse text-base">
-          <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Person', 'Role', 'Sensitive data', 'Active from', 'PTIN', 'Actions', 'Time'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
+          <thead><tr className="text-cap text-fg-3">{['Person', 'Role', 'Sensitive data', 'Active from', 'PTIN', 'Actions', 'Time'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">{h}</th>)}</tr></thead>
           <tbody>
             {actors.map((a) => {
               const n = wp.state.events.filter((e) => e.actor === a.id).length;
@@ -190,13 +190,13 @@ function People({ wp }: { wp: Workpaper }) {
               const inactive = a.role !== 'client' && now.slice(0, 10) < a.activeFrom;
               return (
                 <tr key={a.id} className="hover:bg-panel-2">
-                  <td className="border-b border-line px-3 py-2"><span className="inline-flex items-center gap-2"><Avatar actor={a} size={24} /><span><span className="block font-medium">{a.name}</span>{a.note && <span className="block text-cap text-fg-3">{a.note}</span>}</span></span></td>
-                  <td className="border-b border-line px-3 py-2"><span className={`ink-${a.ink} font-medium`}>{a.roleLabel}</span>{a.credential ? `, ${a.credential}` : ''}</td>
-                  <td className="border-b border-line px-3 py-2">{a.role === 'client' ? <span className="text-fg-3">Own data in portal</span> : a.clearance ? <Badge tone="ok">Cleared</Badge> : <Badge tone="warn">Masked</Badge>}</td>
-                  <td className="border-b border-line px-3 py-2 text-sm">{a.role === 'client' ? '—' : <>{date(a.activeFrom)}{inactive && <Badge className="ml-1.5">not yet</Badge>}</>}</td>
-                  <td className="mono border-b border-line px-3 py-2 text-sm">{ptins[a.id] ?? '—'}</td>
-                  <td className="num border-b border-line px-3 py-2">{n}</td>
-                  <td className="num border-b border-line px-3 py-2">{min ? `${hours(min)} h` : '—'}</td>
+                  <td className="border-b border-line px-4 py-2.5"><span className="inline-flex items-center gap-2"><Avatar actor={a} size={24} /><span><span className="block font-medium">{a.name}</span>{a.note && <span className="block text-cap text-fg-3">{a.note}</span>}</span></span></td>
+                  <td className="border-b border-line px-4 py-2.5"><span className={`ink-${a.ink} font-medium`}>{a.roleLabel}</span>{a.credential ? `, ${a.credential}` : ''}</td>
+                  <td className="border-b border-line px-4 py-2.5">{a.role === 'client' ? <span className="text-fg-3">Own data in portal</span> : a.clearance ? <Badge tone="ok">Cleared</Badge> : <Badge tone="warn">Masked</Badge>}</td>
+                  <td className="border-b border-line px-4 py-2.5 text-sm">{a.role === 'client' ? '—' : <>{date(a.activeFrom)}{inactive && <Badge className="ml-1.5">not yet</Badge>}</>}</td>
+                  <td className="mono border-b border-line px-4 py-2.5 text-sm">{ptins[a.id] ?? '—'}</td>
+                  <td className="num border-b border-line px-4 py-2.5">{n}</td>
+                  <td className="num border-b border-line px-4 py-2.5">{min ? `${hours(min)} h` : '—'}</td>
                 </tr>
               );
             })}
@@ -216,10 +216,10 @@ function Access({ wp }: { wp: Workpaper }) {
     <div className="space-y-4">
       <Card className="flex items-start gap-3"><Eye className="mt-0.5 size-4 text-fg-3" /><p className="text-base text-fg-2">{RULE.masked} SSNs, account numbers and IP PINs are masked in every view, including the printed document pages; a person with clearance can show one for 15 minutes, and that view is recorded here. Staff without clearance cannot show them at all.</p></Card>
       {rows.length === 0 ? <Empty title="No identifiers have been shown" /> : (
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full border-collapse text-base">
-            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['When', 'Who', 'What', 'Reason'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
-            <tbody>{rows.map((r, i) => { const a = actors.find((x) => x.id === r.by); return <tr key={i}><td className="border-b border-line px-3 py-2 text-sm whitespace-nowrap">{dateTime(r.at)}</td><td className="border-b border-line px-3 py-2"><span className="inline-flex items-center gap-1.5"><Avatar actor={a} size={18} />{a?.name}</span></td><td className="border-b border-line px-3 py-2 text-sm">{r.field.replace(/_/g, ' ')} · <span className="mono">{r.subject}</span></td><td className="border-b border-line px-3 py-2 text-sm text-fg-2">{r.reason}</td></tr>; })}</tbody>
+            <thead><tr className="text-cap text-fg-3">{['When', 'Who', 'What', 'Reason'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">{h}</th>)}</tr></thead>
+            <tbody>{rows.map((r, i) => { const a = actors.find((x) => x.id === r.by); return <tr key={i}><td className="border-b border-line px-4 py-2.5 text-sm whitespace-nowrap">{dateTime(r.at)}</td><td className="border-b border-line px-4 py-2.5"><span className="inline-flex items-center gap-1.5"><Avatar actor={a} size={18} />{a?.name}</span></td><td className="border-b border-line px-4 py-2.5 text-sm">{r.field.replace(/_/g, ' ')} · <span className="mono">{r.subject}</span></td><td className="border-b border-line px-4 py-2.5 text-sm text-fg-2">{r.reason}</td></tr>; })}</tbody>
           </table>
         </div>
       )}

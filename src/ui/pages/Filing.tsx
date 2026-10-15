@@ -373,9 +373,9 @@ function Amend({ wp }: { wp: Workpaper }) {
       )}
       <section>
         <SectionHead title={open ? 'As filed and as amended' : 'Filed return'} sub="Form 1040-X layout: original, net change, correct amount." />
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[640px] border-collapse text-base">
-            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Line', 'A · As filed', 'B · Net change', 'C · Correct'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+            <thead><tr className="text-cap text-fg-3">{['Line', 'A · As filed', 'B · Net change', 'C · Correct'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-4 py-2.5 font-semibold', i ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
             <tbody>
               {keys.map((k) => {
                 const a = Number(original.values[k] ?? 0);

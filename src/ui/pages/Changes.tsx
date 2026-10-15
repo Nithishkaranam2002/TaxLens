@@ -76,11 +76,11 @@ function Ledger({ wp }: { wp: Workpaper }) {
         <SectionHead title="Adjustment ledger" sub="Effects shown are recomputed when proposed. Nothing is deleted: rejected and withdrawn changes stay in the record."
           right={<><Select value={show} onChange={(v) => setShow(v as 'active' | 'all')} options={[{ id: 'active', label: 'Proposed and approved' }, { id: 'all', label: 'Include rejected and withdrawn' }]} className="w-56" /><Button size="sm" icon={<Download className="size-3.5" />} onClick={exportCsv}>CSV</Button></>} />
         {list.length === 0 ? <Empty title="No changes yet">Propose a correction from a check, or open any number and propose a change to it.</Empty> : (
-          <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+          <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
             <table className="w-full min-w-[820px] border-collapse text-base">
               <thead>
-                <tr className="text-cap tracking-wide text-fg-3 uppercase">
-                  {['#', 'Change', 'Area', 'Proposed', 'Approved', 'Federal', 'California', 'Status'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 5 && i <= 6 ? 'text-right' : 'text-left')}>{h}</th>)}
+                <tr className="text-cap text-fg-3">
+                  {['#', 'Change', 'Area', 'Proposed', 'Approved', 'Federal', 'California', 'Status'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-4 py-2.5 font-semibold', i >= 5 && i <= 6 ? 'text-right' : 'text-left')}>{h}</th>)}
                 </tr>
               </thead>
               <tbody>
@@ -89,14 +89,14 @@ function Ledger({ wp }: { wp: Workpaper }) {
                   const appr = p.decisions.filter((d) => d.decision === 'approve').map((d) => actors.find((a) => a.id === d.by));
                   return (
                     <tr key={p.id} onClick={() => store.open(`adj:${p.id}`)} className={cx('cursor-pointer align-top hover:bg-panel-2', (p.status === 'rejected' || p.status === 'withdrawn') && 'opacity-60')}>
-                      <td className="mono border-b border-line px-3 py-2 text-sm text-fg-3">{p.seq}</td>
-                      <td className="border-b border-line px-3 py-2"><div className="font-medium">{p.title}</div><div className="line-clamp-1 text-sm text-fg-3">{p.authority}</div></td>
-                      <td className="border-b border-line px-3 py-2 text-sm text-fg-2">{AREA[p.area].short}</td>
-                      <td className="border-b border-line px-3 py-2 text-sm whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><Avatar actor={by} size={16} />{date(p.at, false)}</span></td>
-                      <td className="border-b border-line px-3 py-2 text-sm whitespace-nowrap">{appr.length ? <span className="inline-flex items-center gap-1">{appr.map((a, i) => <Avatar key={i} actor={a} size={16} />)}{p.approvedAt && <span className="ml-1">{date(p.approvedAt, false)}</span>}</span> : p.needsPartner ? <span className="text-sm text-fg-3">reviewer + partner</span> : <span className="text-sm text-fg-3">reviewer</span>}</td>
-                      <td className="num border-b border-line px-3 py-2 text-right">{p.fix?.kind === 'data' ? <span className="text-fg-3">data</span> : <span className={p.effect.fedTax > 0 ? 'text-bad' : p.effect.fedTax < 0 ? 'text-ok' : 'text-fg-3'}>{signed(p.effect.fedTax)}</span>}</td>
-                      <td className="num border-b border-line px-3 py-2 text-right">{p.fix?.kind === 'data' ? '' : <span className={p.effect.caTax > 0 ? 'text-bad' : p.effect.caTax < 0 ? 'text-ok' : 'text-fg-3'}>{signed(p.effect.caTax)}</span>}</td>
-                      <td className="border-b border-line px-3 py-2"><StatusPill status={p.status} />{p.needsPartner && p.status === 'proposed' && <div className="mt-1"><Badge tone="violet">partner</Badge></div>}</td>
+                      <td className="mono border-b border-line px-4 py-2.5 text-sm text-fg-3">{p.seq}</td>
+                      <td className="border-b border-line px-4 py-2.5"><div className="font-medium">{p.title}</div><div className="line-clamp-1 text-sm text-fg-3">{p.authority}</div></td>
+                      <td className="border-b border-line px-4 py-2.5 text-sm text-fg-2">{AREA[p.area].short}</td>
+                      <td className="border-b border-line px-4 py-2.5 text-sm whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><Avatar actor={by} size={16} />{date(p.at, false)}</span></td>
+                      <td className="border-b border-line px-4 py-2.5 text-sm whitespace-nowrap">{appr.length ? <span className="inline-flex items-center gap-1">{appr.map((a, i) => <Avatar key={i} actor={a} size={16} />)}{p.approvedAt && <span className="ml-1">{date(p.approvedAt, false)}</span>}</span> : p.needsPartner ? <span className="text-sm text-fg-3">reviewer + partner</span> : <span className="text-sm text-fg-3">reviewer</span>}</td>
+                      <td className="num border-b border-line px-4 py-2.5 text-right">{p.fix?.kind === 'data' ? <span className="text-fg-3">data</span> : <span className={p.effect.fedTax > 0 ? 'text-bad' : p.effect.fedTax < 0 ? 'text-ok' : 'text-fg-3'}>{signed(p.effect.fedTax)}</span>}</td>
+                      <td className="num border-b border-line px-4 py-2.5 text-right">{p.fix?.kind === 'data' ? '' : <span className={p.effect.caTax > 0 ? 'text-bad' : p.effect.caTax < 0 ? 'text-ok' : 'text-fg-3'}>{signed(p.effect.caTax)}</span>}</td>
+                      <td className="border-b border-line px-4 py-2.5"><StatusPill status={p.status} />{p.needsPartner && p.status === 'proposed' && <div className="mt-1"><Badge tone="violet">partner</Badge></div>}</td>
                     </tr>
                   );
                 })}
@@ -205,14 +205,14 @@ function Versions({ wp }: { wp: Workpaper }) {
       {engineChanges && <p className="text-sm text-fg-2"><span className="font-medium">Engine {engineChanges.version}:</span> {engineChanges.trigger}</p>}
       <p className="text-sm text-fg-3">{plural(keys.length, 'line')} {only ? 'differ' : 'shown'}.</p>
       {keys.length === 0 ? <Empty title="No differences">These two versions agree on every line.</Empty> : (
-        <div className="max-h-[70vh] overflow-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="max-h-[70vh] overflow-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[720px] border-collapse text-base">
             <thead>
-              <tr className="text-cap tracking-wide text-fg-3 uppercase">
-                <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th>
-                <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">{name(a)}</th>
-                <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">{name(b)}</th>
-                <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Difference</th>
+              <tr className="text-cap text-fg-3">
+                <th className="sticky top-0 border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Line</th>
+                <th className="sticky top-0 border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">{name(a)}</th>
+                <th className="sticky top-0 border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">{name(b)}</th>
+                <th className="sticky top-0 border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Difference</th>
               </tr>
             </thead>
             <tbody>
@@ -290,23 +290,23 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
     <div className="space-y-6">
       <section>
         <SectionHead title="Engine what-ifs" sub="The engine's own alternatives. TaxLens reproduces each one exactly, then reruns it on our corrected return, where the answer can differ." />
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[760px] border-collapse text-base">
             <thead>
-              <tr className="text-cap tracking-wide text-fg-3 uppercase">
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Alternative</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Engine: federal / CA</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Recompute</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">On our return: federal / CA</th>
+              <tr className="text-cap text-fg-3">
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Alternative</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Engine: federal / CA</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Recompute</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">On our return: federal / CA</th>
               </tr>
             </thead>
             <tbody>
               {engineRows.map(({ alt, ok, ours: o }) => (
                 <tr key={alt.id} className="align-top">
-                  <td className="border-b border-line px-3 py-2"><div className="font-medium">{alt.description}</div><div className="mono text-cap text-fg-3">{alt.id} · on {alt.base_version}</div></td>
-                  <td className="num border-b border-line px-3 py-2 text-right">{signed(alt.federal.total_tax_change)} / {signed(alt.california.total_tax_change)}{alt.federal.penalty_change ? <div className="text-sm text-fg-3">penalty {signed(alt.federal.penalty_change)}</div> : null}</td>
-                  <td className="border-b border-line px-3 py-2">{ok ? <Badge tone="ok">Matches exactly</Badge> : <Badge tone="bad">Differs</Badge>}</td>
-                  <td className="num border-b border-line px-3 py-2 text-right font-medium">{signed(o.fed)} / {signed(o.ca)}{o.pen ? <div className="text-sm font-normal text-fg-3">penalty {signed(o.pen)}</div> : null}</td>
+                  <td className="border-b border-line px-4 py-2.5"><div className="font-medium">{alt.description}</div><div className="mono text-cap text-fg-3">{alt.id} · on {alt.base_version}</div></td>
+                  <td className="num border-b border-line px-4 py-2.5 text-right">{signed(alt.federal.total_tax_change)} / {signed(alt.california.total_tax_change)}{alt.federal.penalty_change ? <div className="text-sm text-fg-3">penalty {signed(alt.federal.penalty_change)}</div> : null}</td>
+                  <td className="border-b border-line px-4 py-2.5">{ok ? <Badge tone="ok">Matches exactly</Badge> : <Badge tone="bad">Differs</Badge>}</td>
+                  <td className="num border-b border-line px-4 py-2.5 text-right font-medium">{signed(o.fed)} / {signed(o.ca)}{o.pen ? <div className="text-sm font-normal text-fg-3">penalty {signed(o.pen)}</div> : null}</td>
                 </tr>
               ))}
             </tbody>

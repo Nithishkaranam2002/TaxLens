@@ -204,7 +204,7 @@ h1, h2, h3 { text-wrap: balance; }
 .mono { font-family: var(--font-mono); }
 .cond { font-family: var(--font-cond); }
 .serif { font-family: var(--font-serif); }
-.eyebrow { font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
+.eyebrow { font-size: 13px; line-height: 18px; color: var(--fg-3); font-weight: 600; }
 
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 ::selection { background: color-mix(in oklab, var(--focus) 25%, transparent); }

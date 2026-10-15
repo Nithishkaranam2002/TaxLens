@@ -60,29 +60,29 @@ function SignOffs({ wp }: { wp: Workpaper }) {
     <div className="space-y-6">
       <section>
         <SectionHead title="By area" sub="Preparer, then reviewer, then partner. No one signs a level above their own work. A changed area reopens its sign-offs and lists what changed." />
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[760px] border-collapse text-base">
-            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase"><th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Area</th>{LEVELS.map((l) => <th key={l} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{l}</th>)}<th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Open</th></tr></thead>
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
+          <table className="w-full min-w-[900px] table-fixed border-collapse text-base">
+            <thead><tr className="text-cap text-fg-3"><th className="w-[22%] border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Area</th>{LEVELS.map((l) => <th key={l} className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold capitalize">{l}</th>)}<th className="w-[13%] border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Open</th></tr></thead>
             <tbody>
               {wp.areas.map((a) => (
                 <tr key={a.id} className="align-top hover:bg-panel-2">
-                  <td className="border-b border-line px-3 py-2"><button type="button" className="font-medium hover:underline" onClick={() => store.go({ page: 'area', id: a.id })}>{AREA[a.id].name}</button><div className="mono text-cap text-fg-3">{a.fingerprint.slice(0, 8)}</div></td>
+                  <td className="border-b border-line px-4 py-3"><button type="button" className="text-left font-medium hover:underline" onClick={() => store.go({ page: 'area', id: a.id })}>{AREA[a.id].name}</button><div className="mono text-cap text-fg-3">{a.fingerprint.slice(0, 8)}</div></td>
                   {LEVELS.map((l) => {
                     const so = a.signoffs[l];
                     const preparerId = wp.state.assignments.get(a.id)?.preparer ?? start.preparer;
                     const can = (l === 'preparer' && (me.role === 'preparer' || me.id === preparerId)) || (l === 'reviewer' && ['reviewer', 'partner'].includes(me.role)) || (l === 'partner' && me.role === 'partner');
                     return (
-                      <td key={l} className={cx('border-b border-line px-3 py-2', so.state === 'reopened' && 'bg-warn-bg/40')}>
+                      <td key={l} className={cx('border-b border-line px-4 py-3', so.state === 'reopened' && 'bg-warn-bg/40')}>
                         <SignState state={so.state} by={so.by} at={so.at} />
                         {so.state === 'reopened' && <div className="mt-1 line-clamp-2 text-cap text-fg-3" title={so.diff.join('\n')}>{so.diff.slice(0, 2).join('; ')}{so.diff.length > 2 ? ` +${so.diff.length - 2}` : ''}</div>}
-                        <div className="mt-1 flex gap-1.5">
-                          {can && so.state !== 'signed' && <Button size="sm" variant="ghost" onClick={() => store.run((x) => signOff(x, a.id, l))}>{so.state === 'reopened' ? 'Re-sign' : 'Sign'}</Button>}
+                        <div className="mt-2 flex gap-1.5">
+                          {can && so.state !== 'signed' && <Button size="sm" onClick={() => store.run((x) => signOff(x, a.id, l))}>{so.state === 'reopened' ? 'Re-sign' : 'Sign'}</Button>}
                           {so.state !== 'missing' && (so.by === me.id || me.role === 'partner') && so.state === 'signed' && <Button size="sm" variant="ghost" onClick={() => store.run((x) => withdrawSignOff(x, a.id, l, 'Withdrawn'))}>Withdraw</Button>}
                         </div>
                       </td>
                     );
                   })}
-                  <td className="border-b border-line px-3 py-2 text-sm">
+                  <td className="border-b border-line px-4 py-3 text-sm">
                     {a.findingsOpen > 0 && <div className="text-bad">{plural(a.findingsOpen, 'finding')}</div>}
                     {a.proposalsPending > 0 && <div className="text-info">{a.proposalsPending} to approve</div>}
                     {a.notesOpen > 0 && <div className="text-warn">{plural(a.notesOpen, 'note')}</div>}
@@ -256,17 +256,17 @@ function Variances({ wp }: { wp: Workpaper }) {
           <Segmented value={show} onChange={setShow} options={[{ id: 'flagged', label: 'Flagged' }, { id: 'all', label: 'All lines' }]} />
         </div>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+      <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
         <table className="w-full min-w-[820px] border-collapse text-base">
-          <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Line', '2024', '2025', 'Change', 'Explanation'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 1 && i <= 3 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+          <thead><tr className="text-cap text-fg-3">{['Line', '2024', '2025', 'Change', 'Explanation'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-4 py-2.5 font-semibold', i >= 1 && i <= 3 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
           <tbody>
             {rows.map((v) => (
               <tr key={v.key} className="align-top">
-                <td className="border-b border-line px-3 py-2"><button type="button" className="text-left hover:underline" onClick={() => store.open(v.key)}>{v.label}</button><div className="mono text-cap text-fg-3">{v.key}</div></td>
-                <td className="num border-b border-line px-3 py-2 text-right text-fg-2">{money(v.prior)}</td>
-                <td className="num border-b border-line px-3 py-2 text-right">{money(v.current)}</td>
-                <td className={cx('num border-b border-line px-3 py-2 text-right', v.flagged && 'font-medium')}>{signed(v.delta)}<div className="text-cap text-fg-3">{v.pct === null ? 'new' : `${Math.round(v.pct * 100)}%`}</div></td>
-                <td className="border-b border-line px-3 py-2">
+                <td className="border-b border-line px-4 py-2.5"><button type="button" className="text-left hover:underline" onClick={() => store.open(v.key)}>{v.label}</button><div className="mono text-cap text-fg-3">{v.key}</div></td>
+                <td className="num border-b border-line px-4 py-2.5 text-right text-fg-2">{money(v.prior)}</td>
+                <td className="num border-b border-line px-4 py-2.5 text-right">{money(v.current)}</td>
+                <td className={cx('num border-b border-line px-4 py-2.5 text-right', v.flagged && 'font-medium')}>{signed(v.delta)}<div className="text-cap text-fg-3">{v.pct === null ? 'new' : `${Math.round(v.pct * 100)}%`}</div></td>
+                <td className="border-b border-line px-4 py-2.5">
                   {edit === v.key ? (
                     <div className="space-y-2">
                       <TextArea value={text} onChange={(e) => setText(e.target.value)} className="min-h-[56px]" />

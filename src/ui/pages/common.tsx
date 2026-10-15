@@ -59,9 +59,9 @@ export function SignDots({ a, size = 'md' }: { a: AreaStatus; size?: 'sm' | 'md'
 export function SignState({ state, by, at }: { state: 'missing' | 'signed' | 'reopened'; by: string | null; at: string | null }) {
   const actors = useApp((s) => s.actors);
   const a = actors.find((x) => x.id === by);
-  if (state === 'missing') return <span className="inline-flex items-center gap-1 text-sm text-fg-3"><CircleDashed className="size-3.5" />Not signed</span>;
-  if (state === 'reopened') return <span className="inline-flex items-center gap-1 text-sm text-warn"><RotateCcw className="size-3.5" />Reopened · {a?.name.split(' ')[0]}</span>;
-  return <span className="inline-flex items-center gap-1.5 text-sm"><Tick ink={a?.ink} size={14} /><span>{a?.name}</span>{at && <span className="text-fg-3">{firmDay(at).slice(5, 10).replace('-', '/')}</span>}</span>;
+  if (state === 'missing') return <span className="inline-flex items-center gap-1.5 text-sm whitespace-nowrap text-fg-3"><CircleDashed className="size-4" />Not signed</span>;
+  if (state === 'reopened') return <span className="inline-flex items-center gap-1.5 text-sm whitespace-nowrap text-warn"><RotateCcw className="size-4" />Reopened · {a?.name.split(' ')[0]}</span>;
+  return <span className="inline-flex items-center gap-1.5 text-sm whitespace-nowrap"><Tick ink={a?.ink} size={14} /><span>{a?.name}</span>{at && <span className="text-fg-3">{firmDay(at).slice(5, 10).replace('-', '/')}</span>}</span>;
 }
 
 export function AreaLink({ id, className }: { id: AreaId | null; className?: string }) {

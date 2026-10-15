@@ -295,15 +295,15 @@ function LinesTable({ id }: { id: AreaId }) {
         </div>
       )}
       {rows.length === 0 ? <Empty title="No lines match" /> : (
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
+        <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full border-collapse text-base">
             <thead>
-              <tr className="text-cap tracking-wide text-fg-3 uppercase">
-                {canVerify && <th className="w-8 border-b border-line bg-panel-2 px-3 py-2" />}
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Engine</th>
-                <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Ours</th>
-                <th className="w-16 border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold" title="Sources on the page"><FileText className="ml-auto size-3.5" /></th>
+              <tr className="text-cap text-fg-3">
+                {canVerify && <th className="w-8 border-b border-line bg-panel-2 px-4 py-2.5" />}
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Line</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Engine</th>
+                <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Ours</th>
+                <th className="w-16 border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold" title="Sources on the page"><FileText className="ml-auto size-3.5" /></th>
               </tr>
             </thead>
             <tbody>

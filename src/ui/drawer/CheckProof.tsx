@@ -27,7 +27,7 @@ export function EvidenceTableView({ t }: { t: EvidenceTable }) {
       {t.title && <div className="border-b border-line bg-panel-2 px-3 py-1.5 text-sm font-medium">{t.title}</div>}
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr>{t.columns.map((c, i) => <th key={i} className={cx('border-b border-line bg-panel-2 px-2.5 py-1.5 text-left text-cap font-semibold tracking-wide text-fg-3 uppercase', t.money?.includes(i) && 'text-right')}>{c}</th>)}</tr>
+          <tr>{t.columns.map((c, i) => <th key={i} className={cx('border-b border-line bg-panel-2 px-2.5 py-1.5 text-left text-cap font-semibold text-fg-3', t.money?.includes(i) && 'text-right')}>{c}</th>)}</tr>
         </thead>
         <tbody>
           {t.rows.map((r, ri) => (
