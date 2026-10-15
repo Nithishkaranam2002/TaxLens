@@ -1,29 +1,31 @@
 @import "tailwindcss";
 
 /* TaxLens — a workpaper drawn from the ledger pad and the reviewer's pen.
-   Neutrals lean green-gray like columnar paper; every person's work shows in their own ink:
+   Cool neutrals and one indigo accent for proof links and focus; every person's work shows in their own ink:
    engine graphite, preparer blue, reviewer green, partner violet, client amber. */
 :root {
-  --bg: #f2f3ef;
+  --bg: #f6f7f9;
   --panel: #ffffff;
-  --panel-2: #f7f8f5;
-  --sunk: #eceee9;
-  --line: #e0e3dc;
-  --line-2: #cdd2c8;
-  --fg: #141a16;
-  --fg-2: #4b5550;
-  --fg-3: #7d877f;
-  --btn: #18201b;
-  --btn-fg: #f6f8f4;
-  --focus: #2c5bd6;
-  --ok: #217449;
-  --ok-bg: #e5f2e9;
-  --bad: #bf3926;
-  --bad-bg: #fbe9e5;
-  --warn: #9c600d;
-  --warn-bg: #fbf0db;
+  --panel-2: #f9fafb;
+  --sunk: #eef0f3;
+  --line: #e4e7ec;
+  --line-2: #d0d5dd;
+  --fg: #101828;
+  --fg-2: #475467;
+  --fg-3: #667085;
+  --btn: #111827;
+  --btn-fg: #ffffff;
+  --accent: #312e81;
+  --accent-bg: #eeeefb;
+  --focus: #312e81;
+  --ok: #16794a;
+  --ok-bg: #e8f5ee;
+  --bad: #c2361f;
+  --bad-bg: #fdecea;
+  --warn: #a35c00;
+  --warn-bg: #fff4e0;
   --info: #3460b8;
-  --info-bg: #e8eefa;
+  --info-bg: #ebf0fb;
   --ink-graphite: #5f6763;
   --ink-blue: #2c5bd6;
   --ink-green: #1e7d50;
@@ -38,32 +40,34 @@
   --hl: #fff0a3;
   --hl-strong: #ffd447;
   --hl-bad: #ffd9d1;
-  --scrim: rgba(18, 24, 20, 0.36);
-  --shadow-1: 0 1px 2px rgba(20, 26, 22, 0.06);
-  --shadow-2: 0 1px 2px rgba(20, 26, 22, 0.05), 0 10px 30px rgba(20, 26, 22, 0.1);
+  --scrim: rgba(16, 24, 40, 0.4);
+  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-2: 0 1px 3px rgba(16, 24, 40, 0.06), 0 12px 32px rgba(16, 24, 40, 0.12);
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d110f;
-    --panel: #141916;
-    --panel-2: #191f1b;
-    --sunk: #0a0d0b;
-    --line: #252c27;
-    --line-2: #333b35;
-    --fg: #e7ebe6;
-    --fg-2: #a7b0a9;
-    --fg-3: #747e77;
-    --btn: #e7ebe6;
-    --btn-fg: #111512;
-    --focus: #7ea0ff;
-    --ok: #55c185;
-    --ok-bg: #11281b;
-    --bad: #ff7a64;
-    --bad-bg: #321714;
-    --warn: #e7ad4b;
-    --warn-bg: #2d2211;
+    --bg: #0e1116;
+    --panel: #151a21;
+    --panel-2: #1a2029;
+    --sunk: #0b0e12;
+    --line: #262d38;
+    --line-2: #353e4b;
+    --fg: #e9edf2;
+    --fg-2: #a9b3c1;
+    --fg-3: #8b95a5;
+    --btn: #e9edf2;
+    --btn-fg: #0e1116;
+    --accent: #c7c9ff;
+    --accent-bg: #22234a;
+    --focus: #c7c9ff;
+    --ok: #5fcf94;
+    --ok-bg: #10291c;
+    --bad: #ff8a75;
+    --bad-bg: #341a17;
+    --warn: #f0b45a;
+    --warn-bg: #2e2210;
     --info: #8aa9ff;
     --info-bg: #161f38;
     --ink-graphite: #a3aaa6;
@@ -87,24 +91,26 @@
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0d110f;
-  --panel: #141916;
-  --panel-2: #191f1b;
-  --sunk: #0a0d0b;
-  --line: #252c27;
-  --line-2: #333b35;
-  --fg: #e7ebe6;
-  --fg-2: #a7b0a9;
-  --fg-3: #747e77;
-  --btn: #e7ebe6;
-  --btn-fg: #111512;
-  --focus: #7ea0ff;
-  --ok: #55c185;
-  --ok-bg: #11281b;
-  --bad: #ff7a64;
-  --bad-bg: #321714;
-  --warn: #e7ad4b;
-  --warn-bg: #2d2211;
+  --bg: #0e1116;
+  --panel: #151a21;
+  --panel-2: #1a2029;
+  --sunk: #0b0e12;
+  --line: #262d38;
+  --line-2: #353e4b;
+  --fg: #e9edf2;
+  --fg-2: #a9b3c1;
+  --fg-3: #8b95a5;
+  --btn: #e9edf2;
+  --btn-fg: #0e1116;
+  --accent: #c7c9ff;
+  --accent-bg: #22234a;
+  --focus: #c7c9ff;
+  --ok: #5fcf94;
+  --ok-bg: #10291c;
+  --bad: #ff8a75;
+  --bad-bg: #341a17;
+  --warn: #f0b45a;
+  --warn-bg: #2e2210;
   --info: #8aa9ff;
   --info-bg: #161f38;
   --ink-graphite: #a3aaa6;
@@ -140,6 +146,8 @@
   --color-btn: var(--btn);
   --color-btn-fg: var(--btn-fg);
   --color-focus: var(--focus);
+  --color-accent: var(--accent);
+  --color-accent-bg: var(--accent-bg);
   --color-ok: var(--ok);
   --color-ok-bg: var(--ok-bg);
   --color-bad: var(--bad);
@@ -159,6 +167,26 @@
   --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
 }
 
+/* Type scale (docs/DESIGN.md §1). Nothing in the app is smaller than text-cap (13px). */
+@theme {
+  --text-cap: 13px;
+  --text-cap--line-height: 18px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 15px;
+  --text-base--line-height: 23px;
+  --text-md: 16px;
+  --text-md--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 26px;
+  --text-xl: 22px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 28px;
+  --text-2xl--line-height: 34px;
+  --text-display: 40px;
+  --text-display--line-height: 44px;
+}
+
 @layer base {
 html, body, #root { height: 100%; }
 body {
@@ -166,8 +194,8 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -176,9 +204,9 @@ h1, h2, h3 { text-wrap: balance; }
 .mono { font-family: var(--font-mono); }
 .cond { font-family: var(--font-cond); }
 .serif { font-family: var(--font-serif); }
-.eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
+.eyebrow { font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
 
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 ::selection { background: color-mix(in oklab, var(--focus) 25%, transparent); }
 }
 
@@ -189,18 +217,20 @@ html body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
-/* A clickable number: dotted underline in the ink of whoever last touched it. */
+/* A clickable number: the text keeps its own ink; only the dotted underline carries the accent. */
 .proof {
   cursor: pointer;
-  border-bottom: 1px dotted color-mix(in oklab, var(--fg-3) 70%, transparent);
-  transition: background-color 120ms, border-color 120ms;
-  border-radius: 2px;
+  text-decoration: underline dotted color-mix(in oklab, var(--accent) 55%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  transition: background-color 120ms, text-decoration-color 120ms;
+  border-radius: 3px;
 }
-.proof:hover { background: color-mix(in oklab, var(--focus) 10%, transparent); border-bottom-color: var(--focus); }
+.proof:hover { background: var(--accent-bg); text-decoration-style: solid; text-decoration-color: var(--accent); }
 
 .ink-graphite { color: var(--ink-graphite); }
 .ink-blue { color: var(--ink-blue); }

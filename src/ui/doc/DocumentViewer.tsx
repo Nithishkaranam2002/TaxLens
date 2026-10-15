@@ -95,10 +95,10 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
     <div className="fixed inset-0 z-50 flex bg-[var(--scrim)] anim-fade" onMouseDown={onClose}>
       <div ref={panelRef} role="dialog" aria-modal="true" aria-label={`${doc.id} ${doc.title}`} className="m-auto flex h-[min(94vh,980px)] w-[min(1400px,96vw)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-2 anim-rise" onMouseDown={(e) => e.stopPropagation()}>
         <header className="flex items-center gap-3 border-b border-line px-4 py-2.5">
-          <span className="mono rounded bg-sunk px-1.5 py-0.5 text-[12px]">{doc.id}</span>
+          <span className="mono rounded bg-sunk px-1.5 py-0.5 text-sm">{doc.id}</span>
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[14px] font-semibold">{doc.title}</div>
-            <div className="truncate text-[12px] text-fg-3">{doc.issuer} · {doc.file_name} · received {dateTime(doc.received_at)} · uploaded by {doc.uploaded_by}</div>
+            <div className="truncate text-md font-semibold">{doc.title}</div>
+            <div className="truncate text-sm text-fg-3">{doc.issuer} · {doc.file_name} · received {dateTime(doc.received_at)} · uploaded by {doc.uploaded_by}</div>
           </div>
           {sensitive && me.role !== 'client' && (masked ? (
             <Button size="sm" variant="ghost" onClick={() => store.run((x) => reveal(x, `doc:${doc.id}`, 'identifiers', 'Viewed in the document viewer'), { undoable: false })} title={me.clearance ? 'This view is logged' : 'Needs sensitive-data clearance'}>Show identifiers</Button>
@@ -113,9 +113,9 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
               {doc.pages.map((p) => {
                 const n = (ix.evsByPage.get(`${doc.id}#${p.page}`) ?? []).length;
                 return (
-                  <button key={p.page} type="button" onClick={() => setPage(p.page)} className={cx('mb-1.5 flex w-full flex-col items-center rounded-md border px-1 py-2 text-[11px]', p.page === page ? 'border-fg-3 bg-panel' : 'border-transparent hover:border-line-2')}>
+                  <button key={p.page} type="button" onClick={() => setPage(p.page)} className={cx('mb-1.5 flex w-full flex-col items-center rounded-md border px-1 py-2 text-cap', p.page === page ? 'border-fg-3 bg-panel' : 'border-transparent hover:border-line-2')}>
                     <span className="font-medium">{p.page}</span>
-                    <span className={cx('num text-[10px]', n ? 'text-fg-3' : 'text-bad')}>{n ? `${n} values` : /\d\.\d\d/.test(p.printed_content) ? 'unread' : '—'}</span>
+                    <span className={cx('num text-cap', n ? 'text-fg-3' : 'text-bad')}>{n ? `${n} values` : /\d\.\d\d/.test(p.printed_content) ? 'unread' : '—'}</span>
                   </button>
                 );
               })}
@@ -125,7 +125,7 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
             <div className="mx-auto mb-3 flex max-w-[760px] flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-1">
                 <IconButton label="Previous page" disabled={page <= 1} onClick={() => setPage(page - 1)}><ChevronLeft className="size-4" /></IconButton>
-                <span className="num text-[12.5px] text-fg-2">Page {page} of {doc.page_count}</span>
+                <span className="num text-sm text-fg-2">Page {page} of {doc.page_count}</span>
                 <IconButton label="Next page" disabled={page >= doc.page_count} onClick={() => setPage(page + 1)}><ChevronRight className="size-4" /></IconButton>
               </div>
               <div className="flex items-center gap-2">
@@ -137,12 +137,12 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
                 <div className="paper-margin ml-10 px-6 py-7 sm:ml-14 sm:px-8">
                   <div className="mb-5 flex items-start justify-between gap-4 border-b border-line-2 pb-3">
                     <div>
-                      <div className="text-[11px] tracking-[0.12em] text-fg-3 uppercase">{doc.document_type.replace(/_/g, ' ')}</div>
-                      <div className="serif text-[18px] leading-tight">{doc.issuer}</div>
+                      <div className="text-cap tracking-[0.12em] text-fg-3 uppercase">{doc.document_type.replace(/_/g, ' ')}</div>
+                      <div className="serif text-lg leading-tight">{doc.issuer}</div>
                     </div>
-                    <div className="text-right text-[11px] text-fg-3">Tax year {doc.tax_year}<br />{doc.file_name}</div>
+                    <div className="text-right text-cap text-fg-3">Tax year {doc.tax_year}<br />{doc.file_name}</div>
                   </div>
-                  <div className={cx('text-[14px] leading-[28px] whitespace-pre-wrap', /letter|engagement|notice|consent/.test(doc.document_type) ? 'serif' : 'mono text-[13px]')}>
+                  <div className={cx('text-md leading-[28px] whitespace-pre-wrap', /letter|engagement|notice|consent/.test(doc.document_type) ? 'serif' : 'mono text-base')}>
                     {segments.map((s, i) => s.ev ? (
                       <mark key={i} data-ev={s.ev} onClick={() => setActive(s.ev!)} title={s.ev}
                         className={cx('hl', active === s.ev && 'active', (() => { const e = ix.evs.get(s.ev!)!; const r = rereadValue(e, text); return r.kind === 'mismatch' || r.kind === 'blank-as-zero' || r.kind === 'low-confidence'; })() && 'bad')}>
@@ -162,7 +162,7 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
                 ))}
               </div>
             )}
-            <div className="mx-auto mt-3 max-w-[760px] text-[11.5px] text-fg-3">
+            <div className="mx-auto mt-3 max-w-[760px] text-cap text-fg-3">
               {view === 'simulated' ? (
                 <>Rendered from the packet's printed text; no scan was provided. Highlights are found by re-reading the text, not from the synthetic positions. When an original page is attached, the same values are drawn at their recorded positions.</>
               ) : imgUrl ? <>Original page attached. Boxes sit at each value's recorded position.</> : <>No original attached for this page.</>}
@@ -177,13 +177,13 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
           <aside className="hidden w-[360px] shrink-0 overflow-y-auto border-l border-line scroll-thin lg:block">
             <div className="border-b border-line p-4">
               <div className="eyebrow mb-1.5">This document</div>
-              <p className="text-[13px] text-fg-2">{account.reason}</p>
-              {account.lines.length > 0 && <div className="mt-2 flex flex-wrap gap-1">{account.lines.slice(0, 16).map((l) => <RefChip key={l} r={l} />)}{account.lines.length > 16 && <span className="text-[11px] text-fg-3">+{account.lines.length - 16}</span>}</div>}
-              {doc.extraction.reason && <p className="mt-2 text-[12px] text-fg-3">{doc.extraction.reason}</p>}
+              <p className="text-base text-fg-2">{account.reason}</p>
+              {account.lines.length > 0 && <div className="mt-2 flex flex-wrap gap-1">{account.lines.slice(0, 16).map((l) => <RefChip key={l} r={l} />)}{account.lines.length > 16 && <span className="text-cap text-fg-3">+{account.lines.length - 16}</span>}</div>}
+              {doc.extraction.reason && <p className="mt-2 text-sm text-fg-3">{doc.extraction.reason}</p>}
             </div>
             <div className="p-4">
               <div className="mb-2 flex items-center justify-between"><div className="eyebrow">Values on page {page}</div><Layers className="size-3.5 text-fg-3" /></div>
-              {evs.length === 0 && <p className="text-[12.5px] text-fg-3">The pipeline read nothing on this page.</p>}
+              {evs.length === 0 && <p className="text-sm text-fg-3">The pipeline read nothing on this page.</p>}
               <div className="space-y-1">
                 {evs.map((e) => {
                   const rr = rereadValue(e, text);
@@ -192,21 +192,21 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
                   return (
                     <button key={e.id} type="button" onClick={() => setActive(e.id)} className={cx('block w-full rounded-md border px-2.5 py-1.5 text-left', active === e.id ? 'border-fg-3 bg-panel-2' : bad ? 'border-bad/40 bg-bad-bg/40' : 'border-transparent hover:border-line')}>
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="truncate text-[12.5px]">{e.label}</span>
-                        <span className="num shrink-0 text-[12.5px] font-medium">{fmtEv(e.value, e.value_type)}</span>
+                        <span className="truncate text-sm">{e.label}</span>
+                        <span className="num shrink-0 text-sm font-medium">{fmtEv(e.value, e.value_type)}</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[11px] text-fg-3">
+                      <div className="flex items-center gap-1.5 text-cap text-fg-3">
                         <span className="mono">{e.id}</span><span>· {e.confidence.toFixed(2)}</span>
                         {uses.length ? <span>· {uses.length === 1 ? uses[0] : `${uses.length} lines`}</span> : <span>· not on a line</span>}
                       </div>
-                      {bad && <div className="text-[11px] text-bad">{rr.reason}</div>}
+                      {bad && <div className="text-cap text-bad">{rr.reason}</div>}
                     </button>
                   );
                 })}
               </div>
               {active && ix.evs.get(active) && (
                 <div className="mt-3 rounded-lg border border-line p-3">
-                  <div className="mb-1 text-[12.5px] font-medium">{ix.evs.get(active)!.label}</div>
+                  <div className="mb-1 text-sm font-medium">{ix.evs.get(active)!.label}</div>
                   <div className="mb-2 flex flex-wrap gap-1">{usesOf(active).map((l) => <RefChip key={l} r={l} />)}</div>
                   <Button size="sm" variant="ghost" onClick={() => store.open(active)}>Open this value</Button>
                 </div>

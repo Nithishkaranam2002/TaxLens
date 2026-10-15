@@ -57,11 +57,11 @@ export function Checks({ focus }: { focus?: string }) {
                               {fs && fs !== 'open' && <StatusPill status={fs} />}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="flex flex-wrap items-baseline gap-x-2"><span className="text-[13.5px] font-medium">{c.title}</span><span className="mono text-[11px] text-fg-3">{c.id}</span></div>
-                              <div className="text-[12.5px] text-fg-3">{c.question}</div>
-                              <div className={cx('mt-1 text-[12.5px]', c.status === 'fail' ? 'text-fg' : 'text-fg-2')}>{c.summary}</div>
+                              <div className="flex flex-wrap items-baseline gap-x-2"><span className="text-base font-medium">{c.title}</span><span className="mono text-cap text-fg-3">{c.id}</span></div>
+                              <div className="text-sm text-fg-3">{c.question}</div>
+                              <div className={cx('mt-1 text-sm', c.status === 'fail' ? 'text-fg' : 'text-fg-2')}>{c.summary}</div>
                             </div>
-                            <div className="hidden w-28 shrink-0 text-right text-[12px] text-fg-3 sm:block">
+                            <div className="hidden w-28 shrink-0 text-right text-sm text-fg-3 sm:block">
                               <div>{AREA[c.area].short}</div>
                               {c.scanned ? <div className="num">{c.scanned.toLocaleString('en-US')} scanned</div> : null}
                               {c.fixes.length > 0 && <div>{c.fixes.length} correction{c.fixes.length > 1 ? 's' : ''}</div>}

@@ -47,8 +47,8 @@ export function Documents() {
           {GROUPS.map((x) => {
             const n = wp.docs.filter((d) => x.match(d.disposition)).length;
             return (
-              <button key={x.id} type="button" onClick={() => setGroup(x.id)} className={cx('inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[12.5px]', group === x.id ? 'border-fg bg-fg text-bg' : 'border-line-2 bg-panel text-fg-2 hover:border-fg-3')}>
-                {x.label}<span className={cx('num text-[11px]', group === x.id ? 'opacity-80' : 'text-fg-3')}>{n}</span>
+              <button key={x.id} type="button" onClick={() => setGroup(x.id)} className={cx('inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-sm', group === x.id ? 'border-fg bg-fg text-bg' : 'border-line-2 bg-panel text-fg-2 hover:border-fg-3')}>
+                {x.label}<span className={cx('num text-cap', group === x.id ? 'opacity-80' : 'text-fg-3')}>{n}</span>
               </button>
             );
           })}
@@ -62,9 +62,9 @@ export function Documents() {
 
       {rows.length === 0 ? <Empty title="No documents match" /> : (
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[860px] border-collapse text-[13px]">
+          <table className="w-full min-w-[860px] border-collapse text-base">
             <thead>
-              <tr className="text-[11px] tracking-wide text-fg-3 uppercase">
+              <tr className="text-cap tracking-wide text-fg-3 uppercase">
                 <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Document</th>
                 <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Received</th>
                 <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Values</th>
@@ -77,31 +77,31 @@ export function Documents() {
                 <tr key={d.doc.id} onClick={() => d.received && store.open(`doc:${d.doc.id}#page1`)} className={cx('align-top', d.received ? 'cursor-pointer hover:bg-panel-2' : 'opacity-60')}>
                   <td className="border-b border-line px-3 py-2">
                     <div className="flex items-start gap-2">
-                      <span className="mono mt-0.5 rounded bg-sunk px-1 text-[10.5px] text-fg-2">{d.doc.id}</span>
+                      <span className="mono mt-0.5 rounded bg-sunk px-1 text-cap text-fg-2">{d.doc.id}</span>
                       <div className="min-w-0">
                         <div className="font-medium">{d.doc.title}</div>
-                        <div className="text-[12px] text-fg-3">{d.doc.issuer} · {plural(d.doc.page_count, 'page')} · <button type="button" className="hover:underline" onClick={(e) => { e.stopPropagation(); store.go({ page: 'area', id: d.area }); }}>{AREA[d.area].short}</button></div>
+                        <div className="text-sm text-fg-3">{d.doc.issuer} · {plural(d.doc.page_count, 'page')} · <button type="button" className="hover:underline" onClick={(e) => { e.stopPropagation(); store.go({ page: 'area', id: d.area }); }}>{AREA[d.area].short}</button></div>
                         <div className="mt-1 flex flex-wrap gap-1">{d.flags.map((f) => <Badge key={f} tone={f === 'Corrected' ? 'info' : f === 'Late' ? 'warn' : 'neutral'}>{f}</Badge>)}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="border-b border-line px-3 py-2 whitespace-nowrap text-[12.5px]">
+                  <td className="border-b border-line px-3 py-2 whitespace-nowrap text-sm">
                     <div>{date(d.doc.received_at)}</div>
-                    <div className="text-[12px] text-fg-3">{d.doc.uploaded_by === 'client' ? 'Client upload' : 'Firm'}</div>
+                    <div className="text-sm text-fg-3">{d.doc.uploaded_by === 'client' ? 'Client upload' : 'Firm'}</div>
                   </td>
                   <td className="border-b border-line px-3 py-2 text-right">
                     <div className="num">{d.evCount || '—'}</div>
-                    {d.problems > 0 && <div className="inline-flex items-center gap-1 text-[12px] text-warn"><AlertTriangle className="size-3" />{d.problems}</div>}
+                    {d.problems > 0 && <div className="inline-flex items-center gap-1 text-sm text-warn"><AlertTriangle className="size-3" />{d.problems}</div>}
                   </td>
                   <td className="border-b border-line px-3 py-2">
                     <StatusPill status={d.disposition} />
-                    <div className="mt-1 max-w-[320px] text-[12.5px] text-fg-2">{d.reason}</div>
-                    {d.doc.extraction.reason && <div className="mt-0.5 max-w-[320px] text-[12px] text-fg-3">{d.doc.extraction.reason}</div>}
+                    <div className="mt-1 max-w-[320px] text-sm text-fg-2">{d.reason}</div>
+                    {d.doc.extraction.reason && <div className="mt-0.5 max-w-[320px] text-sm text-fg-3">{d.doc.extraction.reason}</div>}
                   </td>
                   <td className="border-b border-line px-3 py-2" onClick={(e) => e.stopPropagation()}>
                     <div className="flex max-w-[260px] flex-wrap gap-1">
                       {d.lines.slice(0, 4).map((l) => <RefChip key={l} r={l} />)}
-                      {d.lines.length > 4 && <span className="text-[11px] text-fg-3">+{d.lines.length - 4}</span>}
+                      {d.lines.length > 4 && <span className="text-cap text-fg-3">+{d.lines.length - 4}</span>}
                     </div>
                   </td>
                 </tr>
@@ -110,7 +110,7 @@ export function Documents() {
           </table>
         </div>
       )}
-      <p className="mt-3 text-[12px] text-fg-3">Pages are rendered from the packet's printed text ({ix.packet.documents.reduce((s, d) => s + d.pages.length, 0)} pages). An original scan can be attached to any page; the highlights then sit on the scan at the packet's recorded positions.</p>
+      <p className="mt-3 text-sm text-fg-3">Pages are rendered from the packet's printed text ({ix.packet.documents.reduce((s, d) => s + d.pages.length, 0)} pages). An original scan can be attached to any page; the highlights then sit on the scan at the packet's recorded positions.</p>
     </div>
   );
 }

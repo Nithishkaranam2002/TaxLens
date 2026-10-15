@@ -47,7 +47,7 @@ export function ProofDrawer() {
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <div className="flex h-12 shrink-0 items-center gap-1 border-b border-line px-2">
           {stack.length > 1 ? <IconButton label="Back" onClick={() => store.back()}><ArrowLeft className="size-4" /></IconButton> : <span className="w-2" />}
-          <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden text-[12px] text-fg-3">
+          <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden text-sm text-fg-3">
             {crumbs.map((c) => <span key={c} className="mono max-w-[140px] truncate">{resolveRef(ix, wp, c).id.replace(/^(check|adj):/, '')} ›</span>)}
             <span className="eyebrow">Proof</span>
           </div>

@@ -56,20 +56,20 @@ function StaffClient() {
                   <div className="flex items-start gap-3 px-4 py-3">
                     <Avatar actor={by} size={22} />
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-1.5 text-[12px] text-fg-3"><span className="font-medium text-fg">{by?.name}</span>asked {ago(q.at, now)} · on <RefChip r={q.target} />{q.due && <Badge tone="warn">due {date(q.due)}</Badge>}</div>
-                      <p className="mt-1 text-[13.5px]">{q.text}</p>
+                      <div className="flex flex-wrap items-center gap-1.5 text-sm text-fg-3"><span className="font-medium text-fg">{by?.name}</span>asked {ago(q.at, now)} · on <RefChip r={q.target} />{q.due && <Badge tone="warn">due {date(q.due)}</Badge>}</div>
+                      <p className="mt-1 text-base">{q.text}</p>
                     </div>
                   </div>
                   <div className="border-t border-line bg-panel-2/60 px-4 py-3">
                     {q.answer ? (
-                      <div className="text-[13px]">
-                        <div className="mb-1 flex flex-wrap items-center gap-2"><Avatar actor={actors.find((a) => a.id === q.answer!.by)} size={18} /><span className="font-medium">{actors.find((a) => a.id === q.answer!.by)?.name}</span><span className="text-[12px] text-fg-3">answered {ago(q.answer.at, now)}</span></div>
-                        <p className="serif text-[14px]">“{q.answer.text}”</p>
-                        {q.answer.attachments.length > 0 && <div className="mt-1 flex flex-wrap gap-1.5 text-[12px] text-fg-2">{q.answer.attachments.map((a) => <span key={a} className="inline-flex items-center gap-1"><Paperclip className="size-3" />{a}</span>)}</div>}
-                        <div className="mt-2">{v ? <span className="inline-flex items-center gap-1.5 text-[12px] text-ok"><Tick ink={actors.find((a) => a.id === v.by)?.ink} size={14} />Accepted as evidence · <Who id={v.by} at={v.at} /></span>
+                      <div className="text-base">
+                        <div className="mb-1 flex flex-wrap items-center gap-2"><Avatar actor={actors.find((a) => a.id === q.answer!.by)} size={18} /><span className="font-medium">{actors.find((a) => a.id === q.answer!.by)?.name}</span><span className="text-sm text-fg-3">answered {ago(q.answer.at, now)}</span></div>
+                        <p className="serif text-md">“{q.answer.text}”</p>
+                        {q.answer.attachments.length > 0 && <div className="mt-1 flex flex-wrap gap-1.5 text-sm text-fg-2">{q.answer.attachments.map((a) => <span key={a} className="inline-flex items-center gap-1"><Paperclip className="size-3" />{a}</span>)}</div>}
+                        <div className="mt-2">{v ? <span className="inline-flex items-center gap-1.5 text-sm text-ok"><Tick ink={actors.find((a) => a.id === v.by)?.ink} size={14} />Accepted as evidence · <Who id={v.by} at={v.at} /></span>
                           : canAsk && <Button size="sm" icon={<ShieldCheck className="size-3.5" />} onClick={() => store.run((x) => verify(x, `question:${q.id}`, 'confirmed_with_client', `Client answer accepted as evidence for ${q.target}`, [q.target]))}>Accept as evidence</Button>}</div>
                       </div>
-                    ) : <span className="text-[12.5px] text-fg-3">Waiting for the client. It appears in their portal.</span>}
+                    ) : <span className="text-sm text-fg-3">Waiting for the client. It appears in their portal.</span>}
                   </div>
                 </Card>
               );
@@ -77,12 +77,12 @@ function StaffClient() {
           </div>
           {canAsk && (
             <Card className="h-fit space-y-3">
-              <div className="text-[14px] font-semibold">Ask the client</div>
+              <div className="text-md font-semibold">Ask the client</div>
               <Field label="Area"><Select value={area} onChange={(v) => setArea(v as AreaId)} options={AREAS.map((a) => ({ id: a.id, label: a.name }))} /></Field>
               <Field label="Question"><TextArea value={text} onChange={(e) => setText(e.target.value)} placeholder="Plain words; one question at a time" /></Field>
               <Field label="Answer by (optional)"><Input type="date" value={due} onChange={(e) => setDue(e.target.value)} /></Field>
               <Button variant="primary" icon={<Send className="size-3.5" />} disabled={!text.trim()} onClick={() => { const r = store.run((x) => askClient(x, { target: area, area, text, due: due || null })); if (r.ok) { setText(''); setDue(''); } }}>Send to portal</Button>
-              <p className="text-[12px] text-fg-3">To tie a question to a number, ask it from that number's proof instead.</p>
+              <p className="text-sm text-fg-3">To tie a question to a number, ask it from that number's proof instead.</p>
             </Card>
           )}
         </div>
@@ -93,7 +93,7 @@ function StaffClient() {
             {msgs.map((m) => (
               <li key={m.id} className="flex items-start gap-3 px-4 py-3">
                 <MessageSquare className="mt-0.5 size-4 text-fg-3" />
-                <div className="min-w-0 flex-1"><div className="text-[12px] text-fg-3"><span className="font-medium text-fg">{m.from}</span> · {dateTime(m.at)}{m.packet && <span className="mono ml-2">{m.id}</span>}</div><p className="mt-0.5 text-[13px]">{m.text}</p></div>
+                <div className="min-w-0 flex-1"><div className="text-sm text-fg-3"><span className="font-medium text-fg">{m.from}</span> · {dateTime(m.at)}{m.packet && <span className="mono ml-2">{m.id}</span>}</div><p className="mt-0.5 text-base">{m.text}</p></div>
               </li>
             ))}
           </ul>
@@ -104,8 +104,8 @@ function StaffClient() {
           <ul className="divide-y divide-line">
             {ix.packet.client.questionnaire.map((q) => (
               <li key={q.id} className="grid grid-cols-1 gap-1 px-4 py-2.5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                <div className="text-[12.5px] text-fg-2"><span className="mono mr-2 text-[11px] text-fg-3">{q.id}</span>{q.question}</div>
-                <div className="text-[13px]">“{q.answer}” <span className="text-[11.5px] text-fg-3">— {q.answered_by}</span></div>
+                <div className="text-sm text-fg-2"><span className="mono mr-2 text-cap text-fg-3">{q.id}</span>{q.question}</div>
+                <div className="text-base">“{q.answer}” <span className="text-cap text-fg-3">— {q.answered_by}</span></div>
               </li>
             ))}
           </ul>
@@ -114,7 +114,7 @@ function StaffClient() {
       {tab === 'calls' && (
         <div className="space-y-3">
           {ix.packet.client.call_notes.filter((c) => c.date <= wp.asOf).map((c) => (
-            <Card key={c.id}><div className="text-[12px] text-fg-3">{dateTime(c.date)} · {c.participants.join(', ')} <span className="mono ml-1">{c.id}</span></div><ul className="mt-2 list-disc space-y-1 pl-5 text-[13px]">{c.notes.map((n, i) => <li key={i}>{n}</li>)}</ul></Card>
+            <Card key={c.id}><div className="text-sm text-fg-3">{dateTime(c.date)} · {c.participants.join(', ')} <span className="mono ml-1">{c.id}</span></div><ul className="mt-2 list-disc space-y-1 pl-5 text-base">{c.notes.map((n, i) => <li key={i}>{n}</li>)}</ul></Card>
           ))}
         </div>
       )}
@@ -141,7 +141,7 @@ function Portal() {
       <Card className="mb-6">
         <ol className="grid grid-cols-1 gap-3 sm:grid-cols-4">
           {stages.map(([l, d], i) => (
-            <li key={l} className="flex items-center gap-2 text-[13px]"><StepIcon state={d ? 'done' : i === stages.findIndex(([, x]) => !x) ? 'open' : 'na'} /><span className={cx(d ? 'font-medium' : 'text-fg-2')}>{l}</span></li>
+            <li key={l} className="flex items-center gap-2 text-base"><StepIcon state={d ? 'done' : i === stages.findIndex(([, x]) => !x) ? 'open' : 'na'} /><span className={cx(d ? 'font-medium' : 'text-fg-2')}>{l}</span></li>
           ))}
         </ol>
       </Card>
@@ -156,7 +156,7 @@ function Portal() {
       <section className="mb-6">
         <SectionHead title="Your return" />
         {!partnerSigned && !filed ? (
-          <Card><p className="text-[13.5px]">Your CPA is still preparing and reviewing your return. When it's ready you'll review the results here and sign the e-file authorization (Form 8879).</p></Card>
+          <Card><p className="text-base">Your CPA is still preparing and reviewing your return. When it's ready you'll review the results here and sign the e-file authorization (Form 8879).</p></Card>
         ) : <ApproveCard wp={wp} />}
       </section>
 
@@ -164,7 +164,7 @@ function Portal() {
         <section className="mb-6">
           <SectionHead title="Answered" />
           <Card pad={false}>
-            <ul className="divide-y divide-line">{answered.map((q) => <li key={q.id} className="px-4 py-2.5 text-[13px]"><div className="text-fg-2">{q.text}</div><div className="mt-0.5">“{q.answer!.text}” <span className="text-[12px] text-fg-3">· {ago(q.answer!.at, now)}</span></div></li>)}</ul>
+            <ul className="divide-y divide-line">{answered.map((q) => <li key={q.id} className="px-4 py-2.5 text-base"><div className="text-fg-2">{q.text}</div><div className="mt-0.5">“{q.answer!.text}” <span className="text-sm text-fg-3">· {ago(q.answer!.at, now)}</span></div></li>)}</ul>
           </Card>
         </section>
       )}
@@ -186,10 +186,10 @@ function AnswerCard({ id, text, due }: { id: string; text: string; due: string |
   };
   return (
     <Card>
-      <p className="text-[14px] font-medium">{text}</p>
-      {due && (due < firmDay(now) ? <p className="mt-0.5 text-[12px] text-bad">This was due {date(due)}. Please answer as soon as you can.</p> : <p className="mt-0.5 text-[12px] text-warn">Please answer by {date(due)}</p>)}
+      <p className="text-md font-medium">{text}</p>
+      {due && (due < firmDay(now) ? <p className="mt-0.5 text-sm text-bad">This was due {date(due)}. Please answer as soon as you can.</p> : <p className="mt-0.5 text-sm text-warn">Please answer by {date(due)}</p>)}
       <TextArea className="mt-3" value={a} onChange={(e) => setA(e.target.value)} placeholder="Your answer" />
-      {files.length > 0 && <div className="mt-2 flex flex-wrap gap-2 text-[12px] text-fg-2">{files.map((f) => <span key={f} className="inline-flex items-center gap-1"><Paperclip className="size-3" />{f}</span>)}</div>}
+      {files.length > 0 && <div className="mt-2 flex flex-wrap gap-2 text-sm text-fg-2">{files.map((f) => <span key={f} className="inline-flex items-center gap-1"><Paperclip className="size-3" />{f}</span>)}</div>}
       <input ref={input} type="file" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void onFile(f); e.target.value = ''; }} />
       <div className="mt-2 flex justify-between gap-2">
         <Button size="sm" variant="ghost" icon={<Paperclip className="size-3.5" />} onClick={() => input.current?.click()}>Attach a photo or file</Button>
@@ -218,16 +218,16 @@ function ApproveCard({ wp }: { wp: Workpaper }) {
         {[['Federal', fed, s.federal.totalTax, Number(py['F1040.24'])] as const, ['California', ca, s.california.totalTax, Number(py['CA540.64'])] as const].map(([t, o, tax, pt]) => (
           <div key={t} className="bg-panel p-5">
             <div className="eyebrow">{t}</div>
-            <div className="mt-1 text-[13px] text-fg-2">{o.kind === 'refund' ? 'Your refund' : o.kind === 'owe' ? 'You owe' : 'Nothing due'}</div>
-            <div className={cx('num text-[30px] leading-tight font-semibold', o.kind === 'refund' && 'text-ok')}>{money(o.amount)}</div>
-            <div className="mt-1 text-[12.5px] text-fg-3">Total tax {money(tax)} · last year {money(pt)}</div>
+            <div className="mt-1 text-base text-fg-2">{o.kind === 'refund' ? 'Your refund' : o.kind === 'owe' ? 'You owe' : 'Nothing due'}</div>
+            <div className={cx('num text-display leading-tight font-semibold', o.kind === 'refund' && 'text-ok')}>{money(o.amount)}</div>
+            <div className="mt-1 text-sm text-fg-3">Total tax {money(tax)} · last year {money(pt)}</div>
           </div>
         ))}
       </div>
-      <details className="border-t border-line px-5 py-3 text-[13px]">
+      <details className="border-t border-line px-5 py-3 text-base">
         <summary className="cursor-pointer font-medium">The main figures, with last year</summary>
-        <table className="mt-2 w-full border-collapse text-[13px]">
-          <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase"><th className="py-1 text-left font-semibold">Federal</th><th className="py-1 text-right font-semibold">2024</th><th className="py-1 text-right font-semibold">2025</th></tr></thead>
+        <table className="mt-2 w-full border-collapse text-base">
+          <thead><tr className="text-cap tracking-wide text-fg-3 uppercase"><th className="py-1 text-left font-semibold">Federal</th><th className="py-1 text-right font-semibold">2024</th><th className="py-1 text-right font-semibold">2025</th></tr></thead>
           <tbody>
             {([['F1040.1a', 'Wages', 'F1040.1a'], ['F1040.9', 'Total income', 'F1040.9'], ['F1040.11', 'Adjusted gross income', 'F1040.11'], ['F1040.12', 'Deductions', 'F1040.12'], ['F1040.15', 'Taxable income', 'F1040.15'], ['F1040.24', 'Total tax', 'F1040.24'], ['F1040.33', 'Payments and withholding', 'F1040.33'], ['F540NR.64', 'California tax', 'CA540.64']] as const).map(([k, l, pk]) => (
               <tr key={k} className="border-t border-line"><td className="py-1.5">{l}</td><td className="num py-1.5 text-right text-fg-3">{typeof py[pk] === 'number' ? money(Number(py[pk])) : '—'}</td><td className="num py-1.5 text-right font-medium">{money(Number(wp.ours!.values.get(k) ?? 0))}</td></tr>
@@ -235,7 +235,7 @@ function ApproveCard({ wp }: { wp: Workpaper }) {
           </tbody>
         </table>
       </details>
-      <div className="space-y-3 border-t border-line px-5 py-4 text-[13px]">
+      <div className="space-y-3 border-t border-line px-5 py-4 text-base">
         {filed ? (
           <div className="flex flex-wrap items-center gap-3">
             <CheckCircle2 className="size-5 text-ok" />
@@ -254,7 +254,7 @@ function ApproveCard({ wp }: { wp: Workpaper }) {
             </div>
             <label className="flex items-center gap-2"><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />We have reviewed the summary and approve the return.</label>
             <div className="flex justify-end"><Button variant="primary" icon={<FileSignature className="size-4" />} disabled={!agree || tp.length !== 5 || sp.length !== 5} onClick={() => store.run((x) => clientApprove(x, { taxpayer: tp, spouse: sp }))}>Approve and sign as {me.name.split(' ')[0]}</Button></div>
-            <p className="text-[12px] text-fg-3">Both of you can sign from either account. PINs are not stored; only the fact of signing and the amounts you approved are kept.</p>
+            <p className="text-sm text-fg-3">Both of you can sign from either account. PINs are not stored; only the fact of signing and the amounts you approved are kept.</p>
           </>
         )}
       </div>

@@ -46,7 +46,7 @@ export function SignDots({ a, size = 'md' }: { a: AreaStatus; size?: 'sm' | 'md'
         const who = actors.find((x) => x.id === so.by);
         const title = so.state === 'missing' ? `${l}: not signed` : so.state === 'signed' ? `${l}: signed by ${who?.name}` : `${l}: reopened (signed by ${who?.name}, then the area changed)`;
         return (
-          <span key={l} title={title} className={cx('inline-flex items-center justify-center rounded font-semibold', size === 'sm' ? 'h-4 min-w-5 px-0.5 text-[9.5px]' : 'h-5 min-w-6 px-1 text-[10.5px]',
+          <span key={l} title={title} className={cx('inline-flex items-center justify-center rounded font-semibold', size === 'sm' ? 'h-6 min-w-7 px-1 text-cap' : 'h-6 min-w-8 px-1.5 text-cap',
             so.state === 'signed' ? 'bg-ok-bg text-ok' : so.state === 'reopened' ? 'bg-warn-bg text-warn' : 'border border-dashed border-line-2 text-fg-3')}>
             {so.state === 'reopened' ? <RotateCcw className="size-2.5" /> : LEVEL_SHORT[l]}
           </span>
@@ -59,9 +59,9 @@ export function SignDots({ a, size = 'md' }: { a: AreaStatus; size?: 'sm' | 'md'
 export function SignState({ state, by, at }: { state: 'missing' | 'signed' | 'reopened'; by: string | null; at: string | null }) {
   const actors = useApp((s) => s.actors);
   const a = actors.find((x) => x.id === by);
-  if (state === 'missing') return <span className="inline-flex items-center gap-1 text-[12px] text-fg-3"><CircleDashed className="size-3.5" />Not signed</span>;
-  if (state === 'reopened') return <span className="inline-flex items-center gap-1 text-[12px] text-warn"><RotateCcw className="size-3.5" />Reopened · {a?.name.split(' ')[0]}</span>;
-  return <span className="inline-flex items-center gap-1.5 text-[12px]"><Tick ink={a?.ink} size={14} /><span>{a?.name}</span>{at && <span className="text-fg-3">{firmDay(at).slice(5, 10).replace('-', '/')}</span>}</span>;
+  if (state === 'missing') return <span className="inline-flex items-center gap-1 text-sm text-fg-3"><CircleDashed className="size-3.5" />Not signed</span>;
+  if (state === 'reopened') return <span className="inline-flex items-center gap-1 text-sm text-warn"><RotateCcw className="size-3.5" />Reopened · {a?.name.split(' ')[0]}</span>;
+  return <span className="inline-flex items-center gap-1.5 text-sm"><Tick ink={a?.ink} size={14} /><span>{a?.name}</span>{at && <span className="text-fg-3">{firmDay(at).slice(5, 10).replace('-', '/')}</span>}</span>;
 }
 
 export function AreaLink({ id, className }: { id: AreaId | null; className?: string }) {
@@ -78,14 +78,14 @@ export function Person({ id, size = 18, short }: { id: string; size?: number; sh
 /** A table of return lines: label, key, engine, ours (clickable to the proof), optional prior year. */
 export function LineRows({ wp, keys, prior, emphasize = [], dense }: { wp: Workpaper; keys: (string | [string, string])[]; prior?: Record<string, number | string>; emphasize?: string[]; dense?: boolean }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-line bg-panel scroll-thin">
-      <table className="w-full border-collapse text-[13px]">
+    <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
+      <table className="w-full border-collapse text-base">
         <thead>
-          <tr className="text-[11px] tracking-wide text-fg-3 uppercase">
-            <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th>
-            {prior && <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">2024</th>}
-            <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Engine {wp.version?.version}</th>
-            <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Ours</th>
+          <tr className="text-cap text-fg-3">
+            <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">Line</th>
+            {prior && <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">2024</th>}
+            <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Engine {wp.version?.version}</th>
+            <th className="border-b border-line bg-panel-2 px-4 py-2.5 text-right font-semibold">Ours</th>
           </tr>
         </thead>
         <tbody>
@@ -99,13 +99,13 @@ export function LineRows({ wp, keys, prior, emphasize = [], dense }: { wp: Workp
             const pv = prior?.[k];
             return (
               <tr key={k} className={cx('hover:bg-panel-2', strong && 'bg-panel-2/70')}>
-                <td className={cx('border-b border-line px-3 align-top', dense ? 'py-1.5' : 'py-2')}>
+                <td className={cx('border-b border-line px-4 align-top', dense ? 'py-2' : 'py-3')}>
                   <button type="button" onClick={() => store.open(k)} className={cx('text-left hover:underline', strong && 'font-semibold')}>{label}</button>
-                  <span className="mono ml-2 text-[11px] text-fg-3">{k}</span>
+                  <span className="mono ml-2 text-cap text-fg-3">{k}</span>
                 </td>
-                {prior && <td className={cx('num border-b border-line px-3 text-right text-fg-3', dense ? 'py-1.5' : 'py-2')}>{pv === undefined ? '—' : value(pv, k)}</td>}
-                <td className={cx('num border-b border-line px-3 text-right', dense ? 'py-1.5' : 'py-2', changed ? 'text-fg-3 line-through decoration-fg-3/50' : 'text-fg-2')}>{b === undefined ? '—' : value(b, k)}</td>
-                <td className={cx('border-b border-line px-3 text-right', dense ? 'py-1.5' : 'py-2')}>
+                {prior && <td className={cx('num border-b border-line px-4 text-right text-fg-3', dense ? 'py-2' : 'py-3')}>{pv === undefined ? '—' : value(pv, k)}</td>}
+                <td className={cx('num border-b border-line px-4 text-right', dense ? 'py-2' : 'py-3', changed ? 'text-fg-3 line-through decoration-fg-3/50' : 'text-fg-2')}>{b === undefined ? '—' : value(b, k)}</td>
+                <td className={cx('border-b border-line px-4 text-right', dense ? 'py-2' : 'py-3')}>
                   {o === undefined ? <span className="text-fg-3">{b === undefined ? '—' : 'removed'}</span> : (
                     <button type="button" onClick={() => store.open(k)} className={cx('num proof', strong && 'font-semibold', changed && 'ink-blue font-semibold')}>{value(o, k)}</button>
                   )}
@@ -122,10 +122,10 @@ export function LineRows({ wp, keys, prior, emphasize = [], dense }: { wp: Workp
 export function Stat({ label, value: v, sub, tone, onClick }: { label: ReactNode; value: ReactNode; sub?: ReactNode; tone?: 'ok' | 'bad' | 'warn'; onClick?: () => void }) {
   const El = onClick ? 'button' : 'div';
   return (
-    <El type={onClick ? 'button' : undefined} onClick={onClick} className={cx('flex flex-col rounded-lg border border-line bg-panel p-3 text-left shadow-1', onClick && 'hover:border-line-2')}>
-      <span className="text-[12px] text-fg-3">{label}</span>
-      <span className={cx('num mt-0.5 text-[20px] leading-tight font-semibold', tone === 'ok' && 'text-ok', tone === 'bad' && 'text-bad', tone === 'warn' && 'text-warn')}>{v}</span>
-      {sub && <span className="mt-0.5 text-[12px] text-fg-3">{sub}</span>}
+    <El type={onClick ? 'button' : undefined} onClick={onClick} className={cx('flex flex-col rounded-xl border border-line bg-panel p-4 text-left', onClick && 'hover:border-line-2')}>
+      <span className="text-sm text-fg-3">{label}</span>
+      <span className={cx('num mt-0.5 text-xl leading-tight font-semibold', tone === 'ok' && 'text-ok', tone === 'bad' && 'text-bad', tone === 'warn' && 'text-warn')}>{v}</span>
+      {sub && <span className="mt-0.5 text-sm text-fg-3">{sub}</span>}
     </El>
   );
 }

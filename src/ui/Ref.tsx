@@ -31,7 +31,7 @@ export function RefChip({ r, label, className }: { r: string; label?: string; cl
   };
   return (
     <button type="button" onClick={(e) => { e.stopPropagation(); open(); }} title={title}
-      className={cx('mono inline-flex h-5 max-w-full items-center gap-1 truncate rounded border border-line bg-panel-2 px-1.5 text-[11px] text-fg-2 hover:border-line-2 hover:text-fg', className)}>
+      className={cx('mono inline-flex h-5 max-w-full items-center gap-1 truncate rounded border border-line bg-panel-2 px-1.5 text-cap text-fg-2 hover:border-line-2 hover:text-fg', className)}>
       <Icon className="size-3 shrink-0 text-fg-3" />
       <span className="truncate">{short}</span>
     </button>
@@ -43,14 +43,14 @@ export function RefList({ refs, max = 8 }: { refs: string[]; max?: number }) {
   return (
     <div className="flex flex-wrap gap-1">
       {uniq.slice(0, max).map((r) => <RefChip key={r} r={r} />)}
-      {uniq.length > max && <span className="text-[11px] text-fg-3">+{uniq.length - max} more</span>}
+      {uniq.length > max && <span className="text-cap text-fg-3">+{uniq.length - max} more</span>}
     </div>
   );
 }
 
 export function LineLink({ k, children, className }: { k: string; children?: React.ReactNode; className?: string }) {
   return (
-    <button type="button" onClick={(e) => { e.stopPropagation(); store.open(k); }} className={cx('mono text-[12px] text-fg-2 underline decoration-line-2 underline-offset-2 hover:text-fg hover:decoration-fg', className)}>
+    <button type="button" onClick={(e) => { e.stopPropagation(); store.open(k); }} className={cx('mono text-sm text-fg-2 underline decoration-line-2 underline-offset-2 hover:text-fg hover:decoration-fg', className)}>
       {children ?? k}
     </button>
   );

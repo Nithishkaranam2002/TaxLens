@@ -191,7 +191,7 @@ export function Inbox() {
       {selected.length > 0 && (
         <div className="sticky top-[60px] z-20 mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-line-2 bg-panel px-3 py-2 shadow-2 anim-rise">
           <Layers className="size-4 text-fg-3" />
-          <span className="text-[13px] font-medium">{selected.length} selected</span>
+          <span className="text-base font-medium">{selected.length} selected</span>
           <div className="ml-auto flex flex-wrap gap-2">
             {selFindings.length > 0 && canPropose && (
               <Button size="sm" variant="primary" icon={<Wand2 className="size-3.5" />} onClick={() => {
@@ -239,8 +239,8 @@ export function Inbox() {
               <section key={k}>
                 <div className="mb-2 flex items-center gap-2">
                   {selectable.length > 0 && <Checkbox checked={allSel} onChange={(v) => setSel((s) => { const n = new Set(s); for (const r of selectable) { if (v) n.add(r.id); else n.delete(r.id); } return n; })} />}
-                  <h2 className="text-[14px] font-semibold">{KIND_LABEL[k]}</h2>
-                  <span className="num text-[12px] text-fg-3">{rows.length}</span>
+                  <h2 className="text-md font-semibold">{KIND_LABEL[k]}</h2>
+                  <span className="num text-sm text-fg-3">{rows.length}</span>
                 </div>
                 <div className="overflow-hidden rounded-lg border border-line bg-panel shadow-1">
                   {rows.map((i) => {
@@ -251,18 +251,18 @@ export function Inbox() {
                         <div className="w-4 pt-0.5">{canSel && <Checkbox checked={sel.has(i.id)} onChange={() => toggle(i.id)} />}</div>
                         <button type="button" onClick={() => (i.ref ? store.open(i.ref) : i.go?.())} className="min-w-0 flex-1 text-left">
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="text-[13px] font-medium">{i.title}</span>
+                            <span className="text-base font-medium">{i.title}</span>
                             {i.status && <StatusPill status={i.status} />}
                           </div>
-                          <div className="mt-0.5 line-clamp-2 text-[12.5px] text-fg-2">{i.detail}</div>
-                          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px]">
+                          <div className="mt-0.5 line-clamp-2 text-sm text-fg-2">{i.detail}</div>
+                          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                             <AreaLink id={i.area} className="text-fg-3" />
                             {by && <span className="inline-flex items-center gap-1 text-fg-3"><Avatar actor={by} size={14} />{by.name.split(' ')[0]}</span>}
                             {i.meta}
                           </div>
                         </button>
                         {i.effect && (i.effect.fed !== 0 || i.effect.ca !== 0) && (
-                          <div className="hidden w-36 shrink-0 text-right text-[12px] sm:block">
+                          <div className="hidden w-36 shrink-0 text-right text-sm sm:block">
                             <div className="num"><span className="text-fg-3">Fed </span><span className={i.effect.fed > 0 ? 'text-bad' : i.effect.fed < 0 ? 'text-ok' : ''}>{signed(i.effect.fed)}</span></div>
                             <div className="num"><span className="text-fg-3">CA </span><span className={i.effect.ca > 0 ? 'text-bad' : i.effect.ca < 0 ? 'text-ok' : ''}>{signed(i.effect.ca)}</span></div>
                           </div>
@@ -283,8 +283,8 @@ export function Inbox() {
 
 function KindChip({ label, n, active, onClick }: { label: string; n: number; active: boolean; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className={cx('inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[12.5px]', active ? 'border-fg bg-fg text-bg' : 'border-line-2 bg-panel text-fg-2 hover:border-fg-3')}>
-      {label}<span className={cx('num text-[11px]', active ? 'opacity-80' : 'text-fg-3')}>{n}</span>
+    <button type="button" onClick={onClick} className={cx('inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-sm', active ? 'border-fg bg-fg text-bg' : 'border-line-2 bg-panel text-fg-2 hover:border-fg-3')}>
+      {label}<span className={cx('num text-cap', active ? 'opacity-80' : 'text-fg-3')}>{n}</span>
     </button>
   );
 }

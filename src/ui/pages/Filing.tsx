@@ -59,17 +59,17 @@ function EFile({ wp }: { wp: Workpaper }) {
             {wp.blockers.length === 0 ? (
               <div className="flex flex-wrap items-center gap-3 px-4 py-4">
                 <CheckCircle2 className="size-5 text-ok" />
-                <span className="flex-1 text-[13.5px]">Nothing blocks filing. Federal and California go together; California is held if the federal return is rejected.</span>
+                <span className="flex-1 text-base">Nothing blocks filing. Federal and California go together; California is held if the federal return is rejected.</span>
                 {(me.role === 'reviewer' || me.role === 'partner') && <Button variant="primary" icon={<Send className="size-4" />} onClick={() => store.run((x) => transmit(x))}>Transmit federal and California</Button>}
               </div>
             ) : (
               <>
                 <ul className="max-h-[360px] divide-y divide-line overflow-y-auto scroll-thin">
                   {wp.blockers.map((b, i) => (
-                    <li key={i}><button type="button" onClick={() => openBlocker(b.ref)} className="flex w-full items-start gap-3 px-4 py-2 text-left hover:bg-panel-2"><StepIcon state="open" /><span className="min-w-0 flex-1 text-[13px]"><span className="text-fg-3">{b.kind}:</span> {b.text}</span></button></li>
+                    <li key={i}><button type="button" onClick={() => openBlocker(b.ref)} className="flex w-full items-start gap-3 px-4 py-2 text-left hover:bg-panel-2"><StepIcon state="open" /><span className="min-w-0 flex-1 text-base"><span className="text-fg-3">{b.kind}:</span> {b.text}</span></button></li>
                   ))}
                 </ul>
-                <div className="flex items-center justify-between gap-2 border-t border-line px-4 py-2.5 text-[12.5px] text-fg-3"><span>{plural(wp.blockers.length, 'item')} to clear. Transmitting is refused until then.</span>{(me.role === 'reviewer' || me.role === 'partner') && <Button size="sm" icon={<Send className="size-3.5" />} onClick={() => store.run((x) => transmit(x))}>Try to transmit</Button>}</div>
+                <div className="flex items-center justify-between gap-2 border-t border-line px-4 py-2.5 text-sm text-fg-3"><span>{plural(wp.blockers.length, 'item')} to clear. Transmitting is refused until then.</span>{(me.role === 'reviewer' || me.role === 'partner') && <Button size="sm" icon={<Send className="size-3.5" />} onClick={() => store.run((x) => transmit(x))}>Try to transmit</Button>}</div>
               </>
             )}
           </Card>
@@ -85,10 +85,10 @@ function EFile({ wp }: { wp: Workpaper }) {
                 <li key={i} className="flex flex-wrap items-start gap-3 px-4 py-3">
                   {r.status === 'accepted' ? <CheckCircle2 className="mt-0.5 size-4.5 text-ok" /> : r.status === 'rejected' ? <XCircle className="mt-0.5 size-4.5 text-bad" /> : <ShieldAlert className="mt-0.5 size-4.5 text-warn" />}
                   <div className="min-w-0 flex-1">
-                    <div className="text-[13.5px] font-medium">{r.jurisdiction === 'federal' ? 'IRS' : 'California FTB'}: {r.status.replace('_', ' ')}</div>
-                    <div className="mono text-[11.5px] text-fg-3">{r.submissionId} · {dateTime(r.at)}</div>
-                    {r.errors.map((e) => <div key={e.code} className="mt-1 rounded-md bg-bad-bg/60 px-2.5 py-1.5 text-[12.5px]"><span className="mono font-medium">{e.code}</span> {e.message}{e.code === 'R0000-504-02' && <div className="mt-1"><Button size="sm" variant="ghost" onClick={() => store.open('check:CHK-DEPENDENTS')}>Open the dependent check and its correction</Button></div>}</div>)}
-                    {r.avoided && <div className="mt-1 rounded-md bg-ok-bg/60 px-2.5 py-1.5 text-[12.5px]">{r.avoided}</div>}
+                    <div className="text-base font-medium">{r.jurisdiction === 'federal' ? 'IRS' : 'California FTB'}: {r.status.replace('_', ' ')}</div>
+                    <div className="mono text-cap text-fg-3">{r.submissionId} · {dateTime(r.at)}</div>
+                    {r.errors.map((e) => <div key={e.code} className="mt-1 rounded-md bg-bad-bg/60 px-2.5 py-1.5 text-sm"><span className="mono font-medium">{e.code}</span> {e.message}{e.code === 'R0000-504-02' && <div className="mt-1"><Button size="sm" variant="ghost" onClick={() => store.open('check:CHK-DEPENDENTS')}>Open the dependent check and its correction</Button></div>}</div>)}
+                    {r.avoided && <div className="mt-1 rounded-md bg-ok-bg/60 px-2.5 py-1.5 text-sm">{r.avoided}</div>}
                   </div>
                 </li>
               ))}
@@ -103,13 +103,13 @@ function EFile({ wp }: { wp: Workpaper }) {
           <Card>
             <div className="flex flex-wrap items-start gap-4">
               <Lock className="mt-0.5 size-5 text-fg-3" />
-              <div className="min-w-0 flex-1 text-[13px]">
+              <div className="min-w-0 flex-1 text-base">
                 <div className="flex flex-wrap items-center gap-1.5">Filed by <Who id={f.by} at={f.at} /></div>
-                <div className="mono mt-0.5 text-[11.5px] text-fg-3">Fingerprint {f.hash} · {Object.keys(f.values).length} lines · retained until {String(Number(f.at.slice(0, 4)) + 7)}-{f.at.slice(5, 10)} (firm standard: 7 years)</div>
+                <div className="mono mt-0.5 text-cap text-fg-3">Fingerprint {f.hash} · {Object.keys(f.values).length} lines · retained until {String(Number(f.at.slice(0, 4)) + 7)}-{f.at.slice(5, 10)} (firm standard: 7 years)</div>
                 <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {(['federal', 'california'] as const).map((j) => {
                     const o = outcome(wp.summary.ours![j]);
-                    return <div key={j} className="rounded-md bg-panel-2 px-3 py-2"><div className="text-[12px] text-fg-3">{j === 'federal' ? 'Federal' : 'California'}</div><div className="num font-semibold">{o.kind === 'refund' ? 'Refund' : 'Due'} {money(o.amount)}</div></div>;
+                    return <div key={j} className="rounded-md bg-panel-2 px-3 py-2"><div className="text-sm text-fg-3">{j === 'federal' ? 'Federal' : 'California'}</div><div className="num font-semibold">{o.kind === 'refund' ? 'Refund' : 'Due'} {money(o.amount)}</div></div>;
                   })}
                 </div>
               </div>
@@ -127,7 +127,7 @@ function EFile({ wp }: { wp: Workpaper }) {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card>
             <div className="eyebrow">Federal · Form 4868</div>
-            <div className="mt-2 space-y-1 text-[13px]">
+            <div className="mt-2 space-y-1 text-base">
               <Line l="Estimated total tax (v2)" v={money(ext.federal.estimated_total_tax)} />
               <Line l="Payments before the extension" v={money(ext.federal.payments)} />
               <Line l={`Paid with the extension (${ext.federal.rule})`} v={money(ext.federal.paid_with_form_4868)} strong />
@@ -136,19 +136,19 @@ function EFile({ wp }: { wp: Workpaper }) {
               <Line l="Result" v={ours ? (ours.balanceDue > 0 ? `Short ${money(ours.balanceDue)}: interest and failure-to-pay from April 15` : `Covered; overpaid ${money(-ours.balanceDue)}`) : '—'} strong />
             </div>
             {engDue > 0 && ours && ours.balanceDue <= 0 && (
-              <p className="mt-3 rounded-md bg-ok-bg/60 px-3 py-2 text-[12.5px]">The engine's return as delivered owed {money(engDue)} after the extension. Paid on July 20 it would have added about {money(engInterest)} of interest ({Math.round(rates.irs_underpayment_interest_rate_annual * 100)}% for {Math.round(days)} days) and {money(engFtp)} of failure-to-pay penalty. The corrected return is fully paid, so neither applies.</p>
+              <p className="mt-3 rounded-md bg-ok-bg/60 px-3 py-2 text-sm">The engine's return as delivered owed {money(engDue)} after the extension. Paid on July 20 it would have added about {money(engInterest)} of interest ({Math.round(rates.irs_underpayment_interest_rate_annual * 100)}% for {Math.round(days)} days) and {money(engFtp)} of failure-to-pay penalty. The corrected return is fully paid, so neither applies.</p>
             )}
           </Card>
           <Card>
             <div className="eyebrow">California · FTB 3519</div>
-            <div className="mt-2 space-y-1 text-[13px]">
+            <div className="mt-2 space-y-1 text-base">
               <Line l="Estimated total tax (v2)" v={money(ext.california.estimated_total_tax)} />
               <Line l="Payments before the extension" v={money(ext.california.payments)} />
               <Line l="Paid with the extension" v={money(ext.california.paid_with_ftb_3519)} strong />
               <Line l="Our total tax" v={money(wp.summary.ours?.california.totalTax)} />
               <Line l="Our payments (agreed to the FTB account)" v={money(wp.summary.ours?.california.payments)} />
             </div>
-            <p className="mt-3 text-[12px] text-fg-3">The FTB applied the 9/15/2025 payment of 3,500 to 2024, so it is not a 2025 payment. Ask the FTB to transfer it, or claim it on the 2024 account (outside filings).</p>
+            <p className="mt-3 text-sm text-fg-3">The FTB applied the 9/15/2025 payment of 3,500 to 2024, so it is not a 2025 payment. Ask the FTB to transfer it, or claim it on the 2024 account (outside filings).</p>
           </Card>
         </div>
       </section>
@@ -156,7 +156,7 @@ function EFile({ wp }: { wp: Workpaper }) {
       {wp.state.payments.length > 0 && (
         <section>
           <SectionHead title="After filing" />
-          <Card pad={false}><ul className="divide-y divide-line">{wp.state.payments.map((p, i) => <li key={i} className="flex justify-between px-4 py-2 text-[13px]"><span>{p.jurisdiction === 'federal' ? 'IRS' : 'FTB'} · {p.kind === 'refund' ? 'refund issued' : p.kind === 'balance' ? 'balance paid' : 'interest and penalty'} · {p.date}</span><span className="num font-medium">{money(p.amount, { cents: p.amount % 1 !== 0 })}</span></li>)}</ul></Card>
+          <Card pad={false}><ul className="divide-y divide-line">{wp.state.payments.map((p, i) => <li key={i} className="flex justify-between px-4 py-2 text-base"><span>{p.jurisdiction === 'federal' ? 'IRS' : 'FTB'} · {p.kind === 'refund' ? 'refund issued' : p.kind === 'balance' ? 'balance paid' : 'interest and penalty'} · {p.date}</span><span className="num font-medium">{money(p.amount, { cents: p.amount % 1 !== 0 })}</span></li>)}</ul></Card>
         </section>
       )}
     </div>
@@ -291,7 +291,7 @@ function Season({ wp }: { wp: Workpaper }) {
     <div className="space-y-6">
       <Card className="flex flex-wrap items-start gap-3">
         <CalendarClock className="mt-0.5 size-5 text-fg-3" />
-        <div className="min-w-0 flex-1 text-[13px]">
+        <div className="min-w-0 flex-1 text-base">
           <div className="font-medium">The season clock is at {dateTime(now)}.</div>
           <p className="mt-0.5 text-fg-2">The packet scripts what happens after July 1. Replay moves the clock forward and performs each step as the person who does it, through the same rules: a step that the rules refuse stops the replay and says why. The clock only moves forward; look back any time from the clock menu.</p>
         </div>
@@ -308,9 +308,9 @@ function Season({ wp }: { wp: Workpaper }) {
                 <li key={m.id} className={cx('flex flex-wrap items-start gap-3 px-4 py-3', skipped && 'opacity-55')}>
                   <StepIcon state={done ? 'done' : next ? 'open' : 'na'} />
                   <div className="min-w-0 flex-1">
-                    <div className="text-[13.5px] font-medium">{m.title}</div>
-                    <div className="text-[12px] text-fg-3">{dateTime(m.at)} · {m.who}{waits ? ' · after filing' : ''}</div>
-                    <p className="mt-0.5 text-[12.5px] text-fg-2">{m.detail}</p>
+                    <div className="text-base font-medium">{m.title}</div>
+                    <div className="text-sm text-fg-3">{dateTime(m.at)} · {m.who}{waits ? ' · after filing' : ''}</div>
+                    <p className="mt-0.5 text-sm text-fg-2">{m.detail}</p>
                   </div>
                   {done ? <Badge tone="ok">Done</Badge> : skipped ? <Badge>{m.id === 'refile' && !wp.state.results.length ? 'Only if rejected' : 'Not needed'}</Badge> : (
                     <Button size="sm" variant={next ? 'primary' : 'secondary'} busy={busy} icon={next ? <Play className="size-3.5" /> : <FastForward className="size-3.5" />} onClick={() => void runTo(i)}>{next ? 'Run' : 'Run to here'}</Button>
@@ -326,7 +326,7 @@ function Season({ wp }: { wp: Workpaper }) {
         <Card pad={false}>
           <ul className="divide-y divide-line">
             {packetTl.map((t) => (
-              <li key={t.id} className={cx('flex flex-wrap items-start gap-3 px-4 py-2 text-[12.5px]', t.at > now && 'text-fg-3')}>
+              <li key={t.id} className={cx('flex flex-wrap items-start gap-3 px-4 py-2 text-sm', t.at > now && 'text-fg-3')}>
                 <span className="num w-36 shrink-0">{dateTime(t.at)}</span>
                 <span className="min-w-0 flex-1"><span className="font-medium">{t.event.replace(/_/g, ' ')}</span>{t.detail && <span className="text-fg-3"> — {t.detail.replace(/PIN \d{5}/g, 'PIN •••••')}</span>}</span>
                 <div className="flex flex-wrap gap-1">{t.refs.slice(0, 3).map((r) => <RefChip key={r} r={r} />)}</div>
@@ -353,8 +353,8 @@ function Amend({ wp }: { wp: Workpaper }) {
     <div className="space-y-6">
       {!open ? (
         <Card>
-          <div className="text-[14px] font-semibold">Open an amendment</div>
-          <p className="mt-1 text-[12.5px] text-fg-2">The filed return stays frozen. The amendment is built on top of it with the same evidence, approval and sign-off rules, and is filed as Form 1040-X and an amended 540NR. Partner only.</p>
+          <div className="text-md font-semibold">Open an amendment</div>
+          <p className="mt-1 text-sm text-fg-2">The filed return stays frozen. The amendment is built on top of it with the same evidence, approval and sign-off rules, and is filed as Form 1040-X and an amended 540NR. Partner only.</p>
           <Field label="Why the return is being amended"><TextArea value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Corrected Form 1099-B received after filing" className="mt-1" /></Field>
           <div className="mt-2 flex justify-end"><Button variant="primary" disabled={me.role !== 'partner'} onClick={() => { const r = store.run((x) => openAmendment(x, reason)); if (r.ok) setReason(''); }}>Open amendment</Button></div>
         </Card>
@@ -362,10 +362,10 @@ function Amend({ wp }: { wp: Workpaper }) {
         <Card>
           <div className="flex flex-wrap items-start gap-3">
             <div className="min-w-0 flex-1">
-              <div className="text-[14px] font-semibold">Amendment open</div>
-              <p className="mt-0.5 text-[13px] text-fg-2">{open.reason}</p>
+              <div className="text-md font-semibold">Amendment open</div>
+              <p className="mt-0.5 text-base text-fg-2">{open.reason}</p>
               <div className="mt-1"><Who id={open.by} at={open.at} /></div>
-              <p className="mt-2 text-[12.5px] text-fg-3">Propose changes from any number or check as usual. {plural(since.filter((p) => p.status === 'approved').length, 'change')} approved, {since.filter((p) => p.status === 'proposed').length} waiting.</p>
+              <p className="mt-2 text-sm text-fg-3">Propose changes from any number or check as usual. {plural(since.filter((p) => p.status === 'approved').length, 'change')} approved, {since.filter((p) => p.status === 'proposed').length} waiting.</p>
             </div>
             {me.role === 'partner' && <Button variant="primary" onClick={() => store.run((x) => fileAmendment(x))}>File the amended return</Button>}
           </div>
@@ -374,20 +374,20 @@ function Amend({ wp }: { wp: Workpaper }) {
       <section>
         <SectionHead title={open ? 'As filed and as amended' : 'Filed return'} sub="Form 1040-X layout: original, net change, correct amount." />
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[640px] border-collapse text-[13px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Line', 'A · As filed', 'B · Net change', 'C · Correct'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+          <table className="w-full min-w-[640px] border-collapse text-base">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Line', 'A · As filed', 'B · Net change', 'C · Correct'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
             <tbody>
               {keys.map((k) => {
                 const a = Number(original.values[k] ?? 0);
                 const c = num(wp, k);
-                return <tr key={k}><td className="border-b border-line px-3 py-1.5"><button type="button" className="hover:underline" onClick={() => store.open(k)}>{wp.ours?.labels.get(k) ?? k}</button> <span className="mono text-[11px] text-fg-3">{k}</span></td><td className="num border-b border-line px-3 py-1.5 text-right">{value(a, k)}</td><td className={cx('num border-b border-line px-3 py-1.5 text-right', c - a > 0 ? 'text-bad' : c - a < 0 ? 'text-ok' : 'text-fg-3')}>{c - a ? signed(c - a) : '—'}</td><td className="num border-b border-line px-3 py-1.5 text-right font-medium">{value(c, k)}</td></tr>;
+                return <tr key={k}><td className="border-b border-line px-3 py-1.5"><button type="button" className="hover:underline" onClick={() => store.open(k)}>{wp.ours?.labels.get(k) ?? k}</button> <span className="mono text-cap text-fg-3">{k}</span></td><td className="num border-b border-line px-3 py-1.5 text-right">{value(a, k)}</td><td className={cx('num border-b border-line px-3 py-1.5 text-right', c - a > 0 ? 'text-bad' : c - a < 0 ? 'text-ok' : 'text-fg-3')}>{c - a ? signed(c - a) : '—'}</td><td className="num border-b border-line px-3 py-1.5 text-right font-medium">{value(c, k)}</td></tr>;
               })}
             </tbody>
           </table>
         </div>
       </section>
       {wp.state.amendments.filter((a) => a.filed).length > 0 && (
-        <section><SectionHead title="Filed amendments" /><Card pad={false}><ul className="divide-y divide-line">{wp.state.amendments.filter((a) => a.filed).map((a) => <li key={a.id} className="px-4 py-2 text-[13px]">{a.reason} <span className="text-fg-3">· opened {date(a.at)} · filed {date(a.filed)}</span></li>)}</ul></Card></section>
+        <section><SectionHead title="Filed amendments" /><Card pad={false}><ul className="divide-y divide-line">{wp.state.amendments.filter((a) => a.filed).map((a) => <li key={a.id} className="px-4 py-2 text-base">{a.reason} <span className="text-fg-3">· opened {date(a.at)} · filed {date(a.filed)}</span></li>)}</ul></Card></section>
       )}
     </div>
   );
@@ -412,12 +412,12 @@ function Notices({ wp }: { wp: Workpaper }) {
             <div className="flex flex-wrap items-start gap-3 px-4 py-3">
               <Mail className="mt-0.5 size-4.5 text-fg-3" />
               <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2"><span className="text-[14px] font-semibold">{n.agency} {n.type}</span><Badge tone="outline">Tax year {n.tax_year}</Badge>{n.status ? <Badge tone="ok">Resolved</Badge> : sent ? <Badge tone="ok">Response sent</Badge> : <Badge tone="warn">Response due {date(n.response_due)}</Badge>}</div>
-                <div className="text-[12px] text-fg-3">Dated {date(n.dated)} · <RefChip r={n.document} /></div>
-                {n.summary && <p className="mt-1 text-[13px]">{n.summary}</p>}
-                {n.status && <p className="mt-0.5 text-[12.5px] text-fg-2">{n.status}</p>}
-                {n.items_under_examination && <ul className="mt-2 list-disc space-y-1 pl-5 text-[13px]">{n.items_under_examination.map((x) => <li key={x}>{x}</li>)}</ul>}
-                {sent && <p className="mt-2 text-[12.5px] text-ok">Sent <Who id={sent.by} at={sent.at} /> · package fingerprint <span className="mono">{sent.hash}</span></p>}
+                <div className="flex flex-wrap items-center gap-2"><span className="text-md font-semibold">{n.agency} {n.type}</span><Badge tone="outline">Tax year {n.tax_year}</Badge>{n.status ? <Badge tone="ok">Resolved</Badge> : sent ? <Badge tone="ok">Response sent</Badge> : <Badge tone="warn">Response due {date(n.response_due)}</Badge>}</div>
+                <div className="text-sm text-fg-3">Dated {date(n.dated)} · <RefChip r={n.document} /></div>
+                {n.summary && <p className="mt-1 text-base">{n.summary}</p>}
+                {n.status && <p className="mt-0.5 text-sm text-fg-2">{n.status}</p>}
+                {n.items_under_examination && <ul className="mt-2 list-disc space-y-1 pl-5 text-base">{n.items_under_examination.map((x) => <li key={x}>{x}</li>)}</ul>}
+                {sent && <p className="mt-2 text-sm text-ok">Sent <Who id={sent.by} at={sent.at} /> · package fingerprint <span className="mono">{sent.hash}</span></p>}
               </div>
               {about2025 && wp.state.frozen && (
                 <div className="flex flex-col gap-2">
@@ -427,7 +427,7 @@ function Notices({ wp }: { wp: Workpaper }) {
             </div>
             {preview === n.id && pkg && (
               <div className="border-t border-line">
-                <div className="flex flex-wrap items-center gap-2 bg-panel-2 px-4 py-2 text-[12.5px]">
+                <div className="flex flex-wrap items-center gap-2 bg-panel-2 px-4 py-2 text-sm">
                   <span className="flex-1 text-fg-2">Built from the frozen return and its evidence only · fingerprint <span className="mono">{pkg.hash}</span></span>
                   <Button size="sm" icon={<Download className="size-3.5" />} onClick={() => download(`response-${n.id}.html`, pkg.html, 'text/html')}>Download</Button>
                   {!sent && <Button size="sm" variant="primary" disabled={me.role !== 'partner'} title={me.role !== 'partner' ? 'Partner only' : undefined} onClick={() => store.run((x) => respondNotice(x, n.id, pkg.hash, pkg.items))}>Record as sent</Button>}
@@ -456,7 +456,7 @@ function NextYear({ wp }: { wp: Workpaper }) {
   return (
     <div className="space-y-6">
       <Card className="flex flex-wrap items-center gap-3">
-        <div className="min-w-0 flex-1 text-[13px]">{rf ? <>The 2026 file was started from this workpaper · <Who id={rf.by} at={rf.at} /></> : 'When the 2026 engagement starts, the next file opens with these carryovers, open items and the estimate plan.'}</div>
+        <div className="min-w-0 flex-1 text-base">{rf ? <>The 2026 file was started from this workpaper · <Who id={rf.by} at={rf.at} /></> : 'When the 2026 engagement starts, the next file opens with these carryovers, open items and the estimate plan.'}</div>
         {!rf && ['preparer', 'reviewer', 'partner'].includes(me.role) && <Button variant="primary" disabled={!wp.state.frozen} title={!wp.state.frozen ? 'After filing' : undefined} onClick={() => store.run((x) => rollForward(x, x.wp.state.frozen?.hash ?? x.wp.returnFingerprint))}>Start the 2026 file</Button>}
       </Card>
       <section>
@@ -464,22 +464,22 @@ function NextYear({ wp }: { wp: Workpaper }) {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card>
             <div className="eyebrow">Federal</div>
-            <p className="mt-1 text-[12.5px] text-fg-2">{plan.federal_safe_harbor}</p>
-            <div className="num mt-2 text-[13px]">110% × {money(fedTax)} = <b>{money(fedSafe)}</b></div>
-            <ul className="mt-2 divide-y divide-line text-[13px]">{plan.federal_estimate_due_dates.map((d) => <li key={d} className="flex justify-between py-1"><span>{date(d)}</span><span className="num">{money(Math.ceil(fedSafe / 4))}</span></li>)}</ul>
+            <p className="mt-1 text-sm text-fg-2">{plan.federal_safe_harbor}</p>
+            <div className="num mt-2 text-base">110% × {money(fedTax)} = <b>{money(fedSafe)}</b></div>
+            <ul className="mt-2 divide-y divide-line text-base">{plan.federal_estimate_due_dates.map((d) => <li key={d} className="flex justify-between py-1"><span>{date(d)}</span><span className="num">{money(Math.ceil(fedSafe / 4))}</span></li>)}</ul>
           </Card>
           <Card>
             <div className="eyebrow">California</div>
-            <p className="mt-1 text-[12.5px] text-fg-2">{plan.california_safe_harbor}</p>
-            <div className="num mt-2 text-[13px]">110% × {money(caTax)} = <b>{money(caSafe)}</b></div>
-            <ul className="mt-2 divide-y divide-line text-[13px]">{plan.california_estimate_due_dates.map((d, i) => <li key={d} className="flex justify-between py-1"><span>{date(d)} · {Math.round(plan.california_installment_percentages[i] * 100)}%</span><span className="num">{money(Math.ceil(caSafe * plan.california_installment_percentages[i]))}</span></li>)}</ul>
+            <p className="mt-1 text-sm text-fg-2">{plan.california_safe_harbor}</p>
+            <div className="num mt-2 text-base">110% × {money(caTax)} = <b>{money(caSafe)}</b></div>
+            <ul className="mt-2 divide-y divide-line text-base">{plan.california_estimate_due_dates.map((d, i) => <li key={d} className="flex justify-between py-1"><span>{date(d)} · {Math.round(plan.california_installment_percentages[i] * 100)}%</span><span className="num">{money(Math.ceil(caSafe * plan.california_installment_percentages[i]))}</span></li>)}</ul>
           </Card>
         </div>
       </section>
       <section>
         <SectionHead title="Carried into 2026" />
         <LineRows wp={wp} dense keys={['F6251.11', 'F7203.excess', 'Sch1.16']} />
-        <ul className="mt-3 space-y-1 text-[13px]">
+        <ul className="mt-3 space-y-1 text-base">
           <li>Minimum tax credit: <b className="num">{money(wp.ours?.carryovers.minimum_tax_credit ?? 0)}</b> (Form 8801).</li>
           <li>SEP contribution not deductible for 2025: <b className="num">{money(wp.ours?.carryovers.sep_contribution_not_deductible ?? 0)}</b>, unless withdrawn by October 15, 2026.</li>
           <li>ISO shares still held: regular basis 12,000, AMT basis 52,000 (Form 3921, D12).</li>
@@ -489,11 +489,11 @@ function NextYear({ wp }: { wp: Workpaper }) {
       </section>
       <section>
         <SectionHead title="Known changes for 2026" />
-        <Card pad={false}><ul className="divide-y divide-line">{plan.known_2026_changes_for_this_household.map((x) => <li key={x} className="px-4 py-2 text-[13px]">{x}</li>)}</ul></Card>
+        <Card pad={false}><ul className="divide-y divide-line">{plan.known_2026_changes_for_this_household.map((x) => <li key={x} className="px-4 py-2 text-base">{x}</li>)}</ul></Card>
       </section>
       <section>
         <SectionHead title="Open items to carry" sub="Outside this return; each has an owner." />
-        <Card pad={false}><ul className="divide-y divide-line">{of.map((o) => <li key={o.id} className="flex flex-wrap items-start gap-3 px-4 py-2 text-[13px]"><StatusPill status={o.status === 'required' ? 'open' : 'review'} /><span className="min-w-0 flex-1"><span className="font-medium">{o.what}</span><span className="block text-[12px] text-fg-3">{o.why} · {o.owner} · due {o.due}</span></span></li>)}</ul></Card>
+        <Card pad={false}><ul className="divide-y divide-line">{of.map((o) => <li key={o.id} className="flex flex-wrap items-start gap-3 px-4 py-2 text-base"><StatusPill status={o.status === 'required' ? 'open' : 'review'} /><span className="min-w-0 flex-1"><span className="font-medium">{o.what}</span><span className="block text-sm text-fg-3">{o.why} · {o.owner} · due {o.due}</span></span></li>)}</ul></Card>
       </section>
     </div>
   );

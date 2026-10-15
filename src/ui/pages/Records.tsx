@@ -49,13 +49,13 @@ export function Records({ tab }: { tab?: string }) {
             <div key={g} className="hidden min-[1360px]:block">
               <div className="eyebrow mb-1 px-2">{g}</div>
               {TABS.filter((x) => x.group === g).map((x) => (
-                <button key={x.id} type="button" onClick={() => store.go({ page: 'records', tab: x.id })} className={cx('block w-full rounded-md px-2 py-1.5 text-left text-[13px]', x.id === t.id ? 'bg-panel font-medium shadow-1' : 'text-fg-2 hover:bg-sunk')}>{x.label}</button>
+                <button key={x.id} type="button" onClick={() => store.go({ page: 'records', tab: x.id })} className={cx('block w-full rounded-md px-2 py-1.5 text-left text-base', x.id === t.id ? 'bg-panel font-medium shadow-1' : 'text-fg-2 hover:bg-sunk')}>{x.label}</button>
               ))}
             </div>
           ))}
         </nav>
         <div className="min-w-0">
-          <h2 className="mb-1 text-[18px] font-semibold">{t.label}</h2>
+          <h2 className="mb-1 text-lg font-semibold">{t.label}</h2>
           {!wp.ours ? <Empty title="No return yet" /> : <Body id={t.id} wp={wp} />}
         </div>
       </div>
@@ -85,7 +85,7 @@ function Body({ id, wp }: { id: string; wp: Workpaper }) {
   return null;
 }
 
-const Lede = ({ children }: { children: ReactNode }) => <p className="mb-4 max-w-[80ch] text-[13px] text-fg-2">{children}</p>;
+const Lede = ({ children }: { children: ReactNode }) => <p className="mb-4 max-w-[80ch] text-base text-fg-2">{children}</p>;
 const Block = ({ title, sub, children, right }: { title: string; sub?: ReactNode; children: ReactNode; right?: ReactNode }) => (
   <section className="mb-6"><SectionHead title={title} sub={sub} right={right} />{children}</section>
 );
@@ -123,8 +123,8 @@ function Summary({ wp }: { wp: Workpaper }) {
             {ix.packet.household.related_returns.map((r) => {
               const refs = r.who.startsWith('Ada') ? ['household:ada', 'F8812.6'] : r.who.includes('Woodworks') ? ['D39', 'D40', 'F7203.15'] : ['D37', 'D38', 'SchE.28B'];
               return (
-                <li key={r.who} className="flex flex-wrap items-start gap-3 px-4 py-2.5 text-[13px]">
-                  <div className="min-w-0 flex-1"><div className="font-medium">{r.who}</div><div className="text-[12.5px] text-fg-2">{r.return}</div><div className="text-[12px] text-fg-3">Prepared by {r.prepared_by} · in this packet: {r.in_this_packet === false ? 'no' : String(r.in_this_packet)}</div></div>
+                <li key={r.who} className="flex flex-wrap items-start gap-3 px-4 py-2.5 text-base">
+                  <div className="min-w-0 flex-1"><div className="font-medium">{r.who}</div><div className="text-sm text-fg-2">{r.return}</div><div className="text-sm text-fg-3">Prepared by {r.prepared_by} · in this packet: {r.in_this_packet === false ? 'no' : String(r.in_this_packet)}</div></div>
                   <div className="flex flex-wrap gap-1">{refs.map((x) => <RefChip key={x} r={x} />)}</div>
                 </li>
               );
@@ -162,8 +162,8 @@ function AreaSummaries({ wp }: { wp: Workpaper }) {
     <>
       <Lede>One row per area: what it contains, what the checks found, what changed and who has signed.</Lede>
       <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-        <table className="w-full min-w-[820px] border-collapse text-[13px]">
-          <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Area', 'Lines', 'Documents', 'Checks', 'Changes approved', 'Open', 'Sign-offs', 'Time'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
+        <table className="w-full min-w-[820px] border-collapse text-base">
+          <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Area', 'Lines', 'Documents', 'Checks', 'Changes approved', 'Open', 'Sign-offs', 'Time'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
           <tbody>
             {wp.areas.map((a) => {
               const checks = wp.checks.filter((c) => c.area === a.id);
@@ -173,11 +173,11 @@ function AreaSummaries({ wp }: { wp: Workpaper }) {
                   <td className="border-b border-line px-3 py-2 font-medium">{AREA[a.id].name}</td>
                   <td className="num border-b border-line px-3 py-2">{a.lines.length}</td>
                   <td className="num border-b border-line px-3 py-2">{a.docs.length}</td>
-                  <td className="border-b border-line px-3 py-2 text-[12.5px]">{checks.filter((c) => c.status === 'pass').length}/{checks.length} pass</td>
-                  <td className="border-b border-line px-3 py-2 text-[12.5px]">{appr.length}{appr.length ? <span className="num text-fg-3"> · fed {signed(appr.reduce((s, p) => s + p.effect.fedTax, 0))}</span> : ''}</td>
-                  <td className="border-b border-line px-3 py-2 text-[12.5px]">{a.findingsOpen + a.proposalsPending + a.notesOpen || <span className="text-fg-3">—</span>}</td>
+                  <td className="border-b border-line px-3 py-2 text-sm">{checks.filter((c) => c.status === 'pass').length}/{checks.length} pass</td>
+                  <td className="border-b border-line px-3 py-2 text-sm">{appr.length}{appr.length ? <span className="num text-fg-3"> · fed {signed(appr.reduce((s, p) => s + p.effect.fedTax, 0))}</span> : ''}</td>
+                  <td className="border-b border-line px-3 py-2 text-sm">{a.findingsOpen + a.proposalsPending + a.notesOpen || <span className="text-fg-3">—</span>}</td>
                   <td className="border-b border-line px-3 py-2"><SignDots a={a} size="sm" /></td>
-                  <td className="num border-b border-line px-3 py-2 text-[12.5px]">{hours(a.minutes)}{a.budgetHours ? ` / ${a.budgetHours}` : ''} h</td>
+                  <td className="num border-b border-line px-3 py-2 text-sm">{hours(a.minutes)}{a.budgetHours ? ` / ${a.budgetHours}` : ''} h</td>
                 </tr>
               );
             })}
@@ -200,10 +200,10 @@ function DocIndex({ wp }: { wp: Workpaper }) {
             <Card pad={false}>
               <ul className="divide-y divide-line">
                 {docs.map((d) => (
-                  <li key={d.doc.id} className="flex items-start gap-3 px-3 py-2 text-[13px]">
-                    <span className="mono mt-0.5 w-8 shrink-0 text-[11.5px] text-fg-3">{d.doc.id}</span>
-                    <button type="button" disabled={!d.received} onClick={() => store.open(`doc:${d.doc.id}#page1`)} className="min-w-0 flex-1 text-left enabled:hover:underline">{d.doc.title}<span className="block text-[12px] text-fg-3">{d.reason}</span></button>
-                    <span className="hidden text-[12px] text-fg-3 sm:block">{date(d.doc.received_at)}</span>
+                  <li key={d.doc.id} className="flex items-start gap-3 px-3 py-2 text-base">
+                    <span className="mono mt-0.5 w-8 shrink-0 text-cap text-fg-3">{d.doc.id}</span>
+                    <button type="button" disabled={!d.received} onClick={() => store.open(`doc:${d.doc.id}#page1`)} className="min-w-0 flex-1 text-left enabled:hover:underline">{d.doc.title}<span className="block text-sm text-fg-3">{d.reason}</span></button>
+                    <span className="hidden text-sm text-fg-3 sm:block">{date(d.doc.received_at)}</span>
                     <StatusPill status={d.disposition} />
                   </li>
                 ))}
@@ -237,12 +237,12 @@ function Sales({ wp }: { wp: Workpaper }) {
       <Lede>{plural(lots.length, 'sale')} from three brokerages, Coinhaven, the S corporation distribution and the stock plan, grouped by Form 8949 box and tied to Schedule D. Lots we changed or added are marked; the engine's figure is kept beside ours.</Lede>
       <Block title="By Form 8949 box">
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[760px] border-collapse text-[13px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Box', 'Lots', 'Proceeds', 'Basis', 'Adjustments', 'Gain or loss', 'Schedule D'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 1 && i <= 5 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+          <table className="w-full min-w-[760px] border-collapse text-base">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Box', 'Lots', 'Proceeds', 'Basis', 'Adjustments', 'Gain or loss', 'Schedule D'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 1 && i <= 5 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
             <tbody>
               {totals.map((t) => (
                 <tr key={t.b} className="cursor-pointer hover:bg-panel-2" onClick={() => setBox(t.b)}>
-                  <td className="border-b border-line px-3 py-2"><span className="mono font-semibold">{t.b}</span> <span className="text-[12px] text-fg-3">{BOX_LABEL[t.b]}</span></td>
+                  <td className="border-b border-line px-3 py-2"><span className="mono font-semibold">{t.b}</span> <span className="text-sm text-fg-3">{BOX_LABEL[t.b]}</span></td>
                   <td className="num border-b border-line px-3 py-2 text-right">{t.n}</td>
                   <td className="num border-b border-line px-3 py-2 text-right">{money(t.proceeds, { cents: true })}</td>
                   <td className="num border-b border-line px-3 py-2 text-right">{money(t.basis, { cents: true })}</td>
@@ -263,7 +263,7 @@ function Sales({ wp }: { wp: Workpaper }) {
       </>}>
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
           <div className="min-w-[860px]">
-            <div className="grid grid-cols-[56px_1fr_90px_90px_110px_110px_100px_110px_60px] border-b border-line bg-panel-2 px-3 py-2 text-[11px] font-semibold tracking-wide text-fg-3 uppercase">
+            <div className="grid grid-cols-[56px_1fr_90px_90px_110px_110px_100px_110px_60px] border-b border-line bg-panel-2 px-3 py-2 text-cap font-semibold tracking-wide text-fg-3 uppercase">
               <span>Lot</span><span>Security</span><span>Acquired</span><span>Sold</span><span className="text-right">Proceeds</span><span className="text-right">Basis</span><span className="text-right">Adj.</span><span className="text-right">Gain</span><span className="text-right">Term</span>
             </div>
             <div ref={parent} className="max-h-[520px] overflow-y-auto scroll-thin">
@@ -274,9 +274,9 @@ function Sales({ wp }: { wp: Workpaper }) {
                   const ch = changed(l);
                   return (
                     <button key={l.id} type="button" onClick={() => store.open(`F8949.${l.box}.${l.id}`)}
-                      className={cx('absolute left-0 grid w-full grid-cols-[56px_1fr_90px_90px_110px_110px_100px_110px_60px] items-center border-b border-line px-3 text-left text-[12.5px] hover:bg-panel-2', ch && 'bg-info-bg/40')}
+                      className={cx('absolute left-0 grid w-full grid-cols-[56px_1fr_90px_90px_110px_110px_100px_110px_60px] items-center border-b border-line px-3 text-left text-sm hover:bg-panel-2', ch && 'bg-info-bg/40')}
                       style={{ top: 0, transform: `translateY(${it.start}px)`, height: it.size }}>
-                      <span className="mono text-[11.5px]">{l.box}·{l.id}</span>
+                      <span className="mono text-cap">{l.box}·{l.id}</span>
                       <span className="truncate pr-2">{l.desc}{l.origin === 'added' && <Badge tone="info" className="ml-1.5">added</Badge>}</span>
                       <span className="num text-fg-2">{l.acquired}</span>
                       <span className="num text-fg-2">{l.sold}</span>
@@ -284,7 +284,7 @@ function Sales({ wp }: { wp: Workpaper }) {
                       <span className="num text-right">{b && b.basis !== l.basis ? <><span className="mr-1 text-fg-3 line-through">{money(b.basis)}</span><span className="ink-blue font-semibold">{money(l.basis, { cents: true })}</span></> : money(l.basis, { cents: true })}</span>
                       <span className="num text-right text-fg-2">{l.adjCode ? `${l.adjCode} ${money(l.adj, { cents: true })}` : ''}</span>
                       <span className={cx('num text-right font-medium', lotGain(l) < 0 && 'text-bad')}>{money(lotGain(l), { cents: true })}</span>
-                      <span className="text-right text-[11.5px] text-fg-3">{/^\d{4}-\d{2}-\d{2}$/.test(l.acquired) ? holdingTerm(l.acquired, l.sold) : ''}</span>
+                      <span className="text-right text-cap text-fg-3">{/^\d{4}-\d{2}-\d{2}$/.test(l.acquired) ? holdingTerm(l.acquired, l.sold) : ''}</span>
                     </button>
                   );
                 })}
@@ -322,12 +322,12 @@ function Rentals({ wp }: { wp: Workpaper }) {
       <Lede>1450 Fremont Way (Sacramento, rented all year) and the Austin condo (rented nine months, sold October 15). Both are passive; the condo's sale frees its suspended losses.</Lede>
       <Block title="Schedule E by property" sub="Engine and ours side by side. Blue figures changed because of approved corrections.">
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[640px] border-collapse text-[13px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase"><th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th><th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">A · Fremont Way</th><th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">B · Austin condo</th></tr></thead>
+          <table className="w-full min-w-[640px] border-collapse text-base">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase"><th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th><th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">A · Fremont Way</th><th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">B · Austin condo</th></tr></thead>
             <tbody>
               {rows.map(([n, label]) => (
                 <tr key={n} className={cx(['20', '21', '22'].includes(n) && 'font-medium')}>
-                  <td className="border-b border-line px-3 py-1.5">{label} <span className="mono text-[11px] text-fg-3">line {n}</span></td>
+                  <td className="border-b border-line px-3 py-1.5">{label} <span className="mono text-cap text-fg-3">line {n}</span></td>
                   {(['A', 'B'] as const).map((p) => {
                     const k = `SchE.${n}${p}`;
                     const b = v(k, 'base');
@@ -361,8 +361,8 @@ function K1({ wp }: { wp: Workpaper }) {
         return (
           <Block key={d} title={title} right={<Button size="sm" variant="ghost" onClick={() => store.open(`doc:${d}#page1`)}>Open {d}</Button>}>
             <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-              <table className="w-full border-collapse text-[13px]">
-                <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Box', 'As read', 'Lands on'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i === 1 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+              <table className="w-full border-collapse text-base">
+                <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Box', 'As read', 'Lands on'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i === 1 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
                 <tbody>
                   {evs.map((e) => {
                     const lines = ix.evUses.get(v)?.get(e.id) ?? [];
@@ -370,7 +370,7 @@ function K1({ wp }: { wp: Workpaper }) {
                       <tr key={e.id}>
                         <td className="border-b border-line px-3 py-1.5"><button type="button" className="text-left hover:underline" onClick={() => store.open(`doc:${d}#page${e.page}@${e.id}`)}>{e.label}</button></td>
                         <td className="num border-b border-line px-3 py-1.5 text-right">{typeof e.value === 'number' ? (e.value < 1 && e.value > 0 ? `${Math.round(e.value * 100)}%` : money(e.value)) : String(e.value)}</td>
-                        <td className="border-b border-line px-3 py-1.5"><div className="flex flex-wrap gap-1">{lines.length ? lines.map((l) => <RefChip key={l} r={l} />) : <span className="text-[12px] text-fg-3">Used in a check or schedule</span>}</div></td>
+                        <td className="border-b border-line px-3 py-1.5"><div className="flex flex-wrap gap-1">{lines.length ? lines.map((l) => <RefChip key={l} r={l} />) : <span className="text-sm text-fg-3">Used in a check or schedule</span>}</div></td>
                       </tr>
                     );
                   })}
@@ -398,9 +398,9 @@ function Retirement({ wp }: { wp: Workpaper }) {
         <Card pad={false}>
           <ul className="divide-y divide-line">
             {of.map((o) => (
-              <li key={o.id} className="flex flex-wrap items-start gap-3 px-3 py-2 text-[13px]">
+              <li key={o.id} className="flex flex-wrap items-start gap-3 px-3 py-2 text-base">
                 <Badge tone={o.status === 'required' ? 'bad' : o.status === 'confirm' ? 'warn' : 'ok'}>{o.status === 'required' ? 'Required' : o.status === 'confirm' ? 'Confirm' : 'Not needed'}</Badge>
-                <div className="min-w-0 flex-1"><div className="font-medium">{o.what}</div><div className="text-[12px] text-fg-3">{o.why} · due {o.due} · {o.owner}</div></div>
+                <div className="min-w-0 flex-1"><div className="font-medium">{o.what}</div><div className="text-sm text-fg-3">{o.why} · due {o.due} · {o.owner}</div></div>
                 <div className="flex flex-wrap gap-1">{o.refs.map((r) => <RefChip key={r} r={r} />)}</div>
               </li>
             ))}
@@ -423,16 +423,16 @@ function Depreciation({ wp }: { wp: Workpaper }) {
     <>
       <Lede>Every asset with its federal, California and AMT depreciation. California did not adopt federal special depreciation, so the studio equipment and the 2021 appliances carry different California basis.{e179 ? ' The section 179 election (approved) also applies for California up to its 25,000 limit.' : ''}</Lede>
       <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-        <table className="w-full min-w-[860px] border-collapse text-[12.5px]">
+        <table className="w-full min-w-[860px] border-collapse text-sm">
           <thead>
-            <tr className="text-[10.5px] tracking-wide text-fg-3 uppercase">
+            <tr className="text-cap tracking-wide text-fg-3 uppercase">
               <th rowSpan={2} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Asset</th>
               <th rowSpan={2} className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Cost</th>
               <th colSpan={3} className="border-b border-l border-line bg-panel-2 px-3 py-1.5 text-center font-semibold">Federal</th>
               <th colSpan={3} className="border-b border-l border-line bg-panel-2 px-3 py-1.5 text-center font-semibold">California</th>
               <th colSpan={2} className="border-b border-l border-line bg-panel-2 px-3 py-1.5 text-center font-semibold">AMT</th>
             </tr>
-            <tr className="text-[10.5px] tracking-wide text-fg-3 uppercase">
+            <tr className="text-cap tracking-wide text-fg-3 uppercase">
               {['Prior', '2025', 'End', 'Prior', '2025', 'End', '2025', 'Diff.'].map((h, i) => <th key={i} className={cx('border-b border-line bg-panel-2 px-2 py-1.5 text-right font-semibold', (i === 0 || i === 3 || i === 6) && 'border-l')}>{h}</th>)}
             </tr>
           </thead>
@@ -442,8 +442,8 @@ function Depreciation({ wp }: { wp: Workpaper }) {
               const caChanged = Math.round(ca25) !== Math.round(a.california.depreciation_2025);
               return (
                 <tr key={a.asset_id} className="align-top hover:bg-panel-2">
-                  <td className="border-b border-line px-3 py-1.5"><button type="button" className="text-left hover:underline" onClick={() => store.open(`asset:${a.asset_id}`)}>{a.description}</button><div className="text-[11px] text-fg-3"><span className="mono">{a.asset_id}</span> · in service {a.placed_in_service} · {a.method} · {a.life_years} yr{a.disposed ? ` · sold ${a.disposed}` : ''}</div></td>
-                  <td className="num border-b border-line px-3 py-1.5 text-right">{money(a.cost)}{a.land_value_not_depreciated ? <div className="text-[11px] text-fg-3">land {money(a.land_value_not_depreciated)}</div> : null}</td>
+                  <td className="border-b border-line px-3 py-1.5"><button type="button" className="text-left hover:underline" onClick={() => store.open(`asset:${a.asset_id}`)}>{a.description}</button><div className="text-cap text-fg-3"><span className="mono">{a.asset_id}</span> · in service {a.placed_in_service} · {a.method} · {a.life_years} yr{a.disposed ? ` · sold ${a.disposed}` : ''}</div></td>
+                  <td className="num border-b border-line px-3 py-1.5 text-right">{money(a.cost)}{a.land_value_not_depreciated ? <div className="text-cap text-fg-3">land {money(a.land_value_not_depreciated)}</div> : null}</td>
                   <td className="num border-b border-l border-line px-2 py-1.5 text-right text-fg-2">{f2(a.federal.prior_accumulated)}</td>
                   <td className="num border-b border-line px-2 py-1.5 text-right font-medium">{f2(a.federal.depreciation_2025)}</td>
                   <td className="num border-b border-line px-2 py-1.5 text-right text-fg-2">{f2(a.federal.accumulated_end)}</td>
@@ -457,7 +457,7 @@ function Depreciation({ wp }: { wp: Workpaper }) {
             })}
             {hvac && (
               <tr className="bg-info-bg/40 align-top">
-                <td className="border-b border-line px-3 py-1.5">HVAC system replacement, 1450 Fremont Way<div className="text-[11px] text-fg-3">in service 2025-08-12 · SL / mid-month · 27.5 yr · added by an approved change (was expensed as a repair) <RefChip r="D47" /></div></td>
+                <td className="border-b border-line px-3 py-1.5">HVAC system replacement, 1450 Fremont Way<div className="text-cap text-fg-3">in service 2025-08-12 · SL / mid-month · 27.5 yr · added by an approved change (was expensed as a repair) <RefChip r="D47" /></div></td>
                 <td className="num border-b border-line px-3 py-1.5 text-right">{money(ix.evNum('D47', 'total'))}</td>
                 <td className="num border-b border-l border-line px-2 py-1.5 text-right">0</td><td className="num border-b border-line px-2 py-1.5 text-right font-medium ink-blue">150</td><td className="num border-b border-line px-2 py-1.5 text-right">150</td>
                 <td className="num border-b border-l border-line px-2 py-1.5 text-right">0</td><td className="num border-b border-line px-2 py-1.5 text-right font-medium ink-blue">150</td><td className="num border-b border-line px-2 py-1.5 text-right">150</td>
@@ -503,10 +503,10 @@ function Limit({ label, used, limit, note, k, invert }: { label: string; used: n
   const pct = limit > 0 ? Math.min(100, (used / limit) * 100) : 100;
   return (
     <button type="button" onClick={() => store.open(k)} className="rounded-lg border border-line bg-panel p-3 text-left shadow-1 hover:border-line-2">
-      <div className="text-[12.5px] font-medium">{label}</div>
-      <div className="num mt-1 text-[15px] font-semibold">{money(used)} <span className="text-[12px] font-normal text-fg-3">of {money(limit)}</span></div>
+      <div className="text-sm font-medium">{label}</div>
+      <div className="num mt-1 text-md font-semibold">{money(used)} <span className="text-sm font-normal text-fg-3">of {money(limit)}</span></div>
       <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-sunk"><div className={cx('h-full rounded-full', invert ? 'bg-warn' : pct >= 100 ? 'bg-bad' : 'bg-ok')} style={{ width: `${pct}%` }} /></div>
-      <div className="mt-1.5 text-[11.5px] text-fg-3">{note}</div>
+      <div className="mt-1.5 text-cap text-fg-3">{note}</div>
     </button>
   );
 }
@@ -523,8 +523,8 @@ function Payments({ wp }: { wp: Workpaper }) {
       {sched.length > 0 && (
         <Block title="Form 2210 by installment" sub="Regular method. Each payment applies to the earliest unpaid installment; interest runs until paid or April 15.">
           <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-            <table className="w-full border-collapse text-[13px]">
-              <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Installment', 'Due', 'Required', 'Paid by due date', 'Underpaid', 'Penalty'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 2 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+            <table className="w-full border-collapse text-base">
+              <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Installment', 'Due', 'Required', 'Paid by due date', 'Underpaid', 'Penalty'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 2 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
               <tbody>
                 {sched.map((r) => (
                   <tr key={r.installment}><td className="border-b border-line px-3 py-1.5">{r.installment}</td><td className="border-b border-line px-3 py-1.5">{r.due}</td><td className="num border-b border-line px-3 py-1.5 text-right">{money(r.required)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{money(r.paid)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{money(r.underpaid)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{money(r.interest, { cents: true })}</td></tr>
@@ -550,12 +550,12 @@ function StateSplit({ wp }: { wp: Workpaper }) {
       <div className="mb-4 flex flex-wrap gap-2">{ix.packet.household.residency.map((r) => <Badge key={r.state} tone="outline">{r.state} {r.status} {r.from} → {r.to}</Badge>)}</div>
       <Block title="Schedule CA (540NR)" sub="A federal amount · B subtractions · C additions · D California law (all year) · E California-taxed">
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[760px] border-collapse text-[12.5px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase"><th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th>{['A', 'B', 'C', 'D', 'E'].map((c) => <th key={c} className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">{c}</th>)}</tr></thead>
+          <table className="w-full min-w-[760px] border-collapse text-sm">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase"><th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th>{['A', 'B', 'C', 'D', 'E'].map((c) => <th key={c} className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">{c}</th>)}</tr></thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r} className="hover:bg-panel-2">
-                  <td className="border-b border-line px-3 py-1.5"><span className="mono mr-2 text-[11px] text-fg-3">{r}</span>{label(r)}</td>
+                  <td className="border-b border-line px-3 py-1.5"><span className="mono mr-2 text-cap text-fg-3">{r}</span>{label(r)}</td>
                   {['A', 'B', 'C', 'D', 'E'].map((c) => {
                     const k = `SchCA540NR.${r}.${c}`;
                     const o = wp.ours!.values.get(k);
@@ -595,23 +595,23 @@ function Carryovers({ wp }: { wp: Workpaper }) {
       <Lede>What came in from 2024 and what goes out to 2026, the engine's figure beside ours where our corrections move it.</Lede>
       <CheckTables id="CHK-CARRYOVERS" title="Into 2025, agreed to the 2024 return" />
       <Block title="Into 2025 (federal)">
-        <Card pad={false}><ul className="divide-y divide-line">{rowsIn.map(([l, v]) => <li key={l} className="flex justify-between px-3 py-1.5 text-[13px]"><span>{l}</span><span className="num">{money(v)}</span></li>)}</ul></Card>
-        <p className="mt-2 text-[12px] text-fg-3">{(inn.california as { note?: string }).note}</p>
+        <Card pad={false}><ul className="divide-y divide-line">{rowsIn.map(([l, v]) => <li key={l} className="flex justify-between px-3 py-1.5 text-base"><span>{l}</span><span className="num">{money(v)}</span></li>)}</ul></Card>
+        <p className="mt-2 text-sm text-fg-3">{(inn.california as { note?: string }).note}</p>
       </Block>
       <Block title="Out to 2026">
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full border-collapse text-[13px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Carryover', 'Engine', 'Ours', 'Note'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i === 1 || i === 2 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+          <table className="w-full border-collapse text-base">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Carryover', 'Engine', 'Ours', 'Note'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i === 1 || i === 2 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
             <tbody>
               {rowsOut.map(([l, e, o, n]) => (
-                <tr key={l}><td className="border-b border-line px-3 py-1.5">{l}</td><td className="num border-b border-line px-3 py-1.5 text-right text-fg-2">{e === null ? '—' : money(e)}</td><td className={cx('num border-b border-line px-3 py-1.5 text-right font-medium', o !== null && e !== o && 'ink-blue')}>{o === null ? '—' : money(o)}</td><td className="border-b border-line px-3 py-1.5 text-[12px] text-fg-3">{n}</td></tr>
+                <tr key={l}><td className="border-b border-line px-3 py-1.5">{l}</td><td className="num border-b border-line px-3 py-1.5 text-right text-fg-2">{e === null ? '—' : money(e)}</td><td className={cx('num border-b border-line px-3 py-1.5 text-right font-medium', o !== null && e !== o && 'ink-blue')}>{o === null ? '—' : money(o)}</td><td className="border-b border-line px-3 py-1.5 text-sm text-fg-3">{n}</td></tr>
               ))}
             </tbody>
           </table>
         </div>
       </Block>
       <Block title="California depreciation basis differences carried to 2026">
-        <Card pad={false}><ul className="divide-y divide-line">{Object.entries((wp.version!.carryovers_out.california as { depreciation_basis_differences?: Record<string, number> }).depreciation_basis_differences ?? {}).map(([k, v]) => <li key={k} className="flex justify-between px-3 py-1.5 text-[13px]"><span className="mono text-[12px]">{k}</span><span className="num">{money(v, { cents: v % 1 !== 0 })}</span></li>)}</ul></Card>
+        <Card pad={false}><ul className="divide-y divide-line">{Object.entries((wp.version!.carryovers_out.california as { depreciation_basis_differences?: Record<string, number> }).depreciation_basis_differences ?? {}).map(([k, v]) => <li key={k} className="flex justify-between px-3 py-1.5 text-base"><span className="mono text-sm">{k}</span><span className="num">{money(v, { cents: v % 1 !== 0 })}</span></li>)}</ul></Card>
       </Block>
     </>
   );
@@ -628,11 +628,11 @@ function Basis({ wp }: { wp: Workpaper }) {
       <CheckTables id="CHK-PARTNERSHIP" title="Ridgeline capital account" />
       <Block title="Other basis on record">
         <Card pad={false}>
-          <ul className="divide-y divide-line text-[13px]">
+          <ul className="divide-y divide-line text-base">
             {Object.entries(br).map(([k, rows]) => (
               <li key={k} className="px-3 py-2">
                 <div className="font-medium">{k.replace(/_/g, ' ')}</div>
-                <ul className="mt-1 space-y-0.5 text-[12.5px] text-fg-2">{rows.map((r, i) => <li key={i}>{Object.entries(r).map(([a, b]) => `${a.replace(/_/g, ' ')}: ${b === null ? '—' : typeof b === 'number' ? money(b) : String(b)}`).join(' · ')}</li>)}</ul>
+                <ul className="mt-1 space-y-0.5 text-sm text-fg-2">{rows.map((r, i) => <li key={i}>{Object.entries(r).map(([a, b]) => `${a.replace(/_/g, ' ')}: ${b === null ? '—' : typeof b === 'number' ? money(b) : String(b)}`).join(' · ')}</li>)}</ul>
               </li>
             ))}
           </ul>
@@ -657,12 +657,12 @@ function Prior({ wp }: { wp: Workpaper }) {
   return (
     <>
       <Lede>What Delta River Tax Service did for 2024, what they left open, and how this year's file treats each point.</Lede>
-      <Block title="Prior preparer's memo"><Card><p className="serif text-[14px] leading-relaxed">{pw.summary_memo}</p><div className="mt-2"><RefChip r="D07" /></div></Card></Block>
+      <Block title="Prior preparer's memo"><Card><p className="serif text-md leading-relaxed">{pw.summary_memo}</p><div className="mt-2"><RefChip r="D07" /></div></Card></Block>
       <CheckTables id="CHK-PRIOR-OPEN-ITEMS" title="Open items they left" />
       <Block title="Their treatment and ours">
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[720px] border-collapse text-[13px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Item', 'Prior preparer (2024)', 'This year', 'Evidence'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
+          <table className="w-full min-w-[720px] border-collapse text-base">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Item', 'Prior preparer (2024)', 'This year', 'Evidence'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">{h}</th>)}</tr></thead>
             <tbody>
               {compare.map(([i, a, b, refs]) => (
                 <tr key={i} className="align-top"><td className="border-b border-line px-3 py-2 font-medium">{i}</td><td className="border-b border-line px-3 py-2 text-fg-2">{a}</td><td className="border-b border-line px-3 py-2">{b}</td><td className="border-b border-line px-3 py-2"><div className="flex flex-wrap gap-1">{refs.map((r) => <RefChip key={r} r={r} />)}</div></td></tr>
@@ -674,11 +674,11 @@ function Prior({ wp }: { wp: Workpaper }) {
       <CheckTables id="CHK-QUESTIONNAIRE" title="Client answers against the documents" />
       <Block title="2024 return lines with variances" sub="Firm threshold: more than 10% and more than 1,000.">
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full border-collapse text-[13px]">
-            <thead><tr className="text-[11px] tracking-wide text-fg-3 uppercase">{['Line', '2024', '2025 ours', 'Change', 'Explained'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 1 && i <= 3 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
+          <table className="w-full border-collapse text-base">
+            <thead><tr className="text-cap tracking-wide text-fg-3 uppercase">{['Line', '2024', '2025 ours', 'Change', 'Explained'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 1 && i <= 3 ? 'text-right' : 'text-left')}>{h}</th>)}</tr></thead>
             <tbody>
               {wp.variances.filter((v) => v.flagged).map((v) => (
-                <tr key={v.key}><td className="border-b border-line px-3 py-1.5"><button type="button" className="hover:underline" onClick={() => store.open(v.key)}>{v.label}</button></td><td className="num border-b border-line px-3 py-1.5 text-right">{money(v.prior)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{money(v.current)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{signed(v.delta)}</td><td className="border-b border-line px-3 py-1.5 text-[12px]">{v.explanation ? <span className="text-fg-2">{v.explanation.text}</span> : <Badge tone="warn">To explain</Badge>}</td></tr>
+                <tr key={v.key}><td className="border-b border-line px-3 py-1.5"><button type="button" className="hover:underline" onClick={() => store.open(v.key)}>{v.label}</button></td><td className="num border-b border-line px-3 py-1.5 text-right">{money(v.prior)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{money(v.current)}</td><td className="num border-b border-line px-3 py-1.5 text-right">{signed(v.delta)}</td><td className="border-b border-line px-3 py-1.5 text-sm">{v.explanation ? <span className="text-fg-2">{v.explanation.text}</span> : <Badge tone="warn">To explain</Badge>}</td></tr>
               ))}
             </tbody>
           </table>

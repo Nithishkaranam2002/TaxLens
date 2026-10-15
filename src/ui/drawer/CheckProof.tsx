@@ -24,10 +24,10 @@ export function EvidenceTableView({ t }: { t: EvidenceTable }) {
   };
   return (
     <div className="overflow-x-auto rounded-lg border border-line scroll-thin">
-      {t.title && <div className="border-b border-line bg-panel-2 px-3 py-1.5 text-[12px] font-medium">{t.title}</div>}
-      <table className="w-full border-collapse text-[12.5px]">
+      {t.title && <div className="border-b border-line bg-panel-2 px-3 py-1.5 text-sm font-medium">{t.title}</div>}
+      <table className="w-full border-collapse text-sm">
         <thead>
-          <tr>{t.columns.map((c, i) => <th key={i} className={cx('border-b border-line bg-panel-2 px-2.5 py-1.5 text-left text-[11px] font-semibold tracking-wide text-fg-3 uppercase', t.money?.includes(i) && 'text-right')}>{c}</th>)}</tr>
+          <tr>{t.columns.map((c, i) => <th key={i} className={cx('border-b border-line bg-panel-2 px-2.5 py-1.5 text-left text-cap font-semibold tracking-wide text-fg-3 uppercase', t.money?.includes(i) && 'text-right')}>{c}</th>)}</tr>
         </thead>
         <tbody>
           {t.rows.map((r, ri) => (
@@ -59,7 +59,7 @@ export function FixCard({ fix }: { fix: FixDef }) {
       <div className="flex items-start gap-2 border-b border-line px-3 py-2.5">
         <Wand2 className="mt-0.5 size-4 text-fg-3" />
         <div className="min-w-0 flex-1">
-          <div className="text-[13.5px] font-semibold">{fix.title}</div>
+          <div className="text-base font-semibold">{fix.title}</div>
           <div className="mt-0.5 flex flex-wrap gap-1.5">
             <Badge tone={fix.certainty === 'certain' ? 'neutral' : 'warn'}>{fix.certainty === 'certain' ? 'Documents decide' : 'Judgment call'}</Badge>
             {fix.kind === 'data' && <Badge tone="info">Data correction · no tax effect</Badge>}
@@ -70,13 +70,13 @@ export function FixCard({ fix }: { fix: FixDef }) {
         {proposal && <StatusPill status={proposal.status} />}
       </div>
       <div className="space-y-3 px-3 py-3">
-        <p className="text-[12.5px] text-fg-2">{fix.why}</p>
+        <p className="text-sm text-fg-2">{fix.why}</p>
         {fix.options.length > 1 && (
           <div className="space-y-1.5">
             {fix.options.map((o) => (
               <label key={o.id} className={cx('flex cursor-pointer items-start gap-2 rounded-md border p-2', opt === o.id ? 'border-fg-3 bg-panel-2' : 'border-line')}>
                 <input type="radio" className="mt-1" checked={opt === o.id} onChange={() => setOpt(o.id)} disabled={!!proposal} />
-                <span className="text-[12.5px]"><span className="font-medium">{o.label}{fix.options.indexOf(o) === fix.recommended && ' · recommended'}</span><span className="block text-fg-3">{o.detail}</span></span>
+                <span className="text-sm"><span className="font-medium">{o.label}{fix.options.indexOf(o) === fix.recommended && ' · recommended'}</span><span className="block text-fg-3">{o.detail}</span></span>
               </label>
             ))}
           </div>
@@ -84,22 +84,22 @@ export function FixCard({ fix }: { fix: FixDef }) {
         {option.changes.length > 0 && (
           <div className="divide-y divide-line rounded-md border border-line">
             {option.changes.map((c) => (
-              <div key={c.key} className="flex items-center justify-between gap-3 px-2.5 py-1.5 text-[12.5px]">
-                <button type="button" onClick={() => store.open(c.key)} className="min-w-0 truncate text-left hover:underline">{c.label} <span className="mono text-[11px] text-fg-3">{c.key}</span></button>
+              <div key={c.key} className="flex items-center justify-between gap-3 px-2.5 py-1.5 text-sm">
+                <button type="button" onClick={() => store.open(c.key)} className="min-w-0 truncate text-left hover:underline">{c.label} <span className="mono text-cap text-fg-3">{c.key}</span></button>
                 <Diff from={c.from} to={c.to} />
               </div>
             ))}
           </div>
         )}
         {effect && fix.kind !== 'data' && (
-          <div className="grid grid-cols-2 gap-2 text-[12px]">
-            <div className="rounded-md bg-panel-2 p-2"><div className="text-fg-3">Federal tax · recomputed</div><div className="num text-[14px] font-semibold">{signed(effect.fedTax)}</div><div className="text-fg-3">packet rate {rate && Number.isFinite(rate.fed) ? signed(rate.fed) : '—'}{effect.fedBalance !== effect.fedTax ? ` · balance ${signed(effect.fedBalance)}` : ''}</div></div>
-            <div className="rounded-md bg-panel-2 p-2"><div className="text-fg-3">California tax · recomputed</div><div className="num text-[14px] font-semibold">{signed(effect.caTax)}</div><div className="text-fg-3">packet rate {rate && Number.isFinite(rate.ca) ? signed(rate.ca) : '—'}{effect.caBalance !== effect.caTax ? ` · balance ${signed(effect.caBalance)}` : ''}</div></div>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="rounded-md bg-panel-2 p-2"><div className="text-fg-3">Federal tax · recomputed</div><div className="num text-md font-semibold">{signed(effect.fedTax)}</div><div className="text-fg-3">packet rate {rate && Number.isFinite(rate.fed) ? signed(rate.fed) : '—'}{effect.fedBalance !== effect.fedTax ? ` · balance ${signed(effect.fedBalance)}` : ''}</div></div>
+            <div className="rounded-md bg-panel-2 p-2"><div className="text-fg-3">California tax · recomputed</div><div className="num text-md font-semibold">{signed(effect.caTax)}</div><div className="text-fg-3">packet rate {rate && Number.isFinite(rate.ca) ? signed(rate.ca) : '—'}{effect.caBalance !== effect.caTax ? ` · balance ${signed(effect.caBalance)}` : ''}</div></div>
           </div>
         )}
         <div className="flex flex-wrap gap-1">{fix.evidence.map((e) => <RefChip key={e} r={e} />)}</div>
-        <div className="text-[12px] text-fg-3"><span className="font-medium text-fg-2">Authority:</span> {fix.authority}</div>
-        {fix.followUp && <div className="flex gap-1.5 rounded-md bg-warn-bg/60 px-2.5 py-1.5 text-[12px] text-fg-2"><Lightbulb className="mt-0.5 size-3.5 shrink-0 text-warn" />{fix.followUp}</div>}
+        <div className="text-sm text-fg-3"><span className="font-medium text-fg-2">Authority:</span> {fix.authority}</div>
+        {fix.followUp && <div className="flex gap-1.5 rounded-md bg-warn-bg/60 px-2.5 py-1.5 text-sm text-fg-2"><Lightbulb className="mt-0.5 size-3.5 shrink-0 text-warn" />{fix.followUp}</div>}
         <div className="flex flex-wrap items-center justify-end gap-2">
           {proposal ? (
             <>
@@ -129,11 +129,11 @@ export function CheckProof({ id }: { id: string }) {
   return (
     <div>
       <div className="px-5 pt-4 pb-4">
-        <div className="mb-1 flex flex-wrap items-center gap-1.5"><span className="mono text-[12px] text-fg-3">{c.id}</span><Badge tone="outline">{c.group}</Badge><StatusPill status={c.status} />{finding && finding.status !== 'open' && <StatusPill status={finding.status} />}</div>
-        <h2 className="text-[17px] leading-snug font-semibold">{c.title}</h2>
-        <p className="mt-1 text-[13px] text-fg-2">{c.question}</p>
-        <p className={cx('mt-3 rounded-lg px-3 py-2.5 text-[13px]', c.status === 'fail' ? 'bg-bad-bg/70' : c.status === 'review' ? 'bg-warn-bg/70' : 'bg-ok-bg/70')}>{c.summary}</p>
-        <p className="mt-2 text-[12px] text-fg-3"><span className="font-medium text-fg-2">How it works:</span> {c.method}{c.scanned ? ` Scanned ${c.scanned.toLocaleString('en-US')}.` : ''}</p>
+        <div className="mb-1 flex flex-wrap items-center gap-1.5"><span className="mono text-sm text-fg-3">{c.id}</span><Badge tone="outline">{c.group}</Badge><StatusPill status={c.status} />{finding && finding.status !== 'open' && <StatusPill status={finding.status} />}</div>
+        <h2 className="text-xl leading-snug font-semibold">{c.title}</h2>
+        <p className="mt-1 text-base text-fg-2">{c.question}</p>
+        <p className={cx('mt-3 rounded-lg px-3 py-2.5 text-base', c.status === 'fail' ? 'bg-bad-bg/70' : c.status === 'review' ? 'bg-warn-bg/70' : 'bg-ok-bg/70')}>{c.summary}</p>
+        <p className="mt-2 text-sm text-fg-3"><span className="font-medium text-fg-2">How it works:</span> {c.method}{c.scanned ? ` Scanned ${c.scanned.toLocaleString('en-US')}.` : ''}</p>
       </div>
       {c.tables.filter((t) => t.rows.length).map((t, i) => <Section key={i} title={t.title ?? 'Evidence'}><EvidenceTableView t={t} /></Section>)}
       {c.fixes.length > 0 && (
@@ -144,7 +144,7 @@ export function CheckProof({ id }: { id: string }) {
       {(c.status === 'review' || c.status === 'fail') && (
         <Section title="Disposition">
           {finding?.disposition && (
-            <div className="mb-3 text-[13px]"><Badge tone={finding.status === 'closed' ? 'ok' : 'warn'}>{finding.disposition.disposition}</Badge> <span className="text-fg-2">{finding.disposition.reason}</span><div className="mt-1 text-[12px] text-fg-3">{actors.find((a) => a.id === finding.disposition!.by)?.name}{finding.status !== 'closed' && finding.status !== 'resolved' ? ' · the finding stays open: an error needs a correction, or a reviewer\'s "no change"' : ''}</div></div>
+            <div className="mb-3 text-base"><Badge tone={finding.status === 'closed' ? 'ok' : 'warn'}>{finding.disposition.disposition}</Badge> <span className="text-fg-2">{finding.disposition.reason}</span><div className="mt-1 text-sm text-fg-3">{actors.find((a) => a.id === finding.disposition!.by)?.name}{finding.status !== 'closed' && finding.status !== 'resolved' ? ' · the finding stays open: an error needs a correction, or a reviewer\'s "no change"' : ''}</div></div>
           )}
           {(!finding?.disposition || finding.status === 'open') && me.role !== 'client' && me.role !== 'firm_administrator' && me.role !== 'quality_reviewer' ? (() => {
             // An error (fail) closes only with a correction, a reviewer's "no change", or a deferral; a question (review) closes with a recorded conclusion.
@@ -159,7 +159,7 @@ export function CheckProof({ id }: { id: string }) {
                 <div className="flex justify-end"><Button size="sm" onClick={() => { const r = store.run((x) => dispose(x, c.id, value as 'reviewed' | 'no-change' | 'deferred', reason)); if (r.ok) setReason(''); }}>Record</Button></div>
               </div>
             );
-          })() : !finding?.disposition && <p className="text-[12.5px] text-fg-3">No disposition yet.</p>}
+          })() : !finding?.disposition && <p className="text-sm text-fg-3">No disposition yet.</p>}
         </Section>
       )}
       <Section title="Sources it read"><div className="flex flex-wrap gap-1">{c.refs.slice(0, 30).map((r) => <RefChip key={r} r={r} />)}</div></Section>

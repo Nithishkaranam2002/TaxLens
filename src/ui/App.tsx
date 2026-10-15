@@ -108,7 +108,7 @@ function Shell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar onMenu={() => setMenu(true)} onSearch={() => setPalette(true)} />
         {viewAsOf && (
-          <div className="flex flex-wrap items-center gap-2 border-b border-warn/30 bg-warn-bg px-5 py-2 text-[13px]" style={{ paddingLeft: 'max(20px, env(safe-area-inset-left, 0px))', paddingRight: 'max(20px, env(safe-area-inset-right, 0px))' }}>
+          <div className="flex flex-wrap items-center gap-2 border-b border-warn/30 bg-warn-bg px-5 py-2 text-base" style={{ paddingLeft: 'max(20px, env(safe-area-inset-left, 0px))', paddingRight: 'max(20px, env(safe-area-inset-right, 0px))' }}>
             <History className="size-4 text-warn" />
             <span className="flex-1">You are looking at the workpaper as it stood on <b>{date(viewAsOf)}</b>. Documents, engine output, checks and every decision are shown as of that moment. Nothing can be changed here.</span>
             <Button size="sm" icon={<X className="size-3.5" />} onClick={() => store.setView(null)}>Back to now</Button>
@@ -133,7 +133,7 @@ function Loading() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4">
       <Logo />
-      <div className="flex items-center gap-2 text-[13px] text-fg-3"><Spinner />Loading the packet and running the checks…</div>
+      <div className="flex items-center gap-2 text-base text-fg-3"><Spinner />Loading the packet and running the checks…</div>
     </div>
   );
 }
@@ -142,9 +142,9 @@ function LoadError({ error }: { error: string | null }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
       <Logo />
-      <h1 className="text-[18px] font-semibold">The packet could not be opened</h1>
-      <p className="max-w-[60ch] text-[13px] text-fg-2">{error}</p>
-      <p className="max-w-[60ch] text-[12.5px] text-fg-3">TaxLens loads packet.json from the same folder as the app. Check that the file is published next to index.html and is the packet as delivered.</p>
+      <h1 className="text-lg font-semibold">The packet could not be opened</h1>
+      <p className="max-w-[60ch] text-base text-fg-2">{error}</p>
+      <p className="max-w-[60ch] text-sm text-fg-3">TaxLens loads packet.json from the same folder as the app. Check that the file is published next to index.html and is the packet as delivered.</p>
       <Button onClick={() => location.reload()}>Try again</Button>
     </div>
   );

@@ -83,17 +83,17 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
         <div className="flex items-center gap-2 border-b border-line px-3">
           <Search className="size-4 text-fg-3" />
           <input ref={inputRef} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search lines, amounts, documents, checks, people…"
-            className="h-12 flex-1 bg-transparent text-[14px] outline-none placeholder:text-fg-3"
+            className="h-12 flex-1 bg-transparent text-md outline-none placeholder:text-fg-3"
             onKeyDown={(e) => {
               if (e.key === 'ArrowDown') { e.preventDefault(); setSel((s) => Math.min(results.length - 1, s + 1)); }
               if (e.key === 'ArrowUp') { e.preventDefault(); setSel((s) => Math.max(0, s - 1)); }
               if (e.key === 'Enter') choose(results[sel]);
               if (e.key === 'Escape') onClose();
             }} />
-          <span className="text-[11px] text-fg-3">{results.length} results</span>
+          <span className="text-cap text-fg-3">{results.length} results</span>
         </div>
         <div className="max-h-[60vh] overflow-y-auto p-1 scroll-thin">
-          {results.length === 0 && <div className="px-3 py-6 text-center text-[13px] text-fg-3">Nothing matches. Try a line key (SchC.9), an amount (11,800) or a document (D23).</div>}
+          {results.length === 0 && <div className="px-3 py-6 text-center text-base text-fg-3">Nothing matches. Try a line key (SchC.9), an amount (11,800) or a document (D23).</div>}
           {results.map((e, i) => {
             const Icon = ICON[e.kind];
             return (
@@ -101,10 +101,10 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                 className={cx('flex w-full items-start gap-2.5 rounded-md px-2.5 py-2 text-left', i === sel ? 'bg-sunk' : '')}>
                 <Icon className="mt-0.5 size-4 shrink-0 text-fg-3" />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-medium">{e.title}</span>
-                  <span className="block truncate text-[12px] text-fg-3">{e.sub}</span>
+                  <span className="block truncate text-base font-medium">{e.title}</span>
+                  <span className="block truncate text-sm text-fg-3">{e.sub}</span>
                 </span>
-                <span className="mt-0.5 text-[10.5px] tracking-wide text-fg-3 uppercase">{e.kind}</span>
+                <span className="mt-0.5 text-cap tracking-wide text-fg-3 uppercase">{e.kind}</span>
               </button>
             );
           })}

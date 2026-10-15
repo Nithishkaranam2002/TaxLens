@@ -10,12 +10,12 @@ export function Toasts() {
       {toasts.map((t) => (
         <div key={t.id} className={cx('pointer-events-auto flex items-start gap-2.5 rounded-lg border bg-panel p-3 shadow-2 anim-rise', t.tone === 'error' ? 'border-bad/40' : 'border-line')}>
           {t.tone === 'error' ? <ShieldAlert className="mt-0.5 size-4 shrink-0 text-bad" /> : t.tone === 'info' ? <Info className="mt-0.5 size-4 shrink-0 text-info" /> : <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-ok" />}
-          <div className="min-w-0 flex-1 text-[13px]">
-            {t.rule && <div className="mb-0.5 text-[11px] font-semibold tracking-wide text-bad uppercase">Not allowed</div>}
+          <div className="min-w-0 flex-1 text-base">
+            {t.rule && <div className="mb-0.5 text-cap font-semibold tracking-wide text-bad uppercase">Not allowed</div>}
             {t.text}
           </div>
           {t.undo && t.undo.length > 0 && (
-            <button type="button" className="flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[12.5px] font-medium text-fg-2 hover:bg-sunk hover:text-fg"
+            <button type="button" className="flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-sm font-medium text-fg-2 hover:bg-sunk hover:text-fg"
               onClick={() => { store.run((x) => revert(x, t.undo![0], 'Undone from the confirmation'), { undoable: false }); store.dismissToast(t.id); }}>
               <Undo2 className="size-3.5" />Undo
             </button>

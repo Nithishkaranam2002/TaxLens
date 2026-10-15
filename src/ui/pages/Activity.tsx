@@ -61,10 +61,10 @@ export function ActivityPage() {
           <Button size="sm" icon={<Download className="size-3.5" />} onClick={() => download(`taxlens-log-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify({ packetSha256: ix.sha256, exported: new Date().toISOString(), events: all }, null, 2))}>Export log</Button>
         </>} />
       <div className="mb-5 grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.4fr)]">
-        <Card><div className="text-[12px] text-fg-3">Actions recorded</div><div className="num text-[20px] font-semibold">{all.length.toLocaleString('en-US')}</div><div className="text-[12px] text-fg-3">by {plural(people.size, 'person', 'people')} · {wp.state.reverted.size} undone</div></Card>
-        <Card><div className="text-[12px] text-fg-3">Log fingerprint</div><div className="mono text-[15px] font-semibold">{logHash}</div><div className="text-[12px] text-fg-3">Changes if any entry is altered</div></Card>
+        <Card><div className="text-sm text-fg-3">Actions recorded</div><div className="num text-xl font-semibold">{all.length.toLocaleString('en-US')}</div><div className="text-sm text-fg-3">by {plural(people.size, 'person', 'people')} · {wp.state.reverted.size} undone</div></Card>
+        <Card><div className="text-sm text-fg-3">Log fingerprint</div><div className="mono text-md font-semibold">{logHash}</div><div className="text-sm text-fg-3">Changes if any entry is altered</div></Card>
         <Card>
-          <div className="flex items-center gap-1.5 text-[12px] text-fg-3"><History className="size-3.5" />Look at the workpaper on a day</div>
+          <div className="flex items-center gap-1.5 text-sm text-fg-3"><History className="size-3.5" />Look at the workpaper on a day</div>
           <div className="mt-1.5 flex flex-wrap items-center gap-2">
             <Input type="date" value={day} min="2026-01-12" max={firmDay(now)} onChange={(e) => setDay(e.target.value)} className="w-40" />
             <Button size="sm" variant="primary" onClick={() => { const t = firmEndOfDay(day); store.setView(t >= now ? null : t); }}>View</Button>
@@ -90,13 +90,13 @@ export function ActivityPage() {
                     const a = actors.find((x) => x.id === r.actor);
                     return (
                       <li key={r.id} className={cx('flex items-start gap-3 px-4 py-2', r.reverted && 'opacity-50')}>
-                        {r.packet ? <span className="mt-0.5 flex size-[22px] shrink-0 items-center justify-center rounded-full bg-sunk text-[10px] text-fg-3">PK</span> : <Avatar actor={a} size={22} />}
-                        <button type="button" disabled={!r.ref} onClick={() => r.ref && store.open(r.ref)} className="min-w-0 flex-1 text-left text-[13px] enabled:hover:underline">
+                        {r.packet ? <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-sunk text-cap font-semibold text-fg-3">PK</span> : <Avatar actor={a} size={28} />}
+                        <button type="button" disabled={!r.ref} onClick={() => r.ref && store.open(r.ref)} className="min-w-0 flex-1 text-left text-base enabled:hover:underline">
                           {!r.packet && <span className="font-medium">{a?.name.split(' ')[0]} </span>}
                           <span className={cx(r.reverted && 'line-through', r.tone === 'bad' && 'text-bad', r.tone === 'ok' && '')}>{r.text}</span>
                         </button>
                         <Badge tone="outline" className="hidden sm:inline-flex">{r.kind}</Badge>
-                        <span className="num w-16 shrink-0 text-right text-[11.5px] text-fg-3">{dateTime(r.at).split(' · ')[1]}</span>
+                        <span className="num w-16 shrink-0 text-right text-cap text-fg-3">{dateTime(r.at).split(' · ')[1]}</span>
                         {r.canUndo && !r.reverted ? (
                           <button type="button" title={r.batch ? 'Undo this group' : 'Undo'} onClick={() => { const ev = all.find((e) => e.id === r.id); if (ev) store.run((x) => revert(x, ev, 'Undone from the activity log'), { undoable: false }); }} className="text-fg-3 hover:text-fg"><Undo2 className="size-3.5" /></button>
                         ) : <span className="w-3.5" />}
@@ -107,7 +107,7 @@ export function ActivityPage() {
               </Card>
             </section>
           ))}
-          {shown.length > 600 && <p className="text-[12px] text-fg-3">Showing the latest 600 of {shown.length}. Narrow with the filters.</p>}
+          {shown.length > 600 && <p className="text-sm text-fg-3">Showing the latest 600 of {shown.length}. Narrow with the filters.</p>}
         </div>
       )}
     </div>

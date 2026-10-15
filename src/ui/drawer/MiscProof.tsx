@@ -18,10 +18,10 @@ export function EvProof({ id }: { id: string }) {
   return (
     <div>
       <div className="px-5 pt-4 pb-4">
-        <div className="mb-1 flex flex-wrap items-center gap-1.5"><span className="mono text-[12px] text-fg-3">{e.id}</span><Badge tone="outline">{e.value_type}</Badge>{rr.kind !== 'ok' && rr.kind !== 'skipped' && <Badge tone={rr.kind === 'zero-not-printed' ? 'neutral' : 'bad'}>{rr.kind.replace(/-/g, ' ')}</Badge>}</div>
-        <h2 className="text-[17px] leading-snug font-semibold">{e.label}</h2>
-        <div className="num mt-2 text-[22px] font-semibold">{e.value === null ? '—' : typeof e.value === 'number' ? money(e.value, { cents: e.value % 1 !== 0 }) : e.value_type === 'ssn' ? <Sensitive value={String(e.value)} subject={e.id} field="value" /> : String(e.value)}</div>
-        {rr.reason && <p className="mt-2 rounded-md bg-bad-bg/60 px-3 py-2 text-[12.5px]">{rr.reason}</p>}
+        <div className="mb-1 flex flex-wrap items-center gap-1.5"><span className="mono text-sm text-fg-3">{e.id}</span><Badge tone="outline">{e.value_type}</Badge>{rr.kind !== 'ok' && rr.kind !== 'skipped' && <Badge tone={rr.kind === 'zero-not-printed' ? 'neutral' : 'bad'}>{rr.kind.replace(/-/g, ' ')}</Badge>}</div>
+        <h2 className="text-xl leading-snug font-semibold">{e.label}</h2>
+        <div className="num mt-2 text-2xl font-semibold">{e.value === null ? '—' : typeof e.value === 'number' ? money(e.value, { cents: e.value % 1 !== 0 }) : e.value_type === 'ssn' ? <Sensitive value={String(e.value)} subject={e.id} field="value" /> : String(e.value)}</div>
+        {rr.reason && <p className="mt-2 rounded-md bg-bad-bg/60 px-3 py-2 text-sm">{rr.reason}</p>}
       </div>
       <Section title="As read">
         <KV k="Document"><button type="button" className="hover:underline" onClick={() => store.open(`doc:${e.document_id}#page${e.page}@${e.id}`)}>{doc.id} · {doc.title}</button></KV>
@@ -32,8 +32,8 @@ export function EvProof({ id }: { id: string }) {
         <div className="mt-3"><Button size="sm" icon={<FileText className="size-3.5" />} onClick={() => store.open(`doc:${e.document_id}#page${e.page}@${e.id}`)}>Open the page with this field highlighted</Button></div>
       </Section>
       <Section title="Where it landed">
-        {uses.every((u) => !u.lines.length) ? <p className="text-[12.5px] text-fg-3">Not used on any line. {wp.docs.find((d) => d.doc.id === e.document_id)?.reason}</p> : (
-          <div className="space-y-1.5">{uses.filter((u) => u.lines.length).map((u) => <div key={u.v} className="flex flex-wrap items-center gap-1.5 text-[12.5px]"><span className="w-7 text-fg-3">{u.v}</span>{u.lines.map((l) => <RefChip key={l} r={l} />)}</div>)}</div>
+        {uses.every((u) => !u.lines.length) ? <p className="text-sm text-fg-3">Not used on any line. {wp.docs.find((d) => d.doc.id === e.document_id)?.reason}</p> : (
+          <div className="space-y-1.5">{uses.filter((u) => u.lines.length).map((u) => <div key={u.v} className="flex flex-wrap items-center gap-1.5 text-sm"><span className="w-7 text-fg-3">{u.v}</span>{u.lines.map((l) => <RefChip key={l} r={l} />)}</div>)}</div>
         )}
       </Section>
       <Section title="Verification"><Verifications target={id} /></Section>
@@ -50,7 +50,7 @@ export function NoteProof({ id }: { id: string }) {
     <div>
       <div className="px-5 pt-4 pb-3">
         <div className="mb-1 flex items-center gap-1.5"><Badge tone={n.blocking && n.status === 'open' ? 'bad' : 'neutral'}>{n.kind === 'review' ? 'Review note' : 'Note'}</Badge><StatusPill status={n.status === 'open' ? 'open' : 'resolved'} /></div>
-        <div className="flex flex-wrap items-center gap-1.5 text-[12.5px] text-fg-2">On <RefChip r={n.target} /></div>
+        <div className="flex flex-wrap items-center gap-1.5 text-sm text-fg-2">On <RefChip r={n.target} /></div>
       </div>
       <Section title="Thread"><Notes target={n.target} area={n.area} /></Section>
     </div>
@@ -71,11 +71,11 @@ export function RefProof({ r }: { r: string }) {
     body = <Quote text={m.text} who={`${m.from} → ${m.to}, ${date(m.sent_at)}`} />;
   } else if (info.kind === 'call') {
     const c = ix.calls.get(r)!;
-    body = <ul className="list-disc space-y-1 pl-5 text-[13px]">{c.notes.map((x, i) => <li key={i}>{x}</li>)}</ul>;
+    body = <ul className="list-disc space-y-1 pl-5 text-base">{c.notes.map((x, i) => <li key={i}>{x}</li>)}</ul>;
   } else if (info.kind === 'py' || info.kind === 'agency') {
     const root = info.kind === 'py' ? p.prior_years : p.tax_agency_records;
     const v = pointer(root, r.slice(info.kind === 'py' ? 3 : 7));
-    body = <pre className="mono max-h-80 overflow-auto rounded-lg bg-panel-2 p-3 text-[11.5px] whitespace-pre-wrap scroll-thin">{JSON.stringify(v, null, 2)}</pre>;
+    body = <pre className="mono max-h-80 overflow-auto rounded-lg bg-panel-2 p-3 text-cap whitespace-pre-wrap scroll-thin">{JSON.stringify(v, null, 2)}</pre>;
   } else if (info.kind === 'household') {
     const person = ix.people.get(r.slice(10))!;
     const fixed = wp.dataFixes.get(`${r}.ssn`);
@@ -110,16 +110,16 @@ export function RefProof({ r }: { r: string }) {
     body = <div><KV k="Federal tax change">{money(a.federal.total_tax_change)}</KV><KV k="California tax change">{money(a.california.total_tax_change)}</KV><KV k="Lines changed">{a.changed_lines.length}</KV></div>;
   } else if (info.kind === 'timeline') {
     const t = ix.timeline.get(r.replace(/^timeline:/, ''));
-    body = t ? <div><KV k="When">{t.at}</KV><KV k="Who">{t.actor ? ix.staff.get(t.actor)?.name : '—'}</KV>{t.detail && <p className="mt-2 text-[13px]">{t.detail}</p>}<div className="mt-2 flex flex-wrap gap-1">{t.refs.map((x) => <RefChip key={x} r={x.startsWith('v') ? x : x} />)}</div></div> : null;
+    body = t ? <div><KV k="When">{t.at}</KV><KV k="Who">{t.actor ? ix.staff.get(t.actor)?.name : '—'}</KV>{t.detail && <p className="mt-2 text-base">{t.detail}</p>}<div className="mt-2 flex flex-wrap gap-1">{t.refs.map((x) => <RefChip key={x} r={x.startsWith('v') ? x : x} />)}</div></div> : null;
   } else if (info.value) {
-    body = <div className="num text-[18px] font-semibold">{info.value}</div>;
+    body = <div className="num text-lg font-semibold">{info.value}</div>;
   }
   return (
     <div>
       <div className="px-5 pt-4 pb-4">
-        <div className="mono mb-1 text-[12px] text-fg-3">{r}</div>
-        <h2 className="text-[17px] leading-snug font-semibold">{info.title}</h2>
-        {info.detail && <p className="mt-1 text-[12.5px] text-fg-3">{info.detail}</p>}
+        <div className="mono mb-1 text-sm text-fg-3">{r}</div>
+        <h2 className="text-xl leading-snug font-semibold">{info.title}</h2>
+        {info.detail && <p className="mt-1 text-sm text-fg-3">{info.detail}</p>}
       </div>
       {body && <Section title="Record">{body}</Section>}
       {info.docId && <Section title="Document"><Button size="sm" icon={<FileText className="size-3.5" />} onClick={() => store.open(`doc:${info.docId}#page${info.page ?? 1}`)}>Open {info.docId}</Button></Section>}
@@ -131,8 +131,8 @@ export function RefProof({ r }: { r: string }) {
 function Quote({ text, who }: { text: string; who: string }) {
   return (
     <figure className="rounded-lg border-l-4 border-line-2 bg-panel-2 px-4 py-3">
-      <blockquote className="text-[14px]">“{text}”</blockquote>
-      <figcaption className="mt-1.5 text-[12px] text-fg-3">{who}</figcaption>
+      <blockquote className="text-md">“{text}”</blockquote>
+      <figcaption className="mt-1.5 text-sm text-fg-3">{who}</figcaption>
     </figure>
   );
 }

@@ -37,11 +37,11 @@ export function Verifications({ target, compact }: { target: string; compact?: b
   const standards = (wp.state.standards.get('verification_types') as string[] | undefined) ?? METHODS;
   return (
     <div className="space-y-2">
-      {list.length === 0 && !compact && <p className="text-[12.5px] text-fg-3">Not verified yet.</p>}
+      {list.length === 0 && !compact && <p className="text-sm text-fg-3">Not verified yet.</p>}
       {list.map((v) => {
         const a = actors.find((x) => x.id === v.by);
         return (
-          <div key={v.eventId} className="flex items-start gap-2 text-[12.5px]">
+          <div key={v.eventId} className="flex items-start gap-2 text-sm">
             <Tick ink={a?.ink} size={15} title={`${VERIFICATION_LABEL[v.method]} by ${a?.name}`} />
             <div className="min-w-0 flex-1">
               <span className="font-medium">{VERIFICATION_LABEL[v.method] ?? v.method}</span>
@@ -90,7 +90,7 @@ export function Notes({ target, area }: { target: string; area: AreaId }) {
         const a = actors.find((x) => x.id === n.by);
         return (
           <div key={n.id} className={cx('rounded-lg border p-3', n.status === 'open' && n.blocking ? 'border-bad/40 bg-bad-bg/40' : 'border-line bg-panel-2')}>
-            <div className="mb-1 flex flex-wrap items-center gap-1.5 text-[12px]">
+            <div className="mb-1 flex flex-wrap items-center gap-1.5 text-sm">
               <Avatar actor={a} size={18} />
               <span className="font-medium">{a?.name}</span>
               <span className="text-fg-3">{ago(n.at, now)}</span>
@@ -100,11 +100,11 @@ export function Notes({ target, area }: { target: string; area: AreaId }) {
               {n.due && n.status === 'open' && <Badge tone={n.due < today ? 'bad' : 'warn'}>{n.due < today ? 'Overdue' : 'Due'} {date(n.due)}</Badge>}
               {n.due && n.status !== 'open' && <span className="text-fg-3">· was due {date(n.due)}</span>}
             </div>
-            <p className="text-[13px] whitespace-pre-wrap">{n.text}</p>
+            <p className="text-base whitespace-pre-wrap">{n.text}</p>
             {n.thread.map((t, i) => {
               const ta = actors.find((x) => x.id === t.by);
               return (
-                <div key={i} className="mt-2 flex gap-2 border-l-2 border-line-2 pl-2.5 text-[12.5px]">
+                <div key={i} className="mt-2 flex gap-2 border-l-2 border-line-2 pl-2.5 text-sm">
                   <Avatar actor={ta} size={16} />
                   <div><span className="font-medium">{ta?.name.split(' ')[0]}</span> <span className="text-fg-3">{t.kind === 'resolve' ? 'cleared' : t.kind === 'reopen' ? 'reopened' : 'replied'} · {ago(t.at, now)}</span>{t.text && <div className="text-fg-2">{t.text}</div>}</div>
                 </div>
@@ -139,7 +139,7 @@ export function Notes({ target, area }: { target: string; area: AreaId }) {
             {kind === 'review' && canReview && <Checkbox checked={blocking} onChange={setBlocking} label="Blocks filing" />}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex flex-wrap items-center gap-2 text-[12px] text-fg-3">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-fg-3">
               <span>For</span>
               <Select value={assignee} onChange={setAssignee} options={[{ id: '', label: kind === 'review' && canReview ? 'The preparer' : 'No one in particular' }, ...staff.map((a) => ({ id: a.id, label: `${a.name} · ${a.roleLabel.toLowerCase()}` }))]} className="w-48" />
               <span>by</span>
@@ -177,7 +177,7 @@ export function Attachments({ target }: { target: string }) {
   return (
     <div className="space-y-2">
       {files.map((f) => (
-        <div key={f.id} className="flex items-start gap-2 text-[12.5px]">
+        <div key={f.id} className="flex items-start gap-2 text-sm">
           <Paperclip className="mt-0.5 size-3.5 text-fg-3" />
           <div className="min-w-0 flex-1">
             <div className="truncate font-medium">{f.kind === 'file' ? f.name : f.kind === 'note' ? 'Note' : f.name}</div>
@@ -244,7 +244,7 @@ export function Who({ id, at }: { id: string; at: string }) {
   const actors = useApp((s) => s.actors);
   const a = actors.find((x) => x.id === id);
   return (
-    <span className="inline-flex items-center gap-1.5 text-[12px] text-fg-2">
+    <span className="inline-flex items-center gap-1.5 text-sm text-fg-2">
       <Avatar actor={a} size={16} />
       <span>{a?.name ?? id}</span>
       <span className="text-fg-3">· {dateTime(at)}</span>

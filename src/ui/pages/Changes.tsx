@@ -77,9 +77,9 @@ function Ledger({ wp }: { wp: Workpaper }) {
           right={<><Select value={show} onChange={(v) => setShow(v as 'active' | 'all')} options={[{ id: 'active', label: 'Proposed and approved' }, { id: 'all', label: 'Include rejected and withdrawn' }]} className="w-56" /><Button size="sm" icon={<Download className="size-3.5" />} onClick={exportCsv}>CSV</Button></>} />
         {list.length === 0 ? <Empty title="No changes yet">Propose a correction from a check, or open any number and propose a change to it.</Empty> : (
           <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-            <table className="w-full min-w-[820px] border-collapse text-[13px]">
+            <table className="w-full min-w-[820px] border-collapse text-base">
               <thead>
-                <tr className="text-[11px] tracking-wide text-fg-3 uppercase">
+                <tr className="text-cap tracking-wide text-fg-3 uppercase">
                   {['#', 'Change', 'Area', 'Proposed', 'Approved', 'Federal', 'California', 'Status'].map((h, i) => <th key={h} className={cx('border-b border-line bg-panel-2 px-3 py-2 font-semibold', i >= 5 && i <= 6 ? 'text-right' : 'text-left')}>{h}</th>)}
                 </tr>
               </thead>
@@ -89,11 +89,11 @@ function Ledger({ wp }: { wp: Workpaper }) {
                   const appr = p.decisions.filter((d) => d.decision === 'approve').map((d) => actors.find((a) => a.id === d.by));
                   return (
                     <tr key={p.id} onClick={() => store.open(`adj:${p.id}`)} className={cx('cursor-pointer align-top hover:bg-panel-2', (p.status === 'rejected' || p.status === 'withdrawn') && 'opacity-60')}>
-                      <td className="mono border-b border-line px-3 py-2 text-[12px] text-fg-3">{p.seq}</td>
-                      <td className="border-b border-line px-3 py-2"><div className="font-medium">{p.title}</div><div className="line-clamp-1 text-[12px] text-fg-3">{p.authority}</div></td>
-                      <td className="border-b border-line px-3 py-2 text-[12.5px] text-fg-2">{AREA[p.area].short}</td>
-                      <td className="border-b border-line px-3 py-2 text-[12.5px] whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><Avatar actor={by} size={16} />{date(p.at, false)}</span></td>
-                      <td className="border-b border-line px-3 py-2 text-[12.5px] whitespace-nowrap">{appr.length ? <span className="inline-flex items-center gap-1">{appr.map((a, i) => <Avatar key={i} actor={a} size={16} />)}{p.approvedAt && <span className="ml-1">{date(p.approvedAt, false)}</span>}</span> : p.needsPartner ? <span className="text-[12px] text-fg-3">reviewer + partner</span> : <span className="text-[12px] text-fg-3">reviewer</span>}</td>
+                      <td className="mono border-b border-line px-3 py-2 text-sm text-fg-3">{p.seq}</td>
+                      <td className="border-b border-line px-3 py-2"><div className="font-medium">{p.title}</div><div className="line-clamp-1 text-sm text-fg-3">{p.authority}</div></td>
+                      <td className="border-b border-line px-3 py-2 text-sm text-fg-2">{AREA[p.area].short}</td>
+                      <td className="border-b border-line px-3 py-2 text-sm whitespace-nowrap"><span className="inline-flex items-center gap-1.5"><Avatar actor={by} size={16} />{date(p.at, false)}</span></td>
+                      <td className="border-b border-line px-3 py-2 text-sm whitespace-nowrap">{appr.length ? <span className="inline-flex items-center gap-1">{appr.map((a, i) => <Avatar key={i} actor={a} size={16} />)}{p.approvedAt && <span className="ml-1">{date(p.approvedAt, false)}</span>}</span> : p.needsPartner ? <span className="text-sm text-fg-3">reviewer + partner</span> : <span className="text-sm text-fg-3">reviewer</span>}</td>
                       <td className="num border-b border-line px-3 py-2 text-right">{p.fix?.kind === 'data' ? <span className="text-fg-3">data</span> : <span className={p.effect.fedTax > 0 ? 'text-bad' : p.effect.fedTax < 0 ? 'text-ok' : 'text-fg-3'}>{signed(p.effect.fedTax)}</span>}</td>
                       <td className="num border-b border-line px-3 py-2 text-right">{p.fix?.kind === 'data' ? '' : <span className={p.effect.caTax > 0 ? 'text-bad' : p.effect.caTax < 0 ? 'text-ok' : 'text-fg-3'}>{signed(p.effect.caTax)}</span>}</td>
                       <td className="border-b border-line px-3 py-2"><StatusPill status={p.status} />{p.needsPartner && p.status === 'proposed' && <div className="mt-1"><Badge tone="violet">partner</Badge></div>}</td>
@@ -115,18 +115,18 @@ function BridgeCard({ title, start, end, steps, k, foot }: { title: string; star
   const max = Math.max(1, ...nonzero.map((s) => Math.abs(s.d)));
   return (
     <Card pad={false}>
-      <div className="flex items-baseline justify-between border-b border-line px-4 py-2.5"><span className="text-[13px] font-semibold">{title}</span><span className="text-[12px] text-fg-3">{foot}</span></div>
+      <div className="flex items-baseline justify-between border-b border-line px-4 py-2.5"><span className="text-base font-semibold">{title}</span><span className="text-sm text-fg-3">{foot}</span></div>
       <div className="px-4 py-2">
         <Row label="Engine as delivered" v={money(start)} strong />
         {nonzero.map((s) => (
-          <button key={s.id} type="button" onClick={() => store.open(`adj:${s.id}`)} className="flex w-full items-center gap-3 py-1 text-left text-[12.5px] hover:bg-panel-2">
-            <span className="mono w-5 shrink-0 text-[11px] text-fg-3">{s.seq}</span>
+          <button key={s.id} type="button" onClick={() => store.open(`adj:${s.id}`)} className="flex w-full items-center gap-3 py-1 text-left text-sm hover:bg-panel-2">
+            <span className="mono w-5 shrink-0 text-cap text-fg-3">{s.seq}</span>
             <span className="min-w-0 flex-1 truncate">{s.title}</span>
             <span className="hidden h-1.5 w-20 overflow-hidden rounded-full bg-sunk sm:block"><span className={cx('block h-full rounded-full', s.d > 0 ? 'bg-bad' : 'bg-ok')} style={{ width: `${(Math.abs(s.d) / max) * 100}%` }} /></span>
             <span className={cx('num w-16 text-right', s.d > 0 ? 'text-bad' : 'text-ok')}>{signed(s.d)}</span>
           </button>
         ))}
-        {zero > 0 && <div className="py-1 text-[12px] text-fg-3">{plural(zero, 'other change')} with no effect on this total</div>}
+        {zero > 0 && <div className="py-1 text-sm text-fg-3">{plural(zero, 'other change')} with no effect on this total</div>}
         <div className="mt-1 border-t border-line pt-1"><Row label="Ours" v={<button type="button" className="num proof" onClick={() => store.open(k)}>{money(end)}</button>} strong delta={end - start} /></div>
       </div>
     </Card>
@@ -135,9 +135,9 @@ function BridgeCard({ title, start, end, steps, k, foot }: { title: string; star
 
 function Row({ label, v, strong, delta }: { label: string; v: React.ReactNode; strong?: boolean; delta?: number }) {
   return (
-    <div className={cx('flex items-center justify-between py-1 text-[13px]', strong && 'font-semibold')}>
+    <div className={cx('flex items-center justify-between py-1 text-base', strong && 'font-semibold')}>
       <span>{label}</span>
-      <span className="flex items-center gap-3">{delta !== undefined && delta !== 0 && <span className={cx('num text-[12px] font-medium', delta > 0 ? 'text-bad' : 'text-ok')}>{signed(delta)}</span>}<span className="num">{v}</span></span>
+      <span className="flex items-center gap-3">{delta !== undefined && delta !== 0 && <span className={cx('num text-sm font-medium', delta > 0 ? 'text-bad' : 'text-ok')}>{signed(delta)}</span>}<span className="num">{v}</span></span>
     </div>
   );
 }
@@ -192,23 +192,23 @@ function Versions({ wp }: { wp: Workpaper }) {
   return (
     <div className="space-y-4">
       <Card className="flex flex-wrap items-end gap-3">
-        <label className="text-[12px] text-fg-2">Compare<Select className="mt-1 w-60" value={a} onChange={(v) => setA(v as ColId)} options={opts} /></label>
+        <label className="text-sm text-fg-2">Compare<Select className="mt-1 w-60" value={a} onChange={(v) => setA(v as ColId)} options={opts} /></label>
         <GitCompareArrows className="mb-2 size-4 text-fg-3" />
-        <label className="text-[12px] text-fg-2">with<Select className="mt-1 w-60" value={b} onChange={(v) => setB(v as ColId)} options={opts} /></label>
-        {(a === 'date' || b === 'date') && <label className="text-[12px] text-fg-2">Date<Input type="date" className="mt-1 w-40" value={asOf} min="2026-03-04" max={firmDay(wp.asOf)} onChange={(e) => setAsOf(e.target.value)} /></label>}
+        <label className="text-sm text-fg-2">with<Select className="mt-1 w-60" value={b} onChange={(v) => setB(v as ColId)} options={opts} /></label>
+        {(a === 'date' || b === 'date') && <label className="text-sm text-fg-2">Date<Input type="date" className="mt-1 w-40" value={asOf} min="2026-03-04" max={firmDay(wp.asOf)} onChange={(e) => setAsOf(e.target.value)} /></label>}
         <div className="ml-auto flex flex-wrap items-center gap-3">
           <Checkbox checked={only} onChange={setOnly} label="Only differences" />
           <Checkbox checked={lots} onChange={setLots} label="Include sales lots" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter lines" className="w-44" aria-label="Filter lines" />
         </div>
       </Card>
-      {engineChanges && <p className="text-[12.5px] text-fg-2"><span className="font-medium">Engine {engineChanges.version}:</span> {engineChanges.trigger}</p>}
-      <p className="text-[12.5px] text-fg-3">{plural(keys.length, 'line')} {only ? 'differ' : 'shown'}.</p>
+      {engineChanges && <p className="text-sm text-fg-2"><span className="font-medium">Engine {engineChanges.version}:</span> {engineChanges.trigger}</p>}
+      <p className="text-sm text-fg-3">{plural(keys.length, 'line')} {only ? 'differ' : 'shown'}.</p>
       {keys.length === 0 ? <Empty title="No differences">These two versions agree on every line.</Empty> : (
         <div className="max-h-[70vh] overflow-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[720px] border-collapse text-[13px]">
+          <table className="w-full min-w-[720px] border-collapse text-base">
             <thead>
-              <tr className="text-[11px] tracking-wide text-fg-3 uppercase">
+              <tr className="text-cap tracking-wide text-fg-3 uppercase">
                 <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Line</th>
                 <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">{name(a)}</th>
                 <th className="sticky top-0 border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">{name(b)}</th>
@@ -222,7 +222,7 @@ function Versions({ wp }: { wp: Workpaper }) {
                 const d = typeof x === 'number' && typeof y === 'number' ? y - x : null;
                 return (
                   <tr key={k} className="hover:bg-panel-2">
-                    <td className="border-b border-line px-3 py-1.5"><button type="button" onClick={() => store.open(k)} className="text-left hover:underline">{label(k)}</button><span className="mono ml-2 text-[11px] text-fg-3">{k}</span><span className="ml-2 text-[11px] text-fg-3">{formName(k)}</span></td>
+                    <td className="border-b border-line px-3 py-1.5"><button type="button" onClick={() => store.open(k)} className="text-left hover:underline">{label(k)}</button><span className="mono ml-2 text-cap text-fg-3">{k}</span><span className="ml-2 text-cap text-fg-3">{formName(k)}</span></td>
                     <td className="num border-b border-line px-3 py-1.5 text-right text-fg-2">{x === undefined ? '—' : value(x, k)}</td>
                     <td className="num border-b border-line px-3 py-1.5 text-right font-medium">{y === undefined ? '—' : value(y, k)}</td>
                     <td className={cx('num border-b border-line px-3 py-1.5 text-right', d === null ? 'text-fg-3' : d > 0 ? 'text-bad' : d < 0 ? 'text-ok' : 'text-fg-3')}>{d === null ? (x === y ? '' : x === undefined ? 'added' : y === undefined ? 'removed' : 'changed') : Math.abs(d) < 1 && d !== 0 ? d.toFixed(4) : signed(d)}</td>
@@ -231,7 +231,7 @@ function Versions({ wp }: { wp: Workpaper }) {
               })}
             </tbody>
           </table>
-          {keys.length > 800 && <div className="px-3 py-2 text-[12px] text-fg-3">Showing 800 of {keys.length}. Narrow with the filter.</div>}
+          {keys.length > 800 && <div className="px-3 py-2 text-sm text-fg-3">Showing 800 of {keys.length}. Narrow with the filter.</div>}
         </div>
       )}
     </div>
@@ -291,9 +291,9 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
       <section>
         <SectionHead title="Engine what-ifs" sub="The engine's own alternatives. TaxLens reproduces each one exactly, then reruns it on our corrected return, where the answer can differ." />
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
-          <table className="w-full min-w-[760px] border-collapse text-[13px]">
+          <table className="w-full min-w-[760px] border-collapse text-base">
             <thead>
-              <tr className="text-[11px] tracking-wide text-fg-3 uppercase">
+              <tr className="text-cap tracking-wide text-fg-3 uppercase">
                 <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Alternative</th>
                 <th className="border-b border-line bg-panel-2 px-3 py-2 text-right font-semibold">Engine: federal / CA</th>
                 <th className="border-b border-line bg-panel-2 px-3 py-2 text-left font-semibold">Recompute</th>
@@ -303,10 +303,10 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
             <tbody>
               {engineRows.map(({ alt, ok, ours: o }) => (
                 <tr key={alt.id} className="align-top">
-                  <td className="border-b border-line px-3 py-2"><div className="font-medium">{alt.description}</div><div className="mono text-[11px] text-fg-3">{alt.id} · on {alt.base_version}</div></td>
-                  <td className="num border-b border-line px-3 py-2 text-right">{signed(alt.federal.total_tax_change)} / {signed(alt.california.total_tax_change)}{alt.federal.penalty_change ? <div className="text-[12px] text-fg-3">penalty {signed(alt.federal.penalty_change)}</div> : null}</td>
+                  <td className="border-b border-line px-3 py-2"><div className="font-medium">{alt.description}</div><div className="mono text-cap text-fg-3">{alt.id} · on {alt.base_version}</div></td>
+                  <td className="num border-b border-line px-3 py-2 text-right">{signed(alt.federal.total_tax_change)} / {signed(alt.california.total_tax_change)}{alt.federal.penalty_change ? <div className="text-sm text-fg-3">penalty {signed(alt.federal.penalty_change)}</div> : null}</td>
                   <td className="border-b border-line px-3 py-2">{ok ? <Badge tone="ok">Matches exactly</Badge> : <Badge tone="bad">Differs</Badge>}</td>
-                  <td className="num border-b border-line px-3 py-2 text-right font-medium">{signed(o.fed)} / {signed(o.ca)}{o.pen ? <div className="text-[12px] font-normal text-fg-3">penalty {signed(o.pen)}</div> : null}</td>
+                  <td className="num border-b border-line px-3 py-2 text-right font-medium">{signed(o.fed)} / {signed(o.ca)}{o.pen ? <div className="text-sm font-normal text-fg-3">penalty {signed(o.pen)}</div> : null}</td>
                 </tr>
               ))}
             </tbody>
@@ -327,8 +327,8 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
                   <li key={f.id} className="flex flex-wrap items-center gap-3 px-3 py-2">
                     <Checkbox checked={!!o} onChange={(v) => setChosen((m) => new Map(m).set(f.id, v ? f.options[f.recommended].id : null))} />
                     <button type="button" onClick={() => store.open(`check:${f.checkId}`)} className="min-w-0 flex-1 text-left">
-                      <div className="text-[13px] font-medium">{f.title}</div>
-                      <div className="text-[12px] text-fg-3">{AREA[f.area].short}{f.kind === 'election' ? ' · election' : ''}{f.certainty === 'judgment' ? ' · judgment' : ''}</div>
+                      <div className="text-base font-medium">{f.title}</div>
+                      <div className="text-sm text-fg-3">{AREA[f.area].short}{f.kind === 'election' ? ' · election' : ''}{f.certainty === 'judgment' ? ' · judgment' : ''}</div>
                     </button>
                     {f.options.length > 1 && o && (
                       <Select className="w-48" value={o} onChange={(v) => setChosen((m) => new Map(m).set(f.id, v))} options={f.options.map((x) => ({ id: x.id, label: x.label }))} />
@@ -342,7 +342,7 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
           <div className="space-y-3 lg:sticky lg:top-[64px] lg:self-start">
             <ScenarioResult title="Federal" ours={ours.federal} sc={scenario.federal} />
             <ScenarioResult title="California" ours={ours.california} sc={scenario.california} />
-            <p className="text-[12px] text-fg-3">Compared with our return as it stands ({plural(wp.proposals.filter((p) => p.status === 'approved').length, 'approved change')}). Pending proposals are not included unless you tick them.</p>
+            <p className="text-sm text-fg-3">Compared with our return as it stands ({plural(wp.proposals.filter((p) => p.status === 'approved').length, 'approved change')}). Pending proposals are not included unless you tick them.</p>
           </div>
         </div>
       </section>
@@ -358,11 +358,11 @@ function ScenarioResult({ title, ours, sc }: { title: string; ours: Summary['fed
     <Card>
       <div className="eyebrow">{title}</div>
       <div className="mt-1 flex items-baseline justify-between">
-        <span className="text-[12.5px] text-fg-2">Total tax</span>
-        <span className="num text-[18px] font-semibold">{money(sc.totalTax)}</span>
+        <span className="text-sm text-fg-2">Total tax</span>
+        <span className="num text-lg font-semibold">{money(sc.totalTax)}</span>
       </div>
-      <div className="flex items-baseline justify-between text-[12.5px]"><span className="text-fg-3">vs ours {money(ours.totalTax)}</span><span className={cx('num font-medium', d > 0 ? 'text-bad' : d < 0 ? 'text-ok' : 'text-fg-3')}>{signed(d)}</span></div>
-      <div className="mt-2 flex items-center gap-2 border-t border-line pt-2 text-[12.5px]">
+      <div className="flex items-baseline justify-between text-sm"><span className="text-fg-3">vs ours {money(ours.totalTax)}</span><span className={cx('num font-medium', d > 0 ? 'text-bad' : d < 0 ? 'text-ok' : 'text-fg-3')}>{signed(d)}</span></div>
+      <div className="mt-2 flex items-center gap-2 border-t border-line pt-2 text-sm">
         <span className="text-fg-3">{o.kind === 'refund' ? 'Refund' : 'Due'} {money(o.amount)}</span>
         <ArrowDown className="size-3 -rotate-90 text-fg-3" />
         <span className="font-medium">{s.kind === 'refund' ? 'Refund' : 'Due'} {money(s.amount)}</span>

@@ -11,11 +11,11 @@ import { Logo } from './Logo';
 function Item({ icon, label, route, count, tone, active }: { icon: ReactNode; label: string; route: Route; count?: number; tone?: 'bad' | 'warn' | 'neutral'; active: boolean }) {
   return (
     <button type="button" onClick={() => store.go(route)} aria-current={active ? 'page' : undefined}
-      className={cx('group flex h-8 w-full items-center gap-2.5 rounded-md px-2 text-[13px] transition-colors', active ? 'bg-panel font-medium text-fg shadow-1' : 'text-fg-2 hover:bg-sunk hover:text-fg')}>
+      className={cx('group flex h-8 w-full items-center gap-2.5 rounded-md px-2 text-base transition-colors', active ? 'bg-panel font-medium text-fg shadow-1' : 'text-fg-2 hover:bg-sunk hover:text-fg')}>
       <span className={cx('text-fg-3', active && 'text-fg')}>{icon}</span>
       <span className="flex-1 truncate text-left">{label}</span>
       {count !== undefined && count > 0 && (
-        <span className={cx('num rounded px-1.5 text-[11px] font-semibold', tone === 'bad' ? 'bg-bad-bg text-bad' : tone === 'warn' ? 'bg-warn-bg text-warn' : 'bg-sunk text-fg-2')}>{count}</span>
+        <span className={cx('num rounded px-1.5 text-cap font-semibold', tone === 'bad' ? 'bg-bad-bg text-bad' : tone === 'warn' ? 'bg-warn-bg text-warn' : 'bg-sunk text-fg-2')}>{count}</span>
       )}
     </button>
   );
@@ -43,8 +43,8 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
       <nav className="flex h-full flex-col gap-1 p-3" onClick={onNavigate}>
         <Logo />
         <div className="mt-4 mb-2 rounded-lg border border-line bg-panel p-3">
-          <div className="text-[13px] font-semibold">{ix.engagement.filers}</div>
-          <div className="text-[12px] text-fg-3">{ix.engagement.year} tax return · {ix.packet.firm.name}</div>
+          <div className="text-base font-semibold">{ix.engagement.filers}</div>
+          <div className="text-sm text-fg-3">{ix.engagement.year} tax return · {ix.packet.firm.name}</div>
         </div>
         <Item icon={<ClipboardList className="size-4" />} label="Your return" route={{ page: 'client' }} active={is('client')} count={qOpen} tone="warn" />
       </nav>
@@ -56,11 +56,11 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
       <Logo />
       <button type="button" onClick={() => go({ page: 'overview' })} className="mt-4 mb-3 rounded-lg border border-line bg-panel p-3 text-left hover:border-line-2">
         <div className="flex items-center justify-between gap-2">
-          <div className="truncate text-[13px] font-semibold">{ix.engagement.fileName}</div>
-          <span className="mono text-[11px] text-fg-3">{ix.packet.packet.client_id}</span>
+          <div className="truncate text-base font-semibold">{ix.engagement.fileName}</div>
+          <span className="mono text-cap text-fg-3">{ix.packet.packet.client_id}</span>
         </div>
-        <div className="text-[12px] text-fg-3">{ix.engagement.year} · {ix.engagement.filingStatusShort} · {ix.engagement.forms}</div>
-        <div className="mt-2 flex items-center gap-1.5 text-[11.5px]">
+        <div className="text-sm text-fg-3">{ix.engagement.year} · {ix.engagement.filingStatusShort} · {ix.engagement.forms}</div>
+        <div className="mt-2 flex items-center gap-1.5 text-cap">
           <span className={cx('size-1.5 rounded-full', filed ? 'bg-ok' : open ? 'bg-warn' : 'bg-ok')} />
           <span className="text-fg-2">{filed ? 'Filed and frozen' : open ? `${open} items before filing` : 'Ready to file'}</span>
         </div>
@@ -82,10 +82,10 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               const active = route.page === 'area' && route.id === a.id;
               return (
                 <button key={a.id} type="button" onClick={() => go({ page: 'area', id: a.id })} aria-current={active ? 'page' : undefined}
-                  className={cx('flex h-7 w-full items-center gap-2.5 rounded-md px-2 text-[12.5px]', active ? 'bg-panel font-medium text-fg shadow-1' : 'text-fg-2 hover:bg-sunk hover:text-fg')}>
+                  className={cx('flex h-7 w-full items-center gap-2.5 rounded-md px-2 text-sm', active ? 'bg-panel font-medium text-fg shadow-1' : 'text-fg-2 hover:bg-sunk hover:text-fg')}>
                   <span className={cx('ml-1 size-2 shrink-0 rounded-full', dot)} />
                   <span className="flex-1 truncate text-left">{def.short}</span>
-                  {a.findingsOpen > 0 && <span className="num text-[11px] text-bad">{a.findingsOpen}</span>}
+                  {a.findingsOpen > 0 && <span className="num text-cap text-bad">{a.findingsOpen}</span>}
                 </button>
               );
             })}
