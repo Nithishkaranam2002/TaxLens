@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ExternalLink, Printer, Search } from 'lucide-react';
+import { ExternalLink, FileClock, PackageOpen, Printer, Search } from 'lucide-react';
 import { type ReactNode, useMemo, useRef, useState } from 'react';
 import { store, useApp, useWorkpaper } from '../../app/store';
 import { AREA, AREAS } from '../../engine/areas';
@@ -56,7 +56,7 @@ export function Records({ tab }: { tab?: string }) {
         </nav>
         <div className="min-w-0">
           <h2 className="mb-1 text-lg font-semibold">{t.label}</h2>
-          {!wp.ours ? <Empty title="No return yet" /> : <Body id={t.id} wp={wp} />}
+          {!wp.ours ? <Empty icon={<FileClock />} title="No return yet">The first engine run is on March 4, 2026. Move the season clock forward to see this record.</Empty> : <Body id={t.id} wp={wp} />}
         </div>
       </div>
     </div>
@@ -356,7 +356,7 @@ function K1({ wp }: { wp: Workpaper }) {
       <Lede>Each K-1 box as read, and the line it landed on. The 2023 Woodworks K-1 (D40) does not land on 2025 lines; it fixes the basis roll-forward.</Lede>
       {docs.map(([d, title]) => {
         const doc = ix.docs.get(d)!;
-        if (!ix.received(d, wp.asOf)) return <Block key={d} title={title}><Empty title={`Not received yet`}>Arrives {date(doc.received_at)}.</Empty></Block>;
+        if (!ix.received(d, wp.asOf)) return <Block key={d} title={title}><Empty icon={<PackageOpen />} title="Not received yet">Arrives {date(doc.received_at)}.</Empty></Block>;
         const evs = ix.evsByDoc.get(d) ?? [];
         return (
           <Block key={d} title={title} right={<Button size="sm" variant="ghost" onClick={() => store.open(`doc:${d}#page1`)}>Open {d}</Button>}>

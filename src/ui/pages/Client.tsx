@@ -48,7 +48,7 @@ function StaffClient() {
       {tab === 'questions' && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-3">
-            {qs.length === 0 ? <Empty title="No questions yet">Ask from any number, check or document, or here.</Empty> : qs.map((q) => {
+            {qs.length === 0 ? <Empty icon={<MessageSquare />} tone="ok" title="No questions yet">Ask from any number, check or document, or here.</Empty> : qs.map((q) => {
               const v = verified(q.id);
               const by = actors.find((a) => a.id === q.by);
               return (

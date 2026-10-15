@@ -1,4 +1,4 @@
-import { Cloud, Copy, Database, Download, Eye, HardDrive, History, RotateCcw, ShieldCheck, Upload } from 'lucide-react';
+import { Cloud, Copy, Database, Download, Eye, EyeOff, HardDrive, History, RotateCcw, ShieldCheck, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { setStandard } from '../../app/actions';
 import { store, useApp, useMe, useWorkpaper } from '../../app/store';
@@ -215,7 +215,7 @@ function Access({ wp }: { wp: Workpaper }) {
   return (
     <div className="space-y-4">
       <Card className="flex items-start gap-3"><Eye className="mt-0.5 size-4 text-fg-3" /><p className="text-base text-fg-2">{RULE.masked} SSNs, account numbers and IP PINs are masked in every view, including the printed document pages; a person with clearance can show one for 15 minutes, and that view is recorded here. Staff without clearance cannot show them at all.</p></Card>
-      {rows.length === 0 ? <Empty title="No identifiers have been shown" /> : (
+      {rows.length === 0 ? <Empty icon={<EyeOff />} tone="ok" title="No identifiers have been shown">Every time someone unmasks an SSN or account number it is logged here.</Empty> : (
         <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full border-collapse text-base">
             <thead><tr className="text-cap text-fg-3">{['When', 'Who', 'What', 'Reason'].map((h) => <th key={h} className="border-b border-line bg-panel-2 px-4 py-2.5 text-left font-semibold">{h}</th>)}</tr></thead>

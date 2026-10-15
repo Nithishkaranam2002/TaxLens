@@ -1,4 +1,4 @@
-import { CalendarClock, CheckCircle2, Download, ExternalLink, FastForward, FileText, Lock, Mail, Play, Send, ShieldAlert, XCircle } from 'lucide-react';
+import { CalendarClock, CheckCircle2, Clock, Download, ExternalLink, FastForward, FileCheck2, FileText, Inbox, Lock, Mail, Play, Send, ShieldAlert, XCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import {
   addNote, clientApprove, decide, fileAmendment, openAmendment, proposeFix, recordPayment, respondNotice, rollForward, setClock, signOff, signOffReturn, transmit,
@@ -296,7 +296,7 @@ function Season({ wp }: { wp: Workpaper }) {
           <p className="mt-0.5 text-fg-2">The packet scripts what happens after July 1. Replay moves the clock forward and performs each step as the person who does it, through the same rules: a step that the rules refuse stops the replay and says why. The clock only moves forward; look back any time from the clock menu.</p>
         </div>
       </Card>
-      {me.role === 'client' || viewAsOf ? <Empty title="Replay is for staff, at the present moment" /> : (
+      {me.role === 'client' || viewAsOf ? <Empty icon={<Clock />} title="Replay is for staff, at the present moment">Return to now (top bar) to run the rest of the season.</Empty> : (
         <Card pad={false}>
           <ol className="divide-y divide-line">
             {ms.map((m, i) => {
@@ -345,7 +345,7 @@ function Amend({ wp }: { wp: Workpaper }) {
   const [reason, setReason] = useState('');
   const f = wp.state.frozen;
   const open = wp.state.amendments.find((a) => !a.filed);
-  if (!f) return <Empty title="Nothing filed yet">Until the return is accepted, change it directly. After filing, changes go into an amendment here.</Empty>;
+  if (!f) return <Empty icon={<FileCheck2 />} title="Nothing filed yet">Until the return is accepted, change it directly. After filing, changes go into an amendment here.</Empty>;
   const original = wp.state.filings[open ? wp.state.filings.length - 1 : Math.max(0, wp.state.filings.length - 2)] ?? f;
   const keys = ['F1040.11', 'F1040.12', 'F1040.15', 'F1040.16', 'F1040.19', 'F1040.23', 'F1040.24', 'F1040.33', 'F540NR.17', 'F540NR.32', 'F540NR.64'];
   const since = open ? wp.proposals.filter((p) => p.at >= open.at) : [];
@@ -401,7 +401,7 @@ function Notices({ wp }: { wp: Workpaper }) {
   const notices = ix.packet.tax_agency_records.notices.filter((n) => ix.received(n.document, wp.asOf));
   const [preview, setPreview] = useState<string | null>(null);
   const pkg = useMemo(() => (preview ? noticePackageHtml(wp, ix, actors, preview) : null), [preview, wp, ix, actors]);
-  if (!notices.length) return <Empty title="No notices">Notices from the IRS or the FTB appear here when they arrive.</Empty>;
+  if (!notices.length) return <Empty icon={<Inbox />} tone="ok" title="No notices">Notices from the IRS or the FTB appear here when they arrive.</Empty>;
   return (
     <div className="space-y-4">
       {notices.map((n) => {

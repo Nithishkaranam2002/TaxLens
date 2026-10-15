@@ -1,9 +1,9 @@
-import { Search } from 'lucide-react';
+import { CheckCheck, Search, SearchX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { store, useWorkpaper } from '../../app/store';
 import { AREA } from '../../engine/areas';
 import { GROUP_ORDER } from '../../engine/checks';
-import { Card, Empty, Input, PageHead, SectionHead, Segmented, StatusPill, cx } from '../kit';
+import { Button, Card, Empty, Input, PageHead, SectionHead, Segmented, StatusPill, cx } from '../kit';
 import { date } from '../format';
 import { Stat } from './common';
 
@@ -37,7 +37,9 @@ export function Checks({ focus }: { focus?: string }) {
         <Segmented value={status} onChange={setStatus} options={[{ id: 'attention', label: 'Need attention' }, { id: 'pass', label: 'Pass or resolved' }, { id: 'all', label: 'All' }]} />
         <div className="relative ml-auto w-60"><Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-fg-3" /><Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Find a check" className="pl-8" aria-label="Find a check" /></div>
       </div>
-      {rows.length === 0 ? <Empty title="Nothing here">{status === 'attention' ? 'Every check passes or its finding is resolved.' : 'No checks match.'}</Empty> : (
+      {rows.length === 0 ? <Empty icon={status === 'attention' && !q ? <CheckCheck /> : <SearchX />} tone={status === 'attention' && !q ? 'ok' : 'neutral'} title={status === 'attention' && !q ? 'Nothing needs attention' : 'No checks match'}
+        action={q || status !== 'all' ? <Button size="sm" onClick={() => { setQ(''); setStatus('all'); }}>Show all checks</Button> : undefined}>
+        {status === 'attention' && !q ? 'Every check passes or its finding is resolved.' : 'Try fewer words or another status.'}</Empty> : (
         <div className="space-y-6">
           {GROUP_ORDER.map((g) => {
             const list = rows.filter((c) => c.group === g);

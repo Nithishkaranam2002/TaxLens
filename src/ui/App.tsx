@@ -1,4 +1,4 @@
-import { History, X } from 'lucide-react';
+import { FileWarning, History, RotateCw, X } from 'lucide-react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { store, useApp, useMe } from '../app/store';
 import { DocumentViewer } from './doc/DocumentViewer';
@@ -116,7 +116,7 @@ function Shell() {
         )}
         <main className="mx-auto w-full max-w-[1464px] flex-1 py-6 md:py-8" style={{ paddingLeft: 'max(16px, env(safe-area-inset-left, 0px))', paddingRight: 'max(16px, env(safe-area-inset-right, 0px))' }}>
           <div className="md:px-2 lg:px-4">
-            <Suspense fallback={<div className="flex h-40 items-center justify-center"><Spinner /></div>}>{page}</Suspense>
+            <Suspense fallback={<PageSkeleton />}>{page}</Suspense>
           </div>
         </main>
       </div>
@@ -131,21 +131,47 @@ function Shell() {
 
 function Loading() {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4">
-      <Logo />
-      <div className="flex items-center gap-2 text-base text-fg-3"><Spinner />Loading the packet and running the checks…</div>
+    <div className="flex h-full flex-col items-center justify-center gap-6 p-6 anim-fade" role="status" aria-live="polite">
+      <Logo large />
+      <div className="w-full max-w-sm rounded-xl border border-line bg-panel p-5">
+        <div className="flex items-center gap-3 text-base font-medium"><Spinner />Opening the workpaper</div>
+        <ul className="mt-3 space-y-1.5 pl-7 text-sm text-fg-2">
+          <li>Loading the packet as delivered and checking its SHA-256</li>
+          <li>Re-reading every extracted value against its page</li>
+          <li>Recomputing the return and running the checks</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/** Shown while a page's code loads: the shape of a page, not a spinner. */
+function PageSkeleton() {
+  const bar = 'rounded-md bg-sunk animate-pulse';
+  return (
+    <div aria-hidden className="space-y-8">
+      <div className="space-y-3"><div className={`${bar} h-4 w-40`} /><div className={`${bar} h-8 w-72`} /><div className={`${bar} h-4 w-[min(560px,100%)]`} /></div>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {[0, 1].map((i) => <div key={i} className="h-40 rounded-xl border border-line bg-panel p-5"><div className={`${bar} h-4 w-32`} /><div className={`${bar} mt-4 h-10 w-48`} /></div>)}
+      </div>
+      <div className="rounded-xl border border-line bg-panel">
+        {[0, 1, 2, 3, 4].map((i) => <div key={i} className="flex items-center gap-4 border-b border-line px-5 py-4 last:border-0"><div className={`${bar} size-5 rounded-full`} /><div className={`${bar} h-4 flex-1`} /><div className={`${bar} h-4 w-20`} /></div>)}
+      </div>
     </div>
   );
 }
 
 function LoadError({ error }: { error: string | null }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-      <Logo />
-      <h1 className="text-lg font-semibold">The packet could not be opened</h1>
-      <p className="max-w-[60ch] text-base text-fg-2">{error}</p>
-      <p className="max-w-[60ch] text-sm text-fg-3">TaxLens loads packet.json from the same folder as the app. Check that the file is published next to index.html and is the packet as delivered.</p>
-      <Button onClick={() => location.reload()}>Try again</Button>
+    <div className="flex h-full flex-col items-center justify-center gap-6 p-6">
+      <Logo large />
+      <div className="flex w-full max-w-lg flex-col items-center gap-3 rounded-xl border border-line bg-panel px-6 py-10 text-center">
+        <span className="flex size-11 items-center justify-center rounded-full bg-bad-bg text-bad"><FileWarning className="size-5" /></span>
+        <h1 className="text-lg font-semibold">The packet could not be opened</h1>
+        {error && <p className="mono max-w-[60ch] rounded-md bg-sunk px-3 py-2 text-sm text-fg-2">{error}</p>}
+        <p className="max-w-[60ch] text-sm text-fg-2">TaxLens loads packet.json from the same folder as the app. Check that the file is published next to index.html and is the packet as delivered.</p>
+        <Button variant="primary" icon={<RotateCw className="size-4" />} onClick={() => location.reload()}>Try again</Button>
+      </div>
     </div>
   );
 }

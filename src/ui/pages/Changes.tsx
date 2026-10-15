@@ -1,4 +1,4 @@
-import { ArrowDown, Download, GitCompareArrows, Wand2 } from 'lucide-react';
+import { ArrowDown, Download, Equal, FileClock, GitCompareArrows, Wand2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { type Result, proposeFix } from '../../app/actions';
 import { store, useApp, useMe, useWorkpaper } from '../../app/store';
@@ -61,7 +61,7 @@ function Ledger({ wp }: { wp: Workpaper }) {
     const rows = wp.proposals.map((p) => [p.seq, p.status, p.area, q(p.title), actors.find((a) => a.id === p.by)?.name ?? p.by, p.at, q(p.decisions.filter((d) => d.decision === 'approve').map((d) => actors.find((a) => a.id === d.by)?.name).join('; ')), p.approvedAt ?? '', p.effect.fedTax, p.effect.caTax, q(p.authority), q(p.evidence.join(' ')), q(p.reason)].join(','));
     download('taxlens-adjustments.csv', [head.join(','), ...rows].join('\n'), 'text/csv');
   };
-  if (!e || !o) return <Empty title="No return yet" />;
+  if (!e || !o) return <Empty icon={<FileClock />} title="No return yet">The first engine run is on March 4, 2026.</Empty>;
   return (
     <div className="space-y-6">
       <section>
@@ -75,7 +75,7 @@ function Ledger({ wp }: { wp: Workpaper }) {
       <section>
         <SectionHead title="Adjustment ledger" sub="Effects shown are recomputed when proposed. Nothing is deleted: rejected and withdrawn changes stay in the record."
           right={<><Select value={show} onChange={(v) => setShow(v as 'active' | 'all')} options={[{ id: 'active', label: 'Proposed and approved' }, { id: 'all', label: 'Include rejected and withdrawn' }]} className="w-56" /><Button size="sm" icon={<Download className="size-3.5" />} onClick={exportCsv}>CSV</Button></>} />
-        {list.length === 0 ? <Empty title="No changes yet">Propose a correction from a check, or open any number and propose a change to it.</Empty> : (
+        {list.length === 0 ? <Empty icon={<GitCompareArrows />} title="No changes yet" action={<Button size="sm" onClick={() => store.go({ page: 'inbox' })}>Open items</Button>}>Propose a correction from a check, or open any number and propose a change to it.</Empty> : (
           <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
             <table className="w-full min-w-[820px] border-collapse text-base">
               <thead>
@@ -204,7 +204,7 @@ function Versions({ wp }: { wp: Workpaper }) {
       </Card>
       {engineChanges && <p className="text-sm text-fg-2"><span className="font-medium">Engine {engineChanges.version}:</span> {engineChanges.trigger}</p>}
       <p className="text-sm text-fg-3">{plural(keys.length, 'line')} {only ? 'differ' : 'shown'}.</p>
-      {keys.length === 0 ? <Empty title="No differences">These two versions agree on every line.</Empty> : (
+      {keys.length === 0 ? <Empty icon={<Equal />} tone="ok" title="No differences">These two versions agree on every line.</Empty> : (
         <div className="max-h-[70vh] overflow-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[720px] border-collapse text-base">
             <thead>
@@ -285,7 +285,7 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
     });
   };
 
-  if (!wp.version || !ours || !scenario) return <Empty title="No return yet" />;
+  if (!wp.version || !ours || !scenario) return <Empty icon={<FileClock />} title="No return yet">The first engine run is on March 4, 2026.</Empty>;
   return (
     <div className="space-y-6">
       <section>

@@ -79,7 +79,7 @@ export function ActivityPage() {
         <Checkbox checked={quiet} onChange={setQuiet} label="Clock and bookkeeping" />
         <div className="relative ml-auto w-60"><Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-fg-3" /><Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search the log" className="pl-8" aria-label="Search the log" /></div>
       </div>
-      {shown.length === 0 ? <Empty title="Nothing recorded yet" icon={<FileInput className="size-5" />}>Actions appear here as people work. Load the recorded season from the Firm page to see a full one.</Empty> : (
+      {shown.length === 0 ? <Empty title="Nothing recorded yet" icon={<FileInput />}>Actions appear here as people work. Load the recorded season from the Firm page to see a full one.</Empty> : (
         <div className="space-y-5">
           {[...byDay.entries()].map(([d, list]) => (
             <section key={d}>

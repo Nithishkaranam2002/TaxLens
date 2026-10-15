@@ -1,10 +1,10 @@
-import { AlertTriangle, Search } from 'lucide-react';
+import { AlertTriangle, Search, SearchX } from 'lucide-react';
 import { useState } from 'react';
 import { store, useApp, useWorkpaper } from '../../app/store';
 import { AREA, AREAS } from '../../engine/areas';
 import type { DocDisposition } from '../../engine/workpaper';
 import { date, plural } from '../format';
-import { Badge, Checkbox, Empty, Input, PageHead, Select, StatusPill, cx } from '../kit';
+import { Badge, Button, Checkbox, Empty, Input, PageHead, Select, StatusPill, cx } from '../kit';
 import { RefChip } from '../Ref';
 import { Stat } from './common';
 
@@ -60,7 +60,7 @@ export function Documents() {
         </div>
       </div>
 
-      {rows.length === 0 ? <Empty title="No documents match" /> : (
+      {rows.length === 0 ? <Empty icon={<SearchX />} title="No documents match" action={<Button size="sm" onClick={() => { setGroup('all'); setArea('all'); setQ(''); setProblems(false); }}>Clear filters</Button>}>Try another group or area, or fewer words.</Empty> : (
         <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full min-w-[860px] border-collapse text-base">
             <thead>

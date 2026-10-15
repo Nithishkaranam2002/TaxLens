@@ -1,4 +1,4 @@
-import { Clock3, FileText, PenLine, RotateCcw, Search, ShieldCheck, Undo2 } from 'lucide-react';
+import { Clock3, FileText, MapPinOff, PenLine, RotateCcw, Search, SearchX, ShieldCheck, Undo2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { assign, logTime, signOff, verify, withdrawSignOff } from '../../app/actions';
 import { store, useApp, useMe, useWorkpaper } from '../../app/store';
@@ -13,7 +13,7 @@ export function AreaPage({ id }: { id: AreaId }) {
   const wp = useWorkpaper();
   const def = AREA[id];
   const a = wp.areas.find((x) => x.id === id);
-  if (!def || !a) return <Empty title="Unknown area">Pick an area from the sidebar.</Empty>;
+  if (!def || !a) return <Empty icon={<MapPinOff />} title="Unknown area" action={<Button size="sm" onClick={() => store.go({ page: 'overview' })}>Go to Overview</Button>}>Pick an area from the sidebar.</Empty>;
   const findings = wp.findings.filter((f) => f.check.area === id);
   const checks = wp.checks.filter((c) => c.area === id);
   const changes = wp.proposals.filter((p) => p.area === id && p.status !== 'withdrawn');
@@ -294,7 +294,7 @@ function LinesTable({ id }: { id: AreaId }) {
           <Button size="sm" variant="ghost" onClick={() => setSel(new Set())}>Clear</Button>
         </div>
       )}
-      {rows.length === 0 ? <Empty title="No lines match" /> : (
+      {rows.length === 0 ? <Empty icon={<SearchX />} title="No lines match" action={<Button size="sm" onClick={() => { setQ(''); setOnly('all'); }}>Clear filters</Button>}>Try fewer words or show all lines.</Empty> : (
         <div className="overflow-x-auto rounded-xl border border-line bg-panel scroll-thin">
           <table className="w-full border-collapse text-base">
             <thead>

@@ -1,4 +1,4 @@
-import { BadgeCheck, CircleCheck, Gavel, ListChecks, Scale, ShieldAlert, Sparkles, Stethoscope, TrendingUp } from 'lucide-react';
+import { BadgeCheck, CircleCheck, Cpu, Gavel, ListChecks, MessageSquareDashed, Scale, ShieldAlert, Sparkles, Stethoscope, TrendingUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import {
   approveJudgment, completeDueDiligence, disposeDiag, explainVariance, markStep, recordJudgment, signOff, signOffReturn, withdrawSignOff,
@@ -134,7 +134,7 @@ function NotesTab({ wp }: { wp: Workpaper }) {
         <p className="text-sm text-fg-3">{RULE.notesBlock} A review note is cleared by the reviewer who wrote it, or the partner. Notes are added from any number, check, change or document.</p>
         <Segmented value={show} onChange={setShow} options={[{ id: 'open', label: 'Open' }, { id: 'all', label: 'All' }]} />
       </div>
-      {notes.length === 0 ? <Empty title="No open notes">Add one from any number's proof.</Empty> : (
+      {notes.length === 0 ? <Empty icon={<MessageSquareDashed />} tone="ok" title="No open notes">Add one from any number's proof.</Empty> : (
         <Card pad={false}>
           <ul className="divide-y divide-line">
             {notes.map((n) => {
@@ -361,7 +361,7 @@ function Diagnostics({ wp }: { wp: Workpaper }) {
   const [open, setOpen] = useState<string | null>(null);
   const [disp, setDisp] = useState<'resolved' | 'accepted' | 'outside-scope'>('accepted');
   const [reason, setReason] = useState('');
-  if (!wp.diagnostics.length) return <Empty title="No engine diagnostics" />;
+  if (!wp.diagnostics.length) return <Empty icon={<Cpu />} tone="ok" title="No engine diagnostics">The engine reported nothing for this version.</Empty>;
   return (
     <div>
       <p className="mb-3 text-sm text-fg-3">Messages from the engine's {wp.version?.version} run. Most are resolved automatically by the work that answers them; the rest need a recorded disposition.</p>
