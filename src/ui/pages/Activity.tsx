@@ -58,7 +58,7 @@ export function ActivityPage() {
     <div>
       <PageHead eyebrow="Filing and after" title="Activity" sub="The workpaper is an append-only log. Every action by every person, with nothing edited or deleted: undo adds a reversing entry. Look at the whole file as it stood on any day."
         right={<>
-          <Button size="sm" icon={<Download className="size-3.5" />} onClick={() => download(`tickmark-log-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify({ packetSha256: ix.sha256, exported: new Date().toISOString(), events: all }, null, 2))}>Export log</Button>
+          <Button size="sm" icon={<Download className="size-3.5" />} onClick={() => download(`taxlens-log-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify({ packetSha256: ix.sha256, exported: new Date().toISOString(), events: all }, null, 2))}>Export log</Button>
         </>} />
       <div className="mb-5 grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.4fr)]">
         <Card><div className="text-[12px] text-fg-3">Actions recorded</div><div className="num text-[20px] font-semibold">{all.length.toLocaleString('en-US')}</div><div className="text-[12px] text-fg-3">by {plural(people.size, 'person', 'people')} · {wp.state.reverted.size} undone</div></Card>

@@ -1,4 +1,4 @@
-// The catalog of corrections Tickmark can propose. Each one is produced by a check, carries its
+// The catalog of corrections TaxLens can propose. Each one is produced by a check, carries its
 // evidence and authority, and is expressed as edits on the engine's leaf lines so the independent
 // recompute can rebuild the return exactly. Amounts come from the packet, never typed in.
 

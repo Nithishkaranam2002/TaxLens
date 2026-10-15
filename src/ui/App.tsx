@@ -144,7 +144,7 @@ function LoadError({ error }: { error: string | null }) {
       <Logo />
       <h1 className="text-[18px] font-semibold">The packet could not be opened</h1>
       <p className="max-w-[60ch] text-[13px] text-fg-2">{error}</p>
-      <p className="max-w-[60ch] text-[12.5px] text-fg-3">Tickmark loads packet.json from the same folder as the app. Check that the file is published next to index.html and is the packet as delivered.</p>
+      <p className="max-w-[60ch] text-[12.5px] text-fg-3">TaxLens loads packet.json from the same folder as the app. Check that the file is published next to index.html and is the packet as delivered.</p>
       <Button onClick={() => location.reload()}>Try again</Button>
     </div>
   );

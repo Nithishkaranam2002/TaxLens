@@ -1,4 +1,4 @@
-# Tickmark — a web-native tax workpaper
+# TaxLens — a web-native tax workpaper
 
 A working prototype for the case study *Redesign the Tax Workpaper*, built on the Okafor-Lindqvist 2025 packet (married filing jointly, Form 1040 plus a part-year California 540NR).
 
@@ -11,7 +11,7 @@ A working prototype for the case study *Redesign the Tax Workpaper*, built on th
 
 ## What it found
 
-The engine's arithmetic is right; its inputs and a few of its rules are not. Tickmark's independent recompute reproduces all three engine runs and all five engine what-ifs to the dollar, which is what lets it recompute the corrected return exactly instead of estimating it.
+The engine's arithmetic is right; its inputs and a few of its rules are not. TaxLens's independent recompute reproduces all three engine runs and all five engine what-ifs to the dollar, which is what lets it recompute the corrected return exactly instead of estimating it.
 
 | | Engine as delivered | After the corrections |
 |---|---:|---:|

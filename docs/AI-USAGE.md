@@ -4,7 +4,7 @@ The brief said to use any tools, including AI, and to say how. Here is exactly h
 
 ## The short version
 
-I built Tickmark with **Claude** (Anthropic) working as an agent in a long session: it read the brief and the packet, proposed the design, wrote the code, the tests and these documents, and ran the app in a real browser to test it. I set the direction and the bar, made the product decisions, reviewed the result, deployed it and recorded the walkthrough myself.
+I built TaxLens with **Claude** (Anthropic) working as an agent in a long session: it read the brief and the packet, proposed the design, wrote the code, the tests and these documents, and ran the app in a real browser to test it. I set the direction and the bar, made the product decisions, reviewed the result, deployed it and recorded the walkthrough myself.
 
 I am saying this plainly because the job is about putting AI to work on tax workflows, and how the AI was directed and checked is part of the answer.
 

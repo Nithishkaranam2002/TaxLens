@@ -200,7 +200,7 @@ function AssignModal({ open, onClose, id }: { open: boolean; onClose: () => void
             <Select className="flex-1" value={vals[l]} onChange={(v) => setVals((s) => ({ ...s, [l]: v }))} options={staffFor(l).map((a) => ({ id: a.id, label: `${a.name}${a.clearance ? '' : ' (no clearance)'}` }))} />
           </label>
         ))}
-        <p className="text-[12px] text-fg-3">The person who prepares an area cannot also review it; Tickmark refuses that sign-off whoever is assigned.</p>
+        <p className="text-[12px] text-fg-3">The person who prepares an area cannot also review it; TaxLens refuses that sign-off whoever is assigned.</p>
       </div>
     </Modal>
   );

@@ -1,6 +1,6 @@
 # Errors found, and how the design surfaced them
 
-The engine adds correctly. Tickmark's independent recompute reproduces every numeric line of engine v1, v2 and v3, and all five engine what-ifs, to the dollar (check `CHK-RECOMPUTE`; 133 sum lines re-footed in `CHK-REFOOT`). What is wrong is what went **into** the engine: values misread from documents, documents counted twice, the client's memory used where a record exists, and a few rules applied to the wrong facts.
+The engine adds correctly. TaxLens's independent recompute reproduces every numeric line of engine v1, v2 and v3, and all five engine what-ifs, to the dollar (check `CHK-RECOMPUTE`; 133 sum lines re-footed in `CHK-REFOOT`). What is wrong is what went **into** the engine: values misread from documents, documents counted twice, the client's memory used where a record exists, and a few rules applied to the wrong facts.
 
 ## The result
 
@@ -18,7 +18,7 @@ Effects below are each correction alone on the engine's return. Together they ar
 
 ## Corrections (23)
 
-| # | What was wrong | Evidence | How Tickmark surfaced it | Federal | California |
+| # | What was wrong | Evidence | How TaxLens surfaced it | Federal | California |
 |---|---|---|---|---:|---:|
 | 1 | Three RSU lots carried **zero basis**: Northlake left basis blank (noncovered) and the pipeline read the blanks as 0.00 with 0.98 confidence. 47,620 of wages taxed twice. | Corvane supplemental statement (D11); W-2 box 14 RSU 38,200 | Re-read of every value against its page, and a tie of RSU lots to the supplemental statement and the W-2 | −15,449 | −3,304 |
 | 2 | **Form 1099-K counted twice.** The Paywell 12,400 is Atlas card payments already in the books. | QuickBooks deposit detail (D15), 1099-K (D21), Atlas 1099-NEC (D17) | Books rebuilt to Schedule C; receipts tied to every information return | −4,236 | −494 |

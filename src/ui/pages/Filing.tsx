@@ -322,7 +322,7 @@ function Season({ wp }: { wp: Workpaper }) {
         </Card>
       )}
       <section>
-        <SectionHead title="The packet's timeline" sub="As scripted. Tickmark's replay follows it, except where the corrected return changes the outcome." />
+        <SectionHead title="The packet's timeline" sub="As scripted. TaxLens's replay follows it, except where the corrected return changes the outcome." />
         <Card pad={false}>
           <ul className="divide-y divide-line">
             {packetTl.map((t) => (

@@ -11,7 +11,7 @@ Before recording: open the live app in a fresh browser window (or Firm → Data 
 **Do:** Show the welcome screen.
 
 **Say:**
-"Hi, I am Nithish. This is Tickmark, my answer to the redesign the tax workpaper case study. It is built on the Okafor Lindqvist packet: a married couple who moved from Sacramento to Austin in the middle of the year, with two W-2 jobs, a design studio, rentals, a condo sale, three brokerages, crypto, K-1s and a Swedish account.
+"Hi, I am Nithish. This is TaxLens, my answer to the redesign the tax workpaper case study. It is built on the Okafor Lindqvist packet: a married couple who moved from Sacramento to Austin in the middle of the year, with two W-2 jobs, a design studio, rentals, a condo sale, three brokerages, crypto, K-1s and a Swedish account.
 The main idea is simple. Every number carries its proof. You click any amount and you see how it was built, which document it came from, who checked it and what changed it."
 
 ## 2. The core idea in one click (1 minute)
@@ -28,7 +28,7 @@ So a reviewer never has to go and hunt for the source. The proof is sitting on t
 **Do:** Go to *Checks*. Open the RSU check, then the mileage check.
 
 **Say:**
-"The engine's arithmetic is actually correct. I proved that first. Tickmark has its own independent recompute of the return, and it matches all three engine runs and all five engine what-ifs to the dollar.
+"The engine's arithmetic is actually correct. I proved that first. TaxLens has its own independent recompute of the return, and it matches all three engine runs and all five engine what-ifs to the dollar.
 So the problem is not the maths. The problem is what went into the engine. That is why the checks do not trust the engine. They go back to the documents.
 For example, this one re-read every value against its printed page. Three RSU lots were read as zero basis because the broker left the field blank. The supplemental statement has the real basis. Without this, about 47,000 of wages gets taxed twice.
 This one compares the pages of the mileage log. Page 3 is a second scan of page 2, so the engine counted 3,700 miles two times.
@@ -74,7 +74,7 @@ Now he approves the home office change. Look at the Business area. Priya had sig
 
 **Say:**
 "The packet scripts what happens after July. Replay moves the clock forward and does each step as the right person, through the same rules.
-In the script, the IRS rejects the e-file because of Theo's SSN. Tickmark caught that in March by comparing with last year's return, so here it is accepted the first time.
+In the script, the IRS rejects the e-file because of Theo's SSN. TaxLens caught that in March by comparing with last year's return, so here it is accepted the first time.
 After acceptance the return is frozen. Any later change has to be an amendment on top of it, with review and the client's signature again.
 And in 2028 the IRS sends a letter. The response package is built only from the frozen record, with the documents and the audit trail, and it has a fingerprint so we can prove what was sent."
 

@@ -40,7 +40,7 @@ export function Overview() {
             <ResultCard title="California" engine={wp.summary.engine!.california} ours={wp.summary.ours!.california} projected={pending.length ? wp.summary.projected!.california : null} taxKey="F540NR.64" balKey="F540NR.97" penaltyKey="FTB5805.penalty" />
           </div>
           <p className="-mt-3 text-[12.5px] text-fg-3">
-            “Ours” is the engine's return with the {plural(approved.length, 'approved change')} applied, rebuilt line by line by Tickmark's independent recompute, which reproduces every engine run to the dollar.
+            “Ours” is the engine's return with the {plural(approved.length, 'approved change')} applied, rebuilt line by line by TaxLens's independent recompute, which reproduces every engine run to the dollar.
             {pending.length > 0 && <> {plural(pending.length, 'more change')} {pending.length === 1 ? 'is' : 'are'} proposed and shown only as a projection until approved.</>}
           </p>
         </>

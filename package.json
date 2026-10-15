@@ -1,8 +1,8 @@
 {
-  "name": "tickmark",
+  "name": "taxlens",
   "private": true,
   "version": "1.0.0",
-  "description": "Tickmark: a web-native tax workpaper where every number carries its proof.",
+  "description": "TaxLens: a web-native tax workpaper where every number carries its proof.",
   "type": "module",
   "scripts": {
     "dev": "vite",

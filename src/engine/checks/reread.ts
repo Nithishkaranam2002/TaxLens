@@ -107,7 +107,7 @@ export function checkUnreadPages(x: CheckCtx): CheckResult {
       if (amounts === 0 || evs.length > 0) continue;
       let finding = '';
       let status: 'ok' | 'bad' | 'info' = 'info';
-      if (d.id === 'D28' && pg.page === 2) { finding = 'Summary read by Tickmark; ties to the five lots (see broker tie-out).'; status = 'ok'; }
+      if (d.id === 'D28' && pg.page === 2) { finding = 'Summary read by TaxLens; ties to the five lots (see broker tie-out).'; status = 'ok'; }
       else if (d.id === 'D14' && pg.page === 2) { finding = 'Balance sheet: equipment 38,000.00 agrees to the Vantage invoice; book depreciation 7,600.00 is replaced by tax depreciation.'; status = 'ok'; }
       else if (/M18/.test(pg.printed_content)) {
         const superseded = x.version?.documents_superseded.includes(d.id);
@@ -124,7 +124,7 @@ export function checkUnreadPages(x: CheckCtx): CheckResult {
     method: 'Lists every page that prints dollar amounts but has no extracted value, then reads it.',
     status: missing ? 'fail' : 'pass',
     summary: missing ? 'Page 32 of the corrected Meridian 1099 ("Additional transactions") holds a sale that is not on the return.' : 'Every page with amounts was read or accounted for.',
-    tables: [{ columns: ['Page', 'Document', 'Amounts printed', 'What Tickmark found'], rows }],
+    tables: [{ columns: ['Page', 'Document', 'Amounts printed', 'What TaxLens found'], rows }],
     refs: rows.map((r) => r.ref!).filter(Boolean),
     fixes: missing ? ['FIX-M18'] : [],
   };

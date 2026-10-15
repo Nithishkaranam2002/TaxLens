@@ -329,7 +329,7 @@ function Data() {
       <section>
         <SectionHead title="Export and import" />
         <Card className="flex flex-wrap items-center gap-2">
-          <Button size="sm" icon={<Download className="size-3.5" />} onClick={() => download(`tickmark-log-${ws}.json`, JSON.stringify({ packetSha256: ix.sha256, exported: new Date().toISOString(), events }, null, 2))}>Export the log</Button>
+          <Button size="sm" icon={<Download className="size-3.5" />} onClick={() => download(`taxlens-log-${ws}.json`, JSON.stringify({ packetSha256: ix.sha256, exported: new Date().toISOString(), events }, null, 2))}>Export the log</Button>
           <Button size="sm" variant="ghost" icon={<Upload className="size-3.5" />} onClick={() => file.current?.click()}>Import a log</Button>
           <input ref={file} type="file" accept="application/json,.json" className="hidden" onChange={async (e) => {
             const f = e.target.files?.[0]; e.target.value = '';

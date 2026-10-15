@@ -30,7 +30,7 @@ export function Welcome() {
           <Logo />
           <h1 id="welcome-title" className="serif mt-4 text-[26px] leading-tight font-semibold tracking-[-0.01em]">Every number carries its proof.</h1>
           <p className="mt-2 max-w-[62ch] text-[14px] text-fg-2">
-            Tickmark is a web-native workpaper for the {ix.engagement.fileName} {ix.engagement.year} return. Click any amount to see how it was built, the exact field on the page it came from, who checked it, and what changed it and why.
+            TaxLens is a web-native workpaper for the {ix.engagement.fileName} {ix.engagement.year} return. Click any amount to see how it was built, the exact field on the page it came from, who checked it, and what changed it and why.
           </p>
           <div className="mt-4 grid grid-cols-2 gap-2 text-[12.5px] sm:grid-cols-4">
             <Fact n={p.documents.length} label="documents in the packet" />

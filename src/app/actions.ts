@@ -299,7 +299,7 @@ export function transmit(x: ActCtx): Result {
   if (!theoFixed) return refuse('Fix Theo\'s SSN before transmitting again (rejection R0000-504-02).');
   if (okFed) {
     out.push(ev(x, 'efile.transmit', { jurisdiction: 'federal', submissionId: okFed.submission_id, returnHash: hash }, batch));
-    out.push(ev(x, 'efile.result', { jurisdiction: 'federal', submissionId: okFed.submission_id, status: 'accepted', errors: [], ...(prevFed.length ? {} : { avoided: firstFed ? `The scripted season shows this return rejected on ${fmtDate(firstFed.date)} for Theo's TIN (${firstFed.errors?.[0]?.code}). Tickmark corrected the TIN before transmission, so it was accepted on the first attempt.` : undefined }) }, batch, 1000));
+    out.push(ev(x, 'efile.result', { jurisdiction: 'federal', submissionId: okFed.submission_id, status: 'accepted', errors: [], ...(prevFed.length ? {} : { avoided: firstFed ? `The scripted season shows this return rejected on ${fmtDate(firstFed.date)} for Theo's TIN (${firstFed.errors?.[0]?.code}). TaxLens corrected the TIN before transmission, so it was accepted on the first attempt.` : undefined }) }, batch, 1000));
   }
   if (okCa) {
     out.push(ev(x, 'efile.transmit', { jurisdiction: 'california', submissionId: okCa.submission_id, returnHash: hash }, batch, 2000));

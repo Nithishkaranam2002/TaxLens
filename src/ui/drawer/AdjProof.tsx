@@ -56,7 +56,7 @@ export function AdjProof({ id }: { id: string }) {
             {e.caBalance !== e.caTax && <Effect label="California amount due" v={e.caBalance} />}
             {e.fedPenalty !== 0 && <Effect label="Federal penalty" v={e.fedPenalty} />}
           </div>
-          <p className="mt-2 text-[12px] text-fg-3">Recomputed: Tickmark rebuilds the whole return with and without this change. The packet's per-dollar rate method is shown for comparison.</p>
+          <p className="mt-2 text-[12px] text-fg-3">Recomputed: TaxLens rebuilds the whole return with and without this change. The packet's per-dollar rate method is shown for comparison.</p>
         </Section>
       )}
 

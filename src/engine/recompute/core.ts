@@ -1,7 +1,7 @@
 // Shared helpers for the independent recompute ("shadow engine").
 // The recompute rebuilds every derived line of a return version from its leaf inputs and the
 // engine_reference parameters. It reproduces engine v1, v2 and v3 to the dollar (see tests), which
-// is what lets Tickmark recompute the corrected return exactly instead of estimating it.
+// is what lets TaxLens recompute the corrected return exactly instead of estimating it.
 
 import type { EngineParams, ReturnLine, ReturnVersion } from '../../data/packet';
 import { group } from '../num';

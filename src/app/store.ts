@@ -226,7 +226,7 @@ class Store {
 
   /** Import a log exported from another browser (Firm → Data). */
   importLog(events: AnyEvent[]) {
-    if (!Array.isArray(events) || events.some((e) => !e || typeof e.id !== 'string' || typeof e.type !== 'string' || typeof e.at !== 'string')) throw new Error('This file is not a Tickmark activity log.');
+    if (!Array.isArray(events) || events.some((e) => !e || typeof e.id !== 'string' || typeof e.type !== 'string' || typeof e.at !== 'string')) throw new Error('This file is not a TaxLens activity log.');
     this.replaceAll(events);
     this.chan?.post({ type: 'events', ws: this.s.workspace, events });
     if (this.s.mode === 'shared') void this.push(events);

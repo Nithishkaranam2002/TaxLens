@@ -59,7 +59,7 @@ function Ledger({ wp }: { wp: Workpaper }) {
     const head = ['seq', 'status', 'area', 'title', 'proposed_by', 'proposed_at', 'approved_by', 'approved_at', 'fed_tax_effect', 'ca_tax_effect', 'authority', 'evidence', 'reason'];
     const q = (s: string) => `"${s.replace(/"/g, '""')}"`;
     const rows = wp.proposals.map((p) => [p.seq, p.status, p.area, q(p.title), actors.find((a) => a.id === p.by)?.name ?? p.by, p.at, q(p.decisions.filter((d) => d.decision === 'approve').map((d) => actors.find((a) => a.id === d.by)?.name).join('; ')), p.approvedAt ?? '', p.effect.fedTax, p.effect.caTax, q(p.authority), q(p.evidence.join(' ')), q(p.reason)].join(','));
-    download('tickmark-adjustments.csv', [head.join(','), ...rows].join('\n'), 'text/csv');
+    download('taxlens-adjustments.csv', [head.join(','), ...rows].join('\n'), 'text/csv');
   };
   if (!e || !o) return <Empty title="No return yet" />;
   return (
@@ -289,7 +289,7 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
   return (
     <div className="space-y-6">
       <section>
-        <SectionHead title="Engine what-ifs" sub="The engine's own alternatives. Tickmark reproduces each one exactly, then reruns it on our corrected return, where the answer can differ." />
+        <SectionHead title="Engine what-ifs" sub="The engine's own alternatives. TaxLens reproduces each one exactly, then reruns it on our corrected return, where the answer can differ." />
         <div className="overflow-x-auto rounded-lg border border-line bg-panel shadow-1 scroll-thin">
           <table className="w-full min-w-[760px] border-collapse text-[13px]">
             <thead>

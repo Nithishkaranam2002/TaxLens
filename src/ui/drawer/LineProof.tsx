@@ -75,7 +75,7 @@ export function LineProof({ k }: { k: string }) {
         )}
         {formula && (
           <div className={cx('rounded-lg border px-3 py-2 text-[12.5px]', changed ? 'border-info/40 bg-info-bg/50' : 'border-line bg-panel-2')}>
-            <div className="mb-0.5 flex items-center gap-1.5 font-medium"><GitBranch className="size-3.5" />Tickmark recompute</div>
+            <div className="mb-0.5 flex items-center gap-1.5 font-medium"><GitBranch className="size-3.5" />TaxLens recompute</div>
             <div className="text-fg-2">{formula.expr}</div>
             <div className="mt-1 text-fg-3">{changed ? `Differs from the engine because of approved changes (${signed((ours as number) - (base as number))}).` : wp.ours?.derived.has(k) ? 'Same result as the engine.' : ''}</div>
           </div>

@@ -1,12 +1,12 @@
-# Tickmark: every number carries its proof
+# TaxLens: every number carries its proof
 
 ## The idea
 
 A paper workpaper earns trust through tickmarks: a small mark beside a number that says *I agreed this to the source*. Spreadsheets lost that. The number and its proof live in different places, and the proof goes stale when the number changes.
 
-Tickmark puts the proof on the number. Click any amount on the return and one panel answers the questions a 20-year CPA asks in order:
+TaxLens puts the proof on the number. Click any amount on the return and one panel answers the questions a 20-year CPA asks in order:
 
-1. **How was it built?** The engine's rule and inputs, and Tickmark's own recomputation of the same line.
+1. **How was it built?** The engine's rule and inputs, and TaxLens's own recomputation of the same line.
 2. **Where did it come from?** Each source value, opening the document page with that value highlighted, plus a flag if a re-read of the page disagrees.
 3. **Who checked it, and how?** Verifications drawn as tickmarks in the verifier's ink (preparer blue, reviewer green, partner violet).
 4. **What changed it, and why?** Each adjustment with the original kept, who proposed and approved it, the evidence, the authority and the exact tax effect.

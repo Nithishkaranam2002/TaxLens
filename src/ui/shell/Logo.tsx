@@ -8,7 +8,7 @@ export function Logo({ small }: { small?: boolean }) {
       </svg>
       {!small && (
         <div className="leading-none">
-          <div className="text-[15px] font-semibold tracking-[-0.01em]">Tickmark</div>
+          <div className="text-[15px] font-semibold tracking-[-0.01em]">TaxLens</div>
           <div className="mt-0.5 text-[10.5px] text-fg-3">Every number carries its proof</div>
         </div>
       )}
