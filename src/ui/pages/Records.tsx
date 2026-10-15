@@ -11,7 +11,7 @@ import { date, hours, money, plural, signed, value } from '../format';
 import { Badge, Button, Card, Empty, Input, PageHead, SectionHead, Select, StatusPill, cx } from '../kit';
 import { RefChip } from '../Ref';
 import { EvidenceTableView } from '../drawer/CheckProof';
-import { LineRows, SignDots, num } from './common';
+import { LineRows, SignDots, num, useFirstRun } from './common';
 
 // Embedded previews (inside another page's frame) cannot open the print dialog.
 const canPrint = (() => { try { return window.self === window.top; } catch { return false; } })();
@@ -36,6 +36,7 @@ const TABS: { id: string; label: string; group: string }[] = [
 ];
 
 export function Records({ tab }: { tab?: string }) {
+  const firstRun = useFirstRun();
   const wp = useWorkpaper();
   const t = TABS.find((x) => x.id === tab) ?? TABS[0];
   const groups = [...new Set(TABS.map((x) => x.group))];
@@ -56,7 +57,7 @@ export function Records({ tab }: { tab?: string }) {
         </nav>
         <div className="min-w-0">
           <h2 className="mb-1 text-lg font-semibold">{t.label}</h2>
-          {!wp.ours ? <Empty icon={<FileClock />} title="No return yet">The first engine run is on March 4, 2026. Move the season clock forward to see this record.</Empty> : <Body id={t.id} wp={wp} />}
+          {!wp.ours ? <Empty icon={<FileClock />} title="No return yet">The first engine run is on {firstRun}. Move the season clock forward to see this record.</Empty> : <Body id={t.id} wp={wp} />}
         </div>
       </div>
     </div>

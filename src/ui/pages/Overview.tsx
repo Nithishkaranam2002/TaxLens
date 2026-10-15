@@ -9,9 +9,10 @@ import type { AreaStatus, Workpaper } from '../../engine/workpaper';
 import { ago, date, hours, money, plural, signed } from '../format';
 import { Avatar, Badge, Button, Card, Disclosure, Empty, Meter, PageHead, cx } from '../kit';
 import { QUIET, describe } from './describe';
-import { AreaLink, LineRows, SignDots, StepIcon, outcome, useNow } from './common';
+import { AreaLink, LineRows, SignDots, StepIcon, outcome, useFirstRun, useNow } from './common';
 
 export function Overview() {
+  const firstRun = useFirstRun();
   const wp = useWorkpaper();
   const ix = useApp((s) => s.ix)!;
   const me = useMe();
@@ -32,7 +33,7 @@ export function Overview() {
       />
 
       {!wp.version ? (
-        <Empty icon={<FileClock />} title="No engine output yet" action={<Button onClick={() => store.setView(null)}>Return to now</Button>}>The first engine run is on March 4, 2026. Move the season clock forward or return to now.</Empty>
+        <Empty icon={<FileClock />} title="No engine output yet" action={<Button onClick={() => store.setView(null)}>Return to now</Button>}>The first engine run is on {firstRun}. Move the season clock forward or return to now.</Empty>
       ) : (
         <section aria-label="Results" className="space-y-3">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">

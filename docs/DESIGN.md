@@ -108,3 +108,16 @@ The ink, paper, highlight and scrim tokens keep their current roles; their value
 ## 8. How this is checked
 
 After each step: `npm run build && npm test` (39 tests), then screenshots of Welcome, Overview, Open items, Area, the Proof drawer, the Document viewer, Records → Sales, Review, Filing and the Client portal at 1440px and 390px, compared with `design-review/baseline/`, plus a check that the browser console is clean.
+
+## 9. As built: differences from the plan and known exceptions
+
+- **Overview:** the Areas table sits full width below Path to filing and Needs you, not inside the left column. At 1280–1440px the column was too narrow and clipped the hours.
+- **Top bar:** the full search field shows from 1280px up; below that it is an icon, so the page title keeps its room at 1024px.
+- **Sidebar active item:** the panel background and full-strength text carry the active state. The planned 3px bar is drawn but sits at the edge of the nav padding.
+- **Exceptions to the 13px minimum:**
+  - Avatar initials scale with the avatar (10px at the smallest 20–24px avatars), and the full name is in the tooltip.
+  - The printed filing documents (`src/ui/pages/filingDocs.ts`) keep their own print stylesheet.
+- **Data rules kept:**
+  - `public/packet.json` is byte-for-byte the delivered packet. Its SHA-256, `ee01f850…`, is unchanged and shown on the welcome screen and in Firm → Data.
+  - Every value on screen comes from the packet, the activity log or `src/data/household.ts`. The date of the first engine run in empty states is read from the packet (`useFirstRun` in `src/ui/pages/common.tsx`).
+- **Not changed, on purpose:** browser storage keys keep the old `tickmark:` prefix, so work already saved in a browser still loads after the rename.

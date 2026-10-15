@@ -35,6 +35,36 @@ After the first build was finished and tested, I started a second Claude session
 
 It changed no tax number and no correction. It also wrote this section.
 
+## A third pass: the redesign
+
+With the product working, I asked a third Claude session to redesign the interface so that a recruiter or a 20-year CPA opening the link sees a product a firm would pay for. The brief was strict: change how it looks, reads and feels, and nothing else. No change to `src/engine/`, `src/app/` or `src/data/`, no tax number, correction, check or judgment text, and no feature, control or shortcut removed.
+
+How it went:
+
+1. **Baseline first.** It ran the build and the 39 tests, then took screenshots of ten screens at 1440 and 390 pixels with Playwright.
+2. **A written spec before any code** ([DESIGN.md](DESIGN.md)): type scale, spacing, colour tokens for light and dark, component rules and a page-by-page plan. I reviewed it and changed two things. Primary buttons stay near-black, and the indigo accent is used only for proof links and focus, because in this app colour already means *who did the work* (preparer blue, reviewer green, partner violet). It then picked the indigo by measuring colour distance against every person's ink in both themes. I also renamed the product from Tickmark to **TaxLens**.
+3. **Nine steps, one commit each**, with the build, the 39 tests and fresh screenshots after every step:
+   - tokens and kit
+   - shell and welcome
+   - Overview
+   - Open items
+   - proof drawer and document viewer
+   - the remaining pages
+   - empty, loading and error states
+   - a responsive and dark-mode pass
+   - these docs
+
+   It pushed only after the build and tests passed.
+4. **What changed:**
+   - Text is 13px minimum and 15px for body; about 560 hard-coded sizes became eight tokens.
+   - There is less on screen at once: completed filing steps, groups in Open items and secondary proof sections fold away, and Team and the 2024 comparison sit behind disclosures.
+   - The welcome screen is a full-screen landing page.
+   - Empty, loading and error states are designed.
+   - It fixed one real bug the baseline exposed: a button nested inside a button in Open items, which React warned about in the console.
+5. **Checked in a browser at the end:** approving change 22 as Daniel reopens Priya's Schedule C sign-off and lists the lines that moved. Clicking a number opens its proof, and its source opens the page with the value highlighted. The console is clean.
+
+Browser storage keys still use the old name, so work already saved in a browser keeps loading.
+
 ## My role
 
 - Set the goal and the standard: a real product a 20-year CPA would trust and a new hire could use on day one, not a spreadsheet.

@@ -5,12 +5,19 @@ import { AREA, type AreaId } from '../../engine/areas';
 import type { Level } from '../../engine/events';
 import type { Summary } from '../../engine/recompute';
 import type { AreaStatus, Workpaper } from '../../engine/workpaper';
-import { money, value } from '../format';
+import { date, money, value } from '../format';
 import { Avatar, Tick, cx } from '../kit';
 import { firmDay } from '../../engine/time';
 
 export const LEVELS: Level[] = ['preparer', 'reviewer', 'partner'];
 export const LEVEL_SHORT: Record<Level, string> = { preparer: 'P', reviewer: 'R', partner: 'Pt' };
+
+/** The date of the packet's first engine run, read from the packet. */
+export function useFirstRun(): string {
+  const ix = useApp((s) => s.ix)!;
+  const v = ix.versions.get(ix.versionOrder[0]);
+  return v ? date(v.computed_at) : '';
+}
 
 /** The season clock, re-read whenever the app ticks. */
 export function useNow(): string {

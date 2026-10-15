@@ -9,7 +9,7 @@ import { type Edit, type Summary, computeReturn, summarize } from '../../engine/
 import type { Workpaper } from '../../engine/workpaper';
 import { date, money, plural, signed, value } from '../format';
 import { Avatar, Badge, Button, Card, Checkbox, Empty, Input, PageHead, SectionHead, Select, StatusPill, Tabs, cx } from '../kit';
-import { download, outcome } from './common';
+import { download, outcome, useFirstRun } from './common';
 import { firmDay, firmEndOfDay } from '../../engine/time';
 
 type Tab = 'ledger' | 'versions' | 'whatif';
@@ -49,6 +49,7 @@ function useBridge(wp: Workpaper) {
 }
 
 function Ledger({ wp }: { wp: Workpaper }) {
+  const firstRun = useFirstRun();
   const actors = useApp((s) => s.actors);
   const bridge = useBridge(wp);
   const [show, setShow] = useState<'active' | 'all'>('active');
@@ -61,7 +62,7 @@ function Ledger({ wp }: { wp: Workpaper }) {
     const rows = wp.proposals.map((p) => [p.seq, p.status, p.area, q(p.title), actors.find((a) => a.id === p.by)?.name ?? p.by, p.at, q(p.decisions.filter((d) => d.decision === 'approve').map((d) => actors.find((a) => a.id === d.by)?.name).join('; ')), p.approvedAt ?? '', p.effect.fedTax, p.effect.caTax, q(p.authority), q(p.evidence.join(' ')), q(p.reason)].join(','));
     download('taxlens-adjustments.csv', [head.join(','), ...rows].join('\n'), 'text/csv');
   };
-  if (!e || !o) return <Empty icon={<FileClock />} title="No return yet">The first engine run is on March 4, 2026.</Empty>;
+  if (!e || !o) return <Empty icon={<FileClock />} title="No return yet">The first engine run is on {firstRun}.</Empty>;
   return (
     <div className="space-y-6">
       <section>
@@ -240,6 +241,7 @@ function Versions({ wp }: { wp: Workpaper }) {
 
 // ---------------------------------------------------------------- what-ifs
 function WhatIfs({ wp }: { wp: Workpaper }) {
+  const firstRun = useFirstRun();
   const ix = useApp((s) => s.ix)!;
   const me = useMe();
   const alts = ix.packet.what_if.alternatives;
@@ -285,7 +287,7 @@ function WhatIfs({ wp }: { wp: Workpaper }) {
     });
   };
 
-  if (!wp.version || !ours || !scenario) return <Empty icon={<FileClock />} title="No return yet">The first engine run is on March 4, 2026.</Empty>;
+  if (!wp.version || !ours || !scenario) return <Empty icon={<FileClock />} title="No return yet">The first engine run is on {firstRun}.</Empty>;
   return (
     <div className="space-y-6">
       <section>
