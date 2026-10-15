@@ -1,4 +1,4 @@
-import { CircleCheck, Layers, Search, Sparkles, Wand2, X } from 'lucide-react';
+import { CheckCheck, ChevronRight, CircleCheck, Layers, Search, SearchX, Sparkles, Wand2, X } from 'lucide-react';
 import { type ReactNode, useMemo, useState } from 'react';
 import { type ActCtx, type Result, decide, explainVariance, proposeFix } from '../../app/actions';
 import { store, useApp, useMe, useWorkpaper } from '../../app/store';
@@ -135,6 +135,8 @@ export function Inbox() {
   const [area, setArea] = useState<string>('all');
   const [q, setQ] = useState('');
   const [sel, setSel] = useState<Set<string>>(new Set());
+  // Groups the person has opened or closed; the first group with items starts open.
+  const [toggled, setToggled] = useState<Map<Kind, boolean>>(new Map());
   const roleOf = (id: string) => actors.find((a) => a.id === id)?.role;
   const nameOf = (id: string) => actors.find((a) => a.id === id)?.name.split(' ')[0] ?? id;
   const today = firmDay(wp.asOf);
@@ -174,24 +176,25 @@ export function Inbox() {
         right={<Segmented value={scope} onChange={(v) => { setScope(v); setSel(new Set()); }} options={[{ id: 'me', label: `For ${me.name.split(' ')[0]}` }, { id: 'all', label: 'Everyone' }]} />}
       />
 
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <div className="flex flex-wrap gap-1">
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap gap-2">
           <KindChip active={kind === 'all'} onClick={() => setKind('all')} label="All" n={[...counts.values()].reduce((s, n) => s + n, 0)} />
           {ORDER.filter((k) => counts.get(k)).map((k) => <KindChip key={k} active={kind === k} onClick={() => setKind(k)} label={KIND_LABEL[k]} n={counts.get(k)!} />)}
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          <Select value={area} onChange={setArea} options={[{ id: 'all', label: 'All areas' }, ...AREAS.map((a) => ({ id: a.id, label: a.short }))]} className="w-40" />
-          <div className="relative w-56">
-            <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-fg-3" />
-            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter" className="pl-8" aria-label="Filter open items" />
+          <Select value={area} onChange={setArea} options={[{ id: 'all', label: 'All areas' }, ...AREAS.map((a) => ({ id: a.id, label: a.short }))]} className="w-44" />
+          <div className="relative w-full sm:w-60">
+            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-fg-3" />
+            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter by text" className="pl-9" aria-label="Filter open items" />
           </div>
         </div>
       </div>
 
       {selected.length > 0 && (
-        <div className="sticky top-[60px] z-20 mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-line-2 bg-panel px-3 py-2 shadow-2 anim-rise">
+        <div className="sticky top-[68px] z-20 mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-line-2 bg-panel px-4 py-3 shadow-2 anim-rise">
           <Layers className="size-4 text-fg-3" />
-          <span className="text-base font-medium">{selected.length} selected</span>
+          <span className="text-base font-semibold">{selected.length} selected</span>
+          <span className="hidden text-sm text-fg-3 md:inline">One undo reverses the whole group.</span>
           <div className="ml-auto flex flex-wrap gap-2">
             {selFindings.length > 0 && canPropose && (
               <Button size="sm" variant="primary" icon={<Wand2 className="size-3.5" />} onClick={() => {
@@ -227,42 +230,56 @@ export function Inbox() {
       )}
 
       {filtered.length === 0 ? (
-        <Empty title={scope === 'me' ? 'Nothing is waiting for you' : 'Nothing is open'}>{scope === 'me' ? 'Switch to Everyone to see what others are working on.' : 'Every finding, change, note and step is complete.'}</Empty>
+        q.trim() || kind !== 'all' || area !== 'all' ? (
+          <Empty icon={<SearchX />} title="Nothing matches these filters" action={<Button size="sm" onClick={() => { setQ(''); setKind('all'); setArea('all'); }}>Clear filters</Button>}>Try another area or fewer words.</Empty>
+        ) : (
+          <Empty icon={<CheckCheck />} tone="ok" title={scope === 'me' ? 'Nothing is waiting for you' : 'Nothing is open'}
+            action={scope === 'me' ? <Button size="sm" onClick={() => setScope('all')}>Show everyone's items</Button> : undefined}>
+            {scope === 'me' ? 'Switch to Everyone to see what others are working on.' : 'Every finding, change, note and step is complete.'}
+          </Empty>
+        )
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {ORDER.map((k) => {
             const rows = filtered.filter((i) => i.kind === k);
             if (!rows.length) return null;
+            const firstKind = ORDER.find((x) => filtered.some((i) => i.kind === x));
+            const expanded = kind === k || (toggled.get(k) ?? (k === firstKind || rows.some((r) => sel.has(r.id))));
             const selectable = rows.filter((r) => r.selectable && (k !== 'change' || canApprove) && (k === 'change' || canPropose));
             const allSel = selectable.length > 0 && selectable.every((r) => sel.has(r.id));
             return (
-              <section key={k}>
-                <div className="mb-2 flex items-center gap-2">
+              <section key={k} className="overflow-hidden rounded-xl border border-line bg-panel">
+                <div className={cx('flex min-h-14 items-center gap-3 px-4', expanded && 'border-b border-line')}>
                   {selectable.length > 0 && <Checkbox checked={allSel} onChange={(v) => setSel((s) => { const n = new Set(s); for (const r of selectable) { if (v) n.add(r.id); else n.delete(r.id); } return n; })} />}
-                  <h2 className="text-md font-semibold">{KIND_LABEL[k]}</h2>
-                  <span className="num text-sm text-fg-3">{rows.length}</span>
+                  <button type="button" aria-expanded={expanded} onClick={() => setToggled((m) => new Map(m).set(k, !expanded))} className="flex min-h-14 flex-1 items-center gap-2.5 text-left">
+                    <h2 className="text-md font-semibold">{KIND_LABEL[k]}</h2>
+                    <span className="num rounded-full bg-sunk px-2 text-cap font-medium text-fg-2">{rows.length}</span>
+                    <ChevronRight className={cx('ml-auto size-4 text-fg-3 transition-transform', expanded && 'rotate-90')} />
+                  </button>
                 </div>
-                <div className="overflow-hidden rounded-lg border border-line bg-panel shadow-1">
+                {expanded && <div>
                   {rows.map((i) => {
                     const by = actors.find((a) => a.id === i.by);
                     const canSel = selectable.includes(i);
                     return (
-                      <div key={i.id} className={cx('flex items-start gap-3 border-b border-line px-3 py-2.5 last:border-b-0', sel.has(i.id) && 'bg-info-bg/40')}>
-                        <div className="w-4 pt-0.5">{canSel && <Checkbox checked={sel.has(i.id)} onChange={() => toggle(i.id)} />}</div>
-                        <button type="button" onClick={() => (i.ref ? store.open(i.ref) : i.go?.())} className="min-w-0 flex-1 text-left">
-                          <div className="flex flex-wrap items-center gap-1.5">
+                      <div key={i.id} className={cx('flex items-start gap-3 border-b border-line px-4 py-3.5 last:border-b-0 hover:bg-panel-2', sel.has(i.id) && 'bg-panel-2')}>
+                        <div className="w-[18px] pt-0.5">{canSel && <Checkbox checked={sel.has(i.id)} onChange={() => toggle(i.id)} />}</div>
+                        <div role="button" tabIndex={0} onClick={() => (i.ref ? store.open(i.ref) : i.go?.())}
+                          onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); if (i.ref) store.open(i.ref); else i.go?.(); } }}
+                          className="min-w-0 flex-1 cursor-pointer rounded-md text-left">
+                          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                             <span className="text-base font-medium">{i.title}</span>
                             {i.status && <StatusPill status={i.status} />}
                           </div>
-                          <div className="mt-0.5 line-clamp-2 text-sm text-fg-2">{i.detail}</div>
-                          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                          <div className="mt-0.5 line-clamp-2 text-sm text-fg-2 md:line-clamp-1">{i.detail}</div>
+                          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                             <AreaLink id={i.area} className="text-fg-3" />
                             {by && <span className="inline-flex items-center gap-1 text-fg-3"><Avatar actor={by} size={14} />{by.name.split(' ')[0]}</span>}
                             {i.meta}
                           </div>
-                        </button>
+                        </div>
                         {i.effect && (i.effect.fed !== 0 || i.effect.ca !== 0) && (
-                          <div className="hidden w-36 shrink-0 text-right text-sm sm:block">
+                          <div className="hidden w-32 shrink-0 text-right text-sm sm:block">
                             <div className="num"><span className="text-fg-3">Fed </span><span className={i.effect.fed > 0 ? 'text-bad' : i.effect.fed < 0 ? 'text-ok' : ''}>{signed(i.effect.fed)}</span></div>
                             <div className="num"><span className="text-fg-3">CA </span><span className={i.effect.ca > 0 ? 'text-bad' : i.effect.ca < 0 ? 'text-ok' : ''}>{signed(i.effect.ca)}</span></div>
                           </div>
@@ -271,7 +288,7 @@ export function Inbox() {
                       </div>
                     );
                   })}
-                </div>
+                </div>}
               </section>
             );
           })}
@@ -283,8 +300,8 @@ export function Inbox() {
 
 function KindChip({ label, n, active, onClick }: { label: string; n: number; active: boolean; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className={cx('inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-sm', active ? 'border-fg bg-fg text-bg' : 'border-line-2 bg-panel text-fg-2 hover:border-fg-3')}>
-      {label}<span className={cx('num text-cap', active ? 'opacity-80' : 'text-fg-3')}>{n}</span>
+    <button type="button" onClick={onClick} aria-pressed={active} className={cx('inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-medium transition-colors', active ? 'border-fg bg-fg text-bg' : 'border-line bg-panel text-fg-2 hover:border-line-2 hover:text-fg')}>
+      {label}<span className={cx('num text-cap', active ? 'opacity-75' : 'text-fg-3')}>{n}</span>
     </button>
   );
 }
