@@ -1,0 +1,38 @@
+{
+  "name": "tickmark",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Tickmark: a web-native tax workpaper where every number carries its proof.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "0.10.4",
+    "@tanstack/react-virtual": "3.10.9",
+    "clsx": "2.1.1",
+    "lucide-react": "0.460.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.2.15",
+    "@tailwindcss/vite": "4.1.18",
+    "@types/node": "22.15.3",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "5.2.0",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3",
+    "vite": "7.3.6",
+    "vitest": "4.1.11"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
