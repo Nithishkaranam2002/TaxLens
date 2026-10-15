@@ -1,7 +1,8 @@
-import { ArrowRight, FileSearch, History, MousePointerClick, PlayCircle, ShieldCheck, Users } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowRight, ChevronDown, FileSearch, History, Loader2, MousePointerClick, PlayCircle, ShieldCheck, Users } from 'lucide-react';
+import { type ReactNode, useState } from 'react';
 import { store, useApp, useWorkpaper } from '../../app/store';
-import { Avatar, Button } from '../kit';
+import type { Actor } from '../../engine/people';
+import { Avatar, Button, cx } from '../kit';
 import { Logo } from './Logo';
 
 export function Welcome() {
@@ -14,6 +15,7 @@ export function Welcome() {
   const priya = actors.find((a) => a.id === 'st-01');
   const daniel = actors.find((a) => a.id === 'st-02');
   const p = ix.packet;
+  const eng = ix.engagement;
 
   const fresh = () => { store.setMe('st-01'); store.welcome(); store.go({ page: 'overview' }); };
   const season = async () => {
@@ -24,58 +26,115 @@ export function Welcome() {
   };
 
   return (
-    <div className="fixed inset-0 z-[55] flex items-start justify-center overflow-y-auto bg-[var(--scrim)] p-4 pt-[6vh] anim-fade">
-      <div role="dialog" aria-modal="true" aria-labelledby="welcome-title" className="w-full max-w-[760px] overflow-hidden rounded-2xl border border-line bg-panel shadow-2 anim-rise">
-        <div className="border-b border-line bg-panel-2 px-6 pt-6 pb-5">
+    <div className="fixed inset-0 z-[55] overflow-y-auto bg-bg anim-fade" style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <div role="dialog" aria-modal="true" aria-labelledby="welcome-title" className="mx-auto flex min-h-full w-full max-w-[1200px] flex-col px-4 sm:px-8">
+        <header className="flex items-center justify-between py-6">
           <Logo />
-          <h1 id="welcome-title" className="serif mt-4 text-2xl leading-tight font-semibold tracking-[-0.01em]">Every number carries its proof.</h1>
-          <p className="mt-2 max-w-[62ch] text-md text-fg-2">
-            TaxLens is a web-native workpaper for the {ix.engagement.fileName} {ix.engagement.year} return. Click any amount to see how it was built, the exact field on the page it came from, who checked it, and what changed it and why.
-          </p>
-          <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
-            <Fact n={p.documents.length} label="documents in the packet" />
-            <Fact n={p.extracted_values.length.toLocaleString('en-US')} label="values read from them" />
-            <Fact n={wp.checks.length} label="independent checks, already run" />
-            <Fact n={findings + reviews} label={`findings (${findings} errors, ${reviews} to review)`} />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 p-6 sm:grid-cols-2">
-          <button type="button" onClick={fresh} className="group flex flex-col rounded-xl border border-line-2 bg-panel p-4 text-left transition-colors hover:border-fg-3">
-            <div className="flex items-center gap-2"><PlayCircle className="size-4.5 text-fg-2" /><span className="text-md font-semibold">Start the work fresh</span></div>
-            <p className="mt-1.5 flex-1 text-base text-fg-2">The packet as delivered, on July 1, 2026, with nothing done yet. Work the findings, propose corrections and take the return to filing.</p>
-            <div className="mt-3 flex items-center gap-2 text-sm text-fg-3"><Avatar actor={priya} size={20} />You are {priya?.name}, preparer<ArrowRight className="ml-auto size-4 text-fg-3 transition-transform group-hover:translate-x-0.5" /></div>
-          </button>
-          <button type="button" onClick={season} disabled={busy} className="group flex flex-col rounded-xl border border-line-2 bg-panel p-4 text-left transition-colors hover:border-fg-3 disabled:opacity-70">
-            <div className="flex items-center gap-2"><History className="size-4.5 text-fg-2" /><span className="text-md font-semibold">Load the recorded season</span></div>
-            <p className="mt-1.5 flex-1 text-base text-fg-2">March to June 2026 by the firm's team of five: corrections, review notes, a late K-1 that reopened sign-offs. Changes are waiting for your approval.</p>
-            <div className="mt-3 flex items-center gap-2 text-sm text-fg-3"><Avatar actor={daniel} size={20} />You are {daniel?.name}, reviewer{busy ? <span className="ml-auto">Building the season…</span> : <ArrowRight className="ml-auto size-4 text-fg-3 transition-transform group-hover:translate-x-0.5" />}</div>
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 gap-x-6 gap-y-2 border-t border-line px-6 py-4 text-sm text-fg-2 sm:grid-cols-2">
-          <Tip icon={<MousePointerClick className="size-3.5" />}>Numbers with a dotted underline open their proof. Sources open the page with the field highlighted.</Tip>
-          <Tip icon={<Users className="size-3.5" />}>Each browser tab is one person. Open a second tab, switch person (top right), and work side by side.</Tip>
-          <Tip icon={<ShieldCheck className="size-3.5" />}>The firm's rules are enforced: no self-review, partner approval over 1,000, masked identifiers.</Tip>
-          <Tip icon={<FileSearch className="size-3.5" />}>Press <kbd className="mono rounded border border-line-2 px-1 text-cap">/</kbd> to find any number, document, check or person.</Tip>
-        </div>
-        <div className="flex justify-end border-t border-line px-6 py-3">
           <Button variant="ghost" size="sm" onClick={() => store.welcome()}>Just look around</Button>
-        </div>
+        </header>
+
+        <main className="grid flex-1 grid-cols-1 content-center gap-x-16 gap-y-10 py-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:py-10">
+          <section className="anim-rise lg:col-start-1 lg:row-start-1 lg:self-end">
+            <div className="text-sm font-medium text-fg-3">{eng.fileName} · {eng.year} return · {eng.filingStatus}</div>
+            <h1 id="welcome-title" className="serif mt-3 text-[clamp(2.25rem,5vw,3.25rem)] leading-[1.08] font-semibold tracking-[-0.02em]">Every number carries its proof.</h1>
+            <p className="mt-5 max-w-[54ch] text-md text-fg-2">
+              A web-native tax workpaper. Click any amount to see how it was built, the exact field on the page it came from, who checked it, and what changed it and why.
+            </p>
+          </section>
+
+          <section className="anim-rise space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center" aria-label="Choose how to start">
+            <Choice onClick={fresh} icon={<PlayCircle />} title="Start fresh" who={priya} role="preparer"
+              text="The packet as delivered, on July 1, 2026, with nothing done yet. Work the findings, propose corrections and take the return to filing." />
+            <Choice onClick={season} disabled={busy} busy={busy} icon={<History />} title="Load the recorded season" who={daniel} role="reviewer"
+              text="March to June 2026 by the firm's team of five: corrections, review notes, a late K-1 that reopened sign-offs. Changes are waiting for your approval." />
+            <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-4">
+              <Fact n={p.documents.length} label="documents" />
+              <Fact n={p.extracted_values.length.toLocaleString('en-US')} label="values read" />
+              <Fact n={wp.checks.length} label="checks run" />
+              <Fact n={findings + reviews} label={`findings: ${findings} errors, ${reviews} to review`} />
+            </dl>
+            <HowItWorks />
+          </section>
+
+          <section className="anim-rise lg:col-start-1 lg:row-start-2 lg:self-start" aria-label="What it does">
+            <ul className="space-y-5">
+              <Point icon={<MousePointerClick />} title="Proof on every number">Rule and inputs, the source page with the value highlighted, verifications, changes and open questions, in one panel.</Point>
+              <Point icon={<ShieldCheck />} title="The firm's rules, enforced">No self-review, partner approval over 1,000, masked identifiers. A refusal quotes the rule.</Point>
+              <Point icon={<History />} title="One log behind everything">Undo, sign-offs that reopen, filing, amending and answering a notice all come from the same append-only record.</Point>
+            </ul>
+          </section>
+
+        </main>
+
+        <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-line py-5 text-sm text-fg-3">
+          <span>Built by <span className="font-medium text-fg-2">Nithish Karanam</span> · Case study for MiraFlores AI, <i>Redesign the Tax Workpaper</i></span>
+          <span>Packet {p.packet.client_id} · SHA-256 {ix.sha256.slice(0, 12)}…</span>
+        </footer>
       </div>
     </div>
   );
 }
 
+function Point({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
+  return (
+    <li className="flex gap-4">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-line bg-panel text-fg-2 [&_svg]:size-5">{icon}</span>
+      <span>
+        <span className="block text-md font-semibold">{title}</span>
+        <span className="block text-sm text-fg-2">{children}</span>
+      </span>
+    </li>
+  );
+}
+
+function Choice({ onClick, disabled, busy, icon, title, text, who, role }: { onClick: () => void; disabled?: boolean; busy?: boolean; icon: ReactNode; title: string; text: string; who?: Actor; role: string }) {
+  return (
+    <button type="button" onClick={onClick} disabled={disabled}
+      className="group flex w-full flex-col rounded-2xl border border-line bg-panel p-5 text-left shadow-1 transition-[border-color,box-shadow] hover:border-fg-3 hover:shadow-2 disabled:opacity-80 sm:p-6">
+      <span className="flex items-center gap-3">
+        <span className="flex size-10 items-center justify-center rounded-xl bg-btn text-btn-fg [&_svg]:size-5">{icon}</span>
+        <span className="flex-1 text-xl font-semibold tracking-[-0.01em]">{title}</span>
+        {busy ? <Loader2 className="size-5 animate-spin text-fg-3" /> : <ArrowRight className="size-5 text-fg-3 transition-transform group-hover:translate-x-1 group-hover:text-fg" />}
+      </span>
+      <span className="mt-3 text-base text-fg-2">{text}</span>
+      <span className="mt-4 flex items-center gap-2 text-sm text-fg-3">
+        <Avatar actor={who} size={24} />
+        <span>{busy ? 'Building the season…' : <>You are <span className="font-medium text-fg-2">{who?.name}</span>, {role}</>}</span>
+      </span>
+    </button>
+  );
+}
+
 function Fact({ n, label }: { n: number | string; label: string }) {
   return (
-    <div className="rounded-lg border border-line bg-panel px-3 py-2">
-      <div className="num text-lg leading-tight font-semibold">{n}</div>
-      <div className="text-fg-3">{label}</div>
+    <div className="bg-panel px-4 py-3">
+      <dt className="sr-only">{label}</dt>
+      <dd className="num text-xl font-semibold">{n}</dd>
+      <div className="text-cap text-fg-3" aria-hidden>{label}</div>
     </div>
   );
 }
 
-function Tip({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
-  return <div className="flex gap-2"><span className="mt-0.5 text-fg-3">{icon}</span><span>{children}</span></div>;
+function HowItWorks() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-xl border border-line bg-panel">
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex h-12 w-full items-center gap-2 px-4 text-left text-base font-medium">
+        <span className="flex-1">How it works</span>
+        <ChevronDown className={cx('size-4 text-fg-3 transition-transform', open && 'rotate-180')} />
+      </button>
+      {open && (
+        <div className="grid grid-cols-1 gap-3 border-t border-line px-4 py-4 text-sm text-fg-2 sm:grid-cols-2">
+          <Tip icon={<MousePointerClick />}>Numbers with a dotted underline open their proof. Sources open the page with the field highlighted.</Tip>
+          <Tip icon={<Users />}>Each browser tab is one person. Open a second tab, switch person (top right), and work side by side.</Tip>
+          <Tip icon={<ShieldCheck />}>The firm's rules are enforced: no self-review, partner approval over 1,000, masked identifiers.</Tip>
+          <Tip icon={<FileSearch />}>Press <kbd className="mono rounded-md border border-line-2 px-1.5 text-cap">/</kbd> to find any number, document, check or person.</Tip>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Tip({ icon, children }: { icon: ReactNode; children: ReactNode }) {
+  return <div className="flex gap-2.5"><span className="mt-0.5 shrink-0 text-fg-3 [&_svg]:size-4">{icon}</span><span>{children}</span></div>;
 }

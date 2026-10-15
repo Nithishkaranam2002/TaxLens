@@ -24,23 +24,23 @@ export function Topbar({ onMenu, onSearch }: { onMenu: () => void; onSearch: () 
   const others = presence.filter((p) => Date.now() - p.at < 60000);
 
   return (
-    <header className="sticky z-30 flex h-[52px] items-center gap-2 border-b border-line bg-bg/90 px-3 backdrop-blur md:px-5" style={{ top: 'env(safe-area-inset-top, 0px)' }}>
-      <IconButton label="Menu" className="lg:hidden" onClick={onMenu}><MenuIcon className="size-4.5" /></IconButton>
-      <div className="min-w-0 flex-1 truncate text-base font-medium text-fg-2">
+    <header className="sticky z-30 flex h-14 items-center gap-2 border-b border-line bg-panel px-3 md:gap-2.5 md:px-6" style={{ top: 'env(safe-area-inset-top, 0px)' }}>
+      <IconButton label="Menu" className="lg:hidden" onClick={onMenu}><MenuIcon className="size-5" /></IconButton>
+      <div className="min-w-0 flex-1 truncate text-md font-semibold">
         {route.page === 'area' ? wp.areas.find((a) => a.id === route.id)?.name : TITLES[route.page]}
       </div>
 
       {me.role !== 'client' && <>
-      <button type="button" onClick={onSearch} className="hidden h-8 w-64 items-center gap-2 rounded-md border border-line-2 bg-panel px-2.5 text-sm text-fg-3 hover:border-fg-3 md:flex">
-        <Search className="size-3.5" />
+      <button type="button" onClick={onSearch} className="hidden h-10 w-64 items-center gap-2.5 rounded-lg border border-line bg-panel-2 px-3 text-sm text-fg-3 transition-colors hover:border-line-2 md:flex xl:w-80">
+        <Search className="size-4" />
         <span className="flex-1 truncate text-left whitespace-nowrap">Find a number, document or person</span>
         <Kbd>⌘K</Kbd>
       </button>
-      <IconButton label="Search" className="md:hidden" onClick={onSearch}><Search className="size-4" /></IconButton>
+      <IconButton label="Search" className="md:hidden" onClick={onSearch}><Search className="size-[18px]" /></IconButton>
 
       <Menu width={300} trigger={() => (
-        <button type="button" className={cx('flex h-8 items-center gap-1.5 rounded-md border px-2 text-sm', viewAsOf ? 'border-warn bg-warn-bg text-warn' : 'border-line-2 bg-panel text-fg-2 hover:border-fg-3')} title="Season clock">
-          {viewAsOf ? <History className="size-3.5" /> : <CalendarClock className="size-3.5" />}
+        <button type="button" className={cx('flex h-10 items-center gap-2 rounded-lg border px-2.5 text-sm font-medium', viewAsOf ? 'border-warn bg-warn-bg text-warn' : 'border-line bg-panel text-fg-2 hover:border-line-2')} title="Season clock" aria-label="Season clock">
+          {viewAsOf ? <History className="size-4" /> : <CalendarClock className="size-4" />}
           <span className="num hidden sm:inline">{date(viewAsOf ?? now)}</span>
         </button>
       )}>
@@ -63,8 +63,8 @@ export function Topbar({ onMenu, onSearch }: { onMenu: () => void; onSearch: () 
 
       {me.role !== 'client' && (
       <span title={mode === 'shared' ? 'Live: everyone with this workspace link sees changes as they happen' : 'Saved in this browser and shared live between its tabs'}
-        className="hidden items-center gap-1 text-cap text-fg-3 sm:flex">
-        {mode === 'shared' ? <><Cloud className="size-3.5 text-ok" /><span className="text-ok">Live</span></> : <><HardDrive className="size-3.5" />This browser</>}
+        className="hidden size-9 items-center justify-center rounded-lg text-fg-3 sm:flex" aria-label={mode === 'shared' ? 'Live workspace' : 'Saved in this browser'}>
+        {mode === 'shared' ? <span className="relative flex"><Cloud className="size-[18px] text-ok" /><span className="live-dot absolute -top-0.5 -right-0.5 size-2 rounded-full bg-ok" /></span> : <HardDrive className="size-[18px]" />}
       </span>
       )}
 
@@ -76,7 +76,7 @@ export function Topbar({ onMenu, onSearch }: { onMenu: () => void; onSearch: () 
 
       <Menu width={340} trigger={() => (
         <IconButton label="Notifications" className="relative">
-          <Bell className="size-4" />
+          <Bell className="size-[18px]" />
           {notes.length > 0 && <span className="num absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-bad px-1 text-cap leading-none font-semibold text-white">{notes.length}</span>}
         </IconButton>
       )}>
@@ -95,7 +95,7 @@ export function Topbar({ onMenu, onSearch }: { onMenu: () => void; onSearch: () 
       </Menu>
 
       <IconButton label={`Theme: ${theme}`} onClick={() => store.setTheme(theme === 'system' ? 'dark' : theme === 'dark' ? 'light' : 'system')}>
-        {theme === 'dark' ? <Moon className="size-4" /> : theme === 'light' ? <Sun className="size-4" /> : <SunMoon className="size-4" />}
+        {theme === 'dark' ? <Moon className="size-[18px]" /> : theme === 'light' ? <Sun className="size-[18px]" /> : <SunMoon className="size-[18px]" />}
       </IconButton>
 
       <RoleSwitcher me={me} actors={actors} />
@@ -107,10 +107,10 @@ export function RoleSwitcher({ me, actors }: { me: Actor; actors: Actor[] }) {
   const now = store.now();
   return (
     <Menu width={330} trigger={(open) => (
-      <button type="button" className={cx('flex h-8 items-center gap-2 rounded-md border pr-2 pl-1 text-left', open ? 'border-fg-3 bg-panel' : 'border-line-2 bg-panel hover:border-fg-3')} aria-label="Switch person">
-        <Avatar actor={me} size={24} />
+      <button type="button" className={cx('flex h-10 items-center gap-2.5 rounded-lg border pr-3 pl-1.5 text-left', open ? 'border-line-2 bg-panel-2' : 'border-line bg-panel hover:border-line-2')} aria-label="Switch person">
+        <Avatar actor={me} size={28} />
         <span className="hidden leading-tight sm:block">
-          <span className="block text-sm font-medium">{me.name}</span>
+          <span className="block text-sm font-semibold">{me.name}</span>
           <span className="block text-cap text-fg-3">{me.roleLabel}{me.credential ? `, ${me.credential}` : ''}</span>
         </span>
       </button>

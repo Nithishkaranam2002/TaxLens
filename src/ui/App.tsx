@@ -95,12 +95,12 @@ function Shell() {
 
   return (
     <div className="flex min-h-full">
-      <aside className="sticky top-0 hidden h-screen w-[248px] shrink-0 border-r border-line bg-bg lg:block">
+      <aside className="sticky top-0 hidden h-screen w-[264px] shrink-0 border-r border-line bg-bg lg:block">
         <Sidebar />
       </aside>
       {menu && (
         <div className="fixed inset-0 z-50 bg-[var(--scrim)] lg:hidden" onClick={() => setMenu(false)}>
-          <aside className="h-full w-[280px] max-w-[85vw] border-r border-line bg-bg anim-drawer" onClick={(e) => e.stopPropagation()} style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+          <aside className="h-full w-[288px] max-w-[85vw] border-r border-line bg-bg anim-drawer" onClick={(e) => e.stopPropagation()} style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
             <Sidebar onNavigate={() => setMenu(false)} />
           </aside>
         </div>
@@ -108,14 +108,14 @@ function Shell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar onMenu={() => setMenu(true)} onSearch={() => setPalette(true)} />
         {viewAsOf && (
-          <div className="flex flex-wrap items-center gap-2 border-b border-warn/30 bg-warn-bg px-5 py-2 text-base" style={{ paddingLeft: 'max(20px, env(safe-area-inset-left, 0px))', paddingRight: 'max(20px, env(safe-area-inset-right, 0px))' }}>
+          <div className="flex flex-wrap items-center gap-3 border-b border-warn/30 bg-warn-bg px-5 py-2.5 text-sm" style={{ paddingLeft: 'max(20px, env(safe-area-inset-left, 0px))', paddingRight: 'max(20px, env(safe-area-inset-right, 0px))' }}>
             <History className="size-4 text-warn" />
             <span className="flex-1">You are looking at the workpaper as it stood on <b>{date(viewAsOf)}</b>. Documents, engine output, checks and every decision are shown as of that moment. Nothing can be changed here.</span>
             <Button size="sm" icon={<X className="size-3.5" />} onClick={() => store.setView(null)}>Back to now</Button>
           </div>
         )}
-        <main className="mx-auto w-full max-w-[1320px] flex-1 py-6" style={{ paddingLeft: 'max(16px, env(safe-area-inset-left, 0px))', paddingRight: 'max(16px, env(safe-area-inset-right, 0px))' }}>
-          <div className="md:px-3">
+        <main className="mx-auto w-full max-w-[1464px] flex-1 py-6 md:py-8" style={{ paddingLeft: 'max(16px, env(safe-area-inset-left, 0px))', paddingRight: 'max(16px, env(safe-area-inset-right, 0px))' }}>
+          <div className="md:px-2 lg:px-4">
             <Suspense fallback={<div className="flex h-40 items-center justify-center"><Spinner /></div>}>{page}</Suspense>
           </div>
         </main>

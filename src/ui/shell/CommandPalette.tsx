@@ -104,7 +104,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                   <span className="block truncate text-base font-medium">{e.title}</span>
                   <span className="block truncate text-sm text-fg-3">{e.sub}</span>
                 </span>
-                <span className="mt-0.5 text-cap tracking-wide text-fg-3 uppercase">{e.kind}</span>
+                <span className="mt-0.5 rounded-md bg-sunk px-1.5 text-cap text-fg-3">{e.kind}</span>
               </button>
             );
           })}
