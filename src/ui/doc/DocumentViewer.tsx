@@ -96,7 +96,7 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
       <div ref={panelRef} role="dialog" aria-modal="true" aria-label={`${doc.id} ${doc.title}`} className="m-auto flex h-[min(94vh,980px)] w-[min(1400px,96vw)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-2 anim-rise" onMouseDown={(e) => e.stopPropagation()}>
         <header className="flex flex-wrap items-center gap-3 border-b border-line px-5 py-3">
           <span className="mono rounded-md bg-sunk px-2 py-0.5 text-sm font-medium">{doc.id}</span>
-          <div className="min-w-0 flex-1">
+          <div className="min-w-[min(100%,15rem)] flex-1">
             <div className="truncate text-md font-semibold">{doc.title}</div>
             <div className="truncate text-sm text-fg-3">{doc.issuer} · {doc.file_name} · received {dateTime(doc.received_at)} · uploaded by {doc.uploaded_by}</div>
           </div>
@@ -121,7 +121,7 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
               })}
             </aside>
           )}
-          <div className="min-w-0 flex-1 overflow-y-auto bg-sunk p-4 scroll-thin md:p-8" ref={pageRef}>
+          <div className="min-w-0 flex-1 overflow-y-auto bg-sunk p-3 scroll-thin sm:p-4 md:p-8" ref={pageRef}>
             <div className="mx-auto mb-3 flex max-w-[760px] flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
                 <IconButton label="Previous page" className="border border-line bg-panel" disabled={page <= 1} onClick={() => setPage(page - 1)}><ChevronLeft className="size-4" /></IconButton>
@@ -134,7 +134,7 @@ export function DocumentViewer({ refStr, onClose }: { refStr: string; onClose: (
             </div>
             {view === 'simulated' || !imgUrl ? (
               <article className="paper mx-auto min-h-[560px] max-w-[760px] rounded-sm">
-                <div className="paper-margin ml-10 px-6 py-7 sm:ml-14 sm:px-8">
+                <div className="paper-margin ml-5 px-4 py-6 sm:ml-14 sm:px-8 sm:py-7">
                   <div className="mb-5 flex items-start justify-between gap-4 border-b border-line-2 pb-3">
                     <div>
                       <div className="text-cap tracking-[0.12em] text-fg-3 uppercase">{doc.document_type.replace(/_/g, ' ')}</div>

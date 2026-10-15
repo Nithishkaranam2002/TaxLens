@@ -46,16 +46,15 @@ export function Overview() {
         </section>
       )}
 
-      <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] xl:gap-6">
-        <div className="space-y-8">
-          <PathToFiling wp={wp} />
-          <AreasTable wp={wp} />
-        </div>
+      <div className="grid grid-cols-1 items-start gap-8 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] xl:gap-6">
+        <PathToFiling wp={wp} />
         <div className="space-y-8">
           <NeedsYou />
           <SinceLastLooked now={now} />
         </div>
       </div>
+
+      <AreasTable wp={wp} />
 
       <div className="space-y-3">
         {wp.ours && (

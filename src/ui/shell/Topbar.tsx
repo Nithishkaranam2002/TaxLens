@@ -31,12 +31,12 @@ export function Topbar({ onMenu, onSearch }: { onMenu: () => void; onSearch: () 
       </div>
 
       {me.role !== 'client' && <>
-      <button type="button" onClick={onSearch} className="hidden h-10 w-64 items-center gap-2.5 rounded-lg border border-line bg-panel-2 px-3 text-sm text-fg-3 transition-colors hover:border-line-2 md:flex xl:w-80">
+      <button type="button" onClick={onSearch} className="hidden h-10 w-64 items-center gap-2.5 rounded-lg border border-line bg-panel-2 px-3 text-sm text-fg-3 transition-colors hover:border-line-2 xl:flex 2xl:w-80">
         <Search className="size-4" />
         <span className="flex-1 truncate text-left whitespace-nowrap">Find a number, document or person</span>
         <Kbd>⌘K</Kbd>
       </button>
-      <IconButton label="Search" className="md:hidden" onClick={onSearch}><Search className="size-[18px]" /></IconButton>
+      <IconButton label="Search" className="xl:hidden" onClick={onSearch}><Search className="size-[18px]" /></IconButton>
 
       <Menu width={300} trigger={() => (
         <button type="button" className={cx('flex h-10 items-center gap-2 rounded-lg border px-2.5 text-sm font-medium', viewAsOf ? 'border-warn bg-warn-bg text-warn' : 'border-line bg-panel text-fg-2 hover:border-line-2')} title="Season clock" aria-label="Season clock">
