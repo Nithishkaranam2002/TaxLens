@@ -4,7 +4,7 @@ A working prototype for the case study *Redesign the Tax Workpaper*, built on th
 
 **The core idea: every number carries its proof.** Click any amount and you see how it was built, the exact field on the document page it came from (highlighted), who verified it and how, what changed it and why, and what is still open about it. Under the screens, the workpaper is an append-only activity log, so undo, "what changed since I last looked", sign-offs that reopen, filing, amending and answering a notice years later all come from one mechanism.
 
-- **Live app:** `<your Vercel link>`
+- **Live app:** [taxlens-nithish.vercel.app](https://taxlens-nithish.vercel.app) (public, no sign-in)
 - **The idea and the data model, on one page:** [docs/ONE-PAGER.md](docs/ONE-PAGER.md)
 - **Errors found, and how the design surfaced each one:** [docs/ERRORS.md](docs/ERRORS.md)
 - **How AI was used:** [docs/AI-USAGE.md](docs/AI-USAGE.md)
