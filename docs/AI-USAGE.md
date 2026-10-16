@@ -42,7 +42,7 @@ With the product working, I asked a third Claude session to redesign the interfa
 How it went:
 
 1. **Baseline first.** It ran the build and the 39 tests, then took screenshots of ten screens at 1440 and 390 pixels with Playwright.
-2. **A written spec before any code** ([DESIGN.md](DESIGN.md)): type scale, spacing, colour tokens for light and dark, component rules and a page-by-page plan. I reviewed it and changed two things. Primary buttons stay near-black, and the indigo accent is used only for proof links and focus, because in this app colour already means *who did the work* (preparer blue, reviewer green, partner violet). It then picked the indigo by measuring colour distance against every person's ink in both themes. I also renamed the product from Tickmark to **TaxLens**.
+2. **A written spec before any code**: type scale, spacing, colour tokens for light and dark, component rules and a page-by-page plan. I reviewed it and changed two things. Primary buttons stay near-black, and the indigo accent is used only for proof links and focus, because in this app colour already means *who did the work* (preparer blue, reviewer green, partner violet). It then picked the indigo by measuring colour distance against every person's ink in both themes. I also renamed the product from Tickmark to **TaxLens**.
 3. **Nine steps, one commit each**, with the build, the 39 tests and fresh screenshots after every step:
    - tokens and kit
    - shell and welcome

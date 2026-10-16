@@ -12,7 +12,6 @@ Click any amount and you see how it was built, the exact field on the document p
 
 - **The idea and the data model, on one page:** [docs/ONE-PAGER.md](docs/ONE-PAGER.md)
 - **Errors found, and how the design surfaced each one:** [docs/ERRORS.md](docs/ERRORS.md)
-- **Design system, page plan and what was built:** [docs/DESIGN.md](docs/DESIGN.md)
 - **How AI was used:** [docs/AI-USAGE.md](docs/AI-USAGE.md)
 
 ## What it found
@@ -156,7 +155,7 @@ Any static host also works (`dist/` after `npm run build`); the shared workspace
 | Rules | Checked before anything is recorded; a refusal quotes the firm rule. `rules.test.ts` proves the refusals (self-review, the 1,000 partner threshold, clearance, start dates, sign-off order, blocking notes). | `src/engine/people.ts`, `src/app/actions.ts` |
 | Recorded season | March to June 2026 played through the same actions and rules. The tests prove no step is refused. | `src/app/season.ts` |
 | Notifications | Derived from the log, nothing stored: changes to approve, notes handed to you (with due dates), your sign-offs that reopened, client questions past their date, firm deadlines near or passed on the season clock. | `src/app/notify.ts` |
-| UI | React, TypeScript, Tailwind v4 with the design tokens in `src/styles.css` and the components in `src/ui/kit.tsx` (see [docs/DESIGN.md](docs/DESIGN.md)). Proof drawer, document viewer, areas, open items with bulk actions, 16 CPA records, review and sign-off, client portal, filing and replay, activity, firm settings. Household and firm labels come from the packet (`src/data/household.ts`), not from the screens. | `src/ui/` |
+| UI | React, TypeScript, Tailwind v4 with the design tokens in `src/styles.css` and the components in `src/ui/kit.tsx`. Proof drawer, document viewer, areas, open items with bulk actions, 16 CPA records, review and sign-off, client portal, filing and replay, activity, firm settings. Household and firm labels come from the packet (`src/data/household.ts`), not from the screens. | `src/ui/` |
 | Shared log (optional) | One Vercel Function on Postgres; idempotent by event id; a reset starts a new epoch and keeps the old rows. | `api/events.ts` |
 
 ## Tests

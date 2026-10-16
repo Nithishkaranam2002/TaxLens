@@ -167,7 +167,7 @@
   --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
 }
 
-/* Type scale (docs/DESIGN.md §1). Nothing in the app is smaller than text-cap (13px). */
+/* Type scale. Nothing in the app is smaller than text-cap (13px). */
 @theme {
   --text-cap: 13px;
   --text-cap--line-height: 18px;
